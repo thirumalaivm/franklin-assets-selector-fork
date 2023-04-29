@@ -1,6 +1,5 @@
 const IMS_API_KEY = 'franklin';
-const AS_MFE_STAGE = 'https://experience-stage.adobe.com/solutions/CQ-assets-selectors/assets/resources/asset-selectors.js';
-const AS_MFE_PROD = 'https://experience.adobe.com/solutions/CQ-assets-selectors/assets/resources/asset-selectors.js';
+const AS_MFE = 'https://experience.adobe.com/solutions/CQ-assets-selectors/assets/resources/asset-selectors.js';
 const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
 
@@ -37,15 +36,13 @@ function load() {
 export function init(cfg, callback) {
   if (cfg.environment.toUpperCase() === 'STAGE') {
     imsEnvironment = IMS_ENV_STAGE;
-    asMFE = AS_MFE_STAGE;
   } else if (cfg.environment.toUpperCase() === 'PROD') {
     imsEnvironment = IMS_ENV_PROD;
-    asMFE = AS_MFE_PROD;
   } else {
     throw new Error('Invalid environment setting!');
   }
 
-  loadScript(asMFE, () => {
+  loadScript(AS_MFE, () => {
     load();
     if (callback) {
       callback();

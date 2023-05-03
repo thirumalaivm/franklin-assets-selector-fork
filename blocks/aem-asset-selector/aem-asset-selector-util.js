@@ -4,7 +4,6 @@ const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
 
 let imsInstance = null;
-let asMFE;
 let imsEnvironment;
 
 function loadScript(url, callback, type) {
@@ -127,6 +126,7 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     handleSelection,
     handleNavigateToAsset,
     env: cfg.environment.toUpperCase(),
+    apiKey: 'franklin'
   };
   const container = document.getElementById('asset-selector');
   // eslint-disable-next-line no-undef

@@ -1,4 +1,3 @@
-const IMS_API_KEY = 'franklin';
 const AS_MFE = 'https://experience.adobe.com/solutions/CQ-assets-selectors/assets/resources/asset-selectors.js';
 const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
@@ -18,9 +17,9 @@ function loadScript(url, callback, type) {
   return $script;
 }
 
-function load() {
+function load(cfg) {
   const imsProps = {
-    imsClientId: IMS_API_KEY,
+    imsClientId: cfg['ims-client-id'],
     imsScope: 'additional_info.projectedProductContext,openid,read_organizations,AdobeID,ab.manage',
     redirectUrl: window.location.href,
     modalMode: true,
@@ -42,7 +41,7 @@ export function init(cfg, callback) {
   }
 
   loadScript(AS_MFE, () => {
-    load();
+    load(cfg);
     if (callback) {
       callback();
     }

@@ -1,0 +1,47 @@
+main .block.copilot h1 {
+  text-align: center;
+}
+
+main .block.copilot form {
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+main .block.copilot label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+main .block.copilot input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+main .block.copilot button[type="submit"] {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+main .block.copilot button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+main .block.copilot #result {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}

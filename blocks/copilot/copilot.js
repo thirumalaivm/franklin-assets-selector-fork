@@ -1,4 +1,5 @@
-export default function decorate(block) {
+import { parsePrompt, generateImages, generateTexts } from "./openai";
+export default  function decorate(block) {
     block.innerHTML = `
     <h1>Franklin Authoring Copilot</h1>
 
@@ -18,34 +19,17 @@ export default function decorate(block) {
     <div id="result"></div>
     `;
 
-    document.getElementById('myForm').addEventListener('submit', function (event) {
+    document.getElementById('myForm').addEventListener('submit', async function (event) {
         event.preventDefault(); // Prevent form submission
 
         // Get the input values
-        var textInput = document.getElementById('textInput').value;
-        var apiKeyInput = document.getElementById('apiKeyInput').value;
-        var tokenInput = document.getElementById('tokenInput').value;
+        const textInput = document.getElementById('textInput').value;
+        const apiKeyInput = document.getElementById('apiKeyInput').value;
+        const tokenInput = document.getElementById('tokenInput').value;
 
-        // Make the API call
-        fetch('https://api.example.com/endpoint', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'API-Key': apiKeyInput,
-                'Token': tokenInput
-            },
-            body: JSON.stringify({ text: textInput })
-        })
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                // Display the API response
-                document.getElementById('result').innerHTML = 'API response: ' + JSON.stringify(data);
-            })
-            .catch(function (error) {
-                console.log('Error:', error);
-            });
+        const command = await parsePrompt(apiKeyInput, tokenInput, textInput);
+        const images = await generateImages(apiKeyInput, tokenInput, command['item_count']);
+        const texts = await generateTexts(apiKeyInput, tokenInput, command['item_count']);
     });
 
 }

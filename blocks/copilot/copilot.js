@@ -1,6 +1,7 @@
 import { generate } from "./openai.js";
-
+import { readBlockConfig } from "../../scripts/lib-franklin.js";
 export default function decorate(block) {
+  const cfg = readBlockConfig(block);
   block.innerHTML = `
     <h1>Franklin Authoring Copilot</h1>
 
@@ -65,7 +66,7 @@ export default function decorate(block) {
     const block = document.getElementById('blockSelect').value;
     const topic = document.getElementById('topicInput').value;
     const item_count = document.getElementById('itemsInput').value;
-    const content = await generate(topic, item_count);
+    const content = await generate(topic, item_count, cfg);
 
 	document.getElementById("loading").style.display = "none";
 	document.getElementById("gif").style.display = "none";
@@ -75,6 +76,7 @@ export default function decorate(block) {
 	clearInterval(myInterval2);
 		
 	console.log(content);
+    if (content) {
 	const table = `
 	<table border="1">
 	<tr>
@@ -96,6 +98,7 @@ export default function decorate(block) {
 	const data = [new ClipboardItem({ [blob.type]: blob })];
 	navigator.clipboard.write(data);
 	window.parent.document.getElementById('hlx-sk-palette-copilot').classList.add('hlx-sk-hidden');
+    }
     
   });
 

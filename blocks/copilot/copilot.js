@@ -34,29 +34,31 @@ export default function decorate(block) {
     const item_count = document.getElementById('itemsInput').value;
     const content = await generate(topic, item_count, cfg);
 
-	console.log('satyam');
-	console.log(content);
-	const table = `
-	<table border="1">
-	<tr>
-	   <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block}</td>
-	</tr>
-	${content.map((item) => {
-	  return `
-	  <tr>
-		<td>${item.text}</td>
-		<td>
-			  <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
-		</td>
-	  </tr>
-	  `;
-	}).join('')};
-	</table>
-	`;
-	const blob = new Blob([table], { type: 'text/html' });
-	const data = [new ClipboardItem({ [blob.type]: blob })];
-	navigator.clipboard.write(data);
-	window.parent.document.getElementById('hlx-sk-palette-copilot').classList.add('hlx-sk-hidden');
+    console.log('satyam');
+    console.log(content);
+    if (content) {
+      const table = `
+    <table border="1">
+    <tr>
+       <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block}</td>
+    </tr>
+    ${content.map((item) => {
+        return `
+      <tr>
+      <td>${item.text}</td>
+      <td>
+          <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
+      </td>
+      </tr>
+      `;
+      }).join('')};
+    </table>
+    `;
+      const blob = new Blob([table], { type: 'text/html' });
+      const data = [new ClipboardItem({ [blob.type]: blob })];
+      navigator.clipboard.write(data);
+      window.parent.document.getElementById('hlx-sk-palette-copilot').classList.add('hlx-sk-hidden');
+    }
 
   });
 

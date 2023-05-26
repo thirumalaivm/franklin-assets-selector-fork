@@ -18,18 +18,19 @@ async function generate(topic, count, cfg) {
 	try {
 		var data = await initCards(cfg);
 		console.log('Init cards Response' + JSON.stringify(data, null, 2));
-		console.log('Invoking getCards');
-		var cards_response = await getCards(data.conversation_id, topic, count, cfg);
-		console.log('Get Cards Response' + JSON.stringify(cards_response, null, 2));
-		while (!cards_response.dialogue.answer.cards) {
+		while (true) {
 			console.log('Invoking getCards');
-			cards_response = await getCards(data.conversation_id, topic, count, cfg);
+			var cards_response = await getCards(data.conversation_id, topic, count, cfg);
 			console.log('Get Cards Response' + JSON.stringify(cards_response, null, 2));
-			if (cards_response.dialogue.answer.cards) {
+			if (cards_response.dialogue.answer) {
 				console.log('Invoking parseCards');
-				const parseCardsResponse = await parseCards(cards_response);
-				console.log('Parse Cards Response' + JSON.stringify(parseCardsResponse, null, 2));
-				return parseCardsResponse
+				try {
+					const parseCardsResponse = await parseCards(cards_response, cfg);
+					console.log('Parse Cards Response' + JSON.stringify(parseCardsResponse, null, 2));
+					return parseCardsResponse
+				} catch(err) {
+					console.log("Unfit getCards response");
+				}
 			} else {
 				console.log("Unfit getCards response");
 			}
@@ -40,19 +41,25 @@ async function generate(topic, count, cfg) {
 	}
 }
 
-async function parseCards(data) {
+async function parseCards(data, cfg) {
 	var cards = [];
 	console.log('Parsing Cards');
-	for (var i = 0; i < data.dialogue.answer.cards.length; i++) {
-		cards.push({
-			"title": data.dialogue.answer.cards[i].title,
-			"image": "",
-			"text": data.dialogue.answer.cards[i].description
-		});
+	for (var i = 0; i < data.dialogue.answer.length; i++) {
+		if(data.dialogue.answer[i].title && data.dialogue.answer[i].description) {
+			cards.push({
+				"title": data.dialogue.answer[i].title,
+				"image": "",
+				"text": data.dialogue.answer[i].description
+			});
+		} else {
+			throw "Unfit getCards response";
+		}
+	}
+	for (var i = 0; i < cards.length; i++) {
 		console.log('Invoking generateImages');
-		const generateImagesResponse = await generateImages(cards, cfg);
+		const generateImagesResponse = await generateImages(cards[i], cfg);
 		console.log('Generate Images Response' + JSON.stringify(generateImagesResponse, null, 2));
-		return generateImagesResponse;
+		cards[i].image = generateImagesResponse;
 	}
 	return cards;
 }

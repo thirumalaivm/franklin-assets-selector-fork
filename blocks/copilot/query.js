@@ -6,7 +6,7 @@
 		const body = {
 			"conversation_id": conversation_id,
 			"dialogue":{
-				"question": "Tell something new about " + topic + " as JSON cards with " + items + " items"
+				"question": "Tell something new about " + topic + " as JSON array of cards with " + items + " items"
 				//"I need a JSON cards block on the topic " + topic + " which has " +  items + " items"
 			}
 		};

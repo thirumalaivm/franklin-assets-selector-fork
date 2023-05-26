@@ -38,6 +38,9 @@ export default function decorate(block) {
 			<button id="regenerate">Regenerate</button>
 		</div>
 	</div>
+	
+	<div id="preview">
+	</div>
     `;
 
   document.getElementById("container").style.display = "block";
@@ -94,6 +97,7 @@ export default function decorate(block) {
 	}).join('')};
 	</table>
 	`;
+	document.getElementById("preview").innerHTML = table;
 	const blob = new Blob([table], { type: 'text/html' });
 	const data = [new ClipboardItem({ [blob.type]: blob })];
 	navigator.clipboard.write(data);

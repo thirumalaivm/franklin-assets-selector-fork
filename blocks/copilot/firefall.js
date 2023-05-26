@@ -33,7 +33,7 @@ async function callAPI(endpoint, body, cfg) {
 
 			if (retries < maxRetries) {
 				retries++;
-				const delay = Math.pow(2, retries) * 1000; // Exponential delay in milliseconds
+				const delay = 5;//Math.pow(2, retries) * 1000; // Exponential delay in milliseconds
 				console.log(`Retrying in ${delay}ms...`);
 				setTimeout(callAPI, delay, endpoint, body, cfg); // Retry the API call after the delay
 			} else {

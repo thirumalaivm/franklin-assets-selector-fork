@@ -2,11 +2,11 @@
 
 	const CREATE_QUERY_ENDPOINT = '/v2/query';
 
-	async function getCards(conversation_id, topic, items, cfg) {
+	async function getCard(conversation_id, topic, items, cfg) {
 		const body = {
 			"conversation_id": conversation_id,
 			"dialogue":{
-				"question": "Tell something new about " + topic + " as JSON array of cards with " + items + " items"
+				"question": "Tell something new about " + topic
 				//"I need a JSON cards block on the topic " + topic + " which has " +  items + " items"
 			}
 		};
@@ -23,4 +23,4 @@
 		return await callAPI(CREATE_QUERY_ENDPOINT, body, cfg);
 	}
 
-	export { getCards, getImage };
+	export { getCard, getImage };

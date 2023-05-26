@@ -1,80 +1,75 @@
 import { initCards, initImage } from "./conversation.js";
-import { getCards, getImage } from "./query.js";
+import { getCard, getImage } from "./query.js";
+
+var topic_var;
 
 async function generate(topic, count, cfg) {
-	/* Stubbed values for now */
-	/*return [{
-		image: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg',
-		text: 'AI, or artificial intelligence, refers to the development of computer systems that can perform tasks that typically require human intelligence, such as speech recognition, problem-solving, and decision-making.'
-	},
-	{
-		image: 'https://images.pexels.com/photos/355948/pexels-photo-355948.jpeg',
-		text: 'Machine learning, a subset of AI, involves training algorithms to recognize patterns and make predictions based on large amounts of data, enabling systems to improve their performance over time without explicit programming.'
-	},
-	{
-		image: 'https://images.pexels.com/photos/8438951/pexels-photo-8438951.jpeg',
-		text: 'Ethical considerations are crucial in AI development, as decisions made by AI systems can have significant social, economic, and ethical implications. Ensuring fairness, transparency, and accountability is essential for responsible AI deployment.'
-	}];*/
 	try {
+		topic_var = topic;
+		var cards = [];
 		var data = await initCards(cfg);
 		console.log('Init cards Response' + JSON.stringify(data, null, 2));
-		while (true) {
-			console.log('Invoking getCards');
-			var cards_response = await getCards(data.conversation_id, topic, count, cfg);
-			console.log('Get Cards Response' + JSON.stringify(cards_response, null, 2));
-			if (cards_response.dialogue.answer) {
-				console.log('Invoking parseCards');
-				try {
-					const parseCardsResponse = await parseCards(cards_response, cfg);
-					console.log('Parse Cards Response' + JSON.stringify(parseCardsResponse, null, 2));
-					return parseCardsResponse
-				} catch(err) {
-					console.log("Unfit getCards response");
+		for (var i = 0; i < count; i++) {
+			var done = false;
+			while (!done) {
+				console.log('Invoking getCard');
+				var card_response = await getCard(data.conversation_id, topic, count, cfg);
+				console.log('Get Card Response' + JSON.stringify(card_response, null, 2));
+				if (card_response.dialogue.answer) {
+					console.log('Invoking parseCard');
+					try {
+						const parseCardResponse = await parseCard(card_response, cfg);
+						console.log('Parse Card Response' + JSON.stringify(parseCardResponse, null, 2));
+						cards.push({
+							"text":parseCardResponse
+						});
+						done = true;
+					} catch(err) {
+						console.log("Unfit getCard response");
+					}
+				} else {
+					console.log("Unfit getCard response");
 				}
-			} else {
-				console.log("Unfit getCards response");
 			}
 		}
+		
+		for (var i = 0; i < cards.length; i++) {
+			var done = false;
+			while (!done) {
+				try {
+					console.log('Invoking generateImage');
+					const generateImageResponse = await generateImage(cards[i], cfg);
+					console.log('Generate Image Response' + JSON.stringify(generateImageResponse, null, 2));
+					cards[i].image = generateImageResponse;
+					done = true;
+				} catch(err) {
+					console.log("Unfit generateImageResponse response");
+				}
+			}
+		}
+		
+		return cards;
 	}
 	catch (err) {
 		console.log("RATM!!!");
 	}
 }
 
-async function parseCards(data, cfg) {
-	var cards = [];
-	console.log('Parsing Cards');
-	for (var i = 0; i < data.dialogue.answer.length; i++) {
-		if(data.dialogue.answer[i].title && data.dialogue.answer[i].description) {
-			cards.push({
-				"title": data.dialogue.answer[i].title,
-				"image": "",
-				"text": data.dialogue.answer[i].description
-			});
-		} else {
-			throw "Unfit getCards response";
-		}
+async function parseCard(data, cfg) {
+	var card = [];
+	console.log('Parsing Card');
+	if(data.dialogue.answer) {
+		return data.dialogue.answer;
+	} else {
+		throw "Unfit getCard response";
 	}
-	for (var i = 0; i < cards.length; i++) {
-		var done = false;
-		while (!done) {
-			try {
-				console.log('Invoking generateImage');
-				const generateImageResponse = await generateImage(cards[i], cfg);
-				console.log('Generate Image Response' + JSON.stringify(generateImageResponse, null, 2));
-				cards[i].image = generateImageResponse;
-				done = true;
-			} catch(err) {
-				console.log("Unfit generateImageResponse response");
-			}
-		}
-	}
-	return cards;
+	
+	return card;
 }
 
 async function generateImage(card, cfg) {
 	console.log('Invoking getImage');
-	var image = await getImage(/*data.conversation_id*/96593, card.title, cfg);
+	var image = await getImage(/*data.conversation_id*/96593, topic_var, cfg);
 	console.log('Get Image Response' + JSON.stringify(image, null, 2));
 	console.log(image.dialogue.answer);
 	if (image.dialogue.answer.indexOf("http")) {

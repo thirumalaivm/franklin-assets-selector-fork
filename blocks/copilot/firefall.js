@@ -21,6 +21,16 @@ async function callAPI(endpoint, body, cfg) {
 	requestOptions.body = JSON.stringify(body);
 	var response;
 	await fetch(BASE_URL + endpoint, requestOptions)
+		.then(response => {
+
+		  // Check that the response is valid and reject an error
+		  // response to prevent subsequent attempt to parse json
+		  if(!response.ok) {
+			 return Promise.reject('Response not ok with status ' + response.status);
+		  }
+
+		  return response;
+		})
 		.then(response => response.json())
 		.then(data => {
 			// Handle the API response data here

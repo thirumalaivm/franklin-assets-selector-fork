@@ -56,26 +56,32 @@ async function parseCards(data, cfg) {
 		}
 	}
 	for (var i = 0; i < cards.length; i++) {
-		console.log('Invoking generateImages');
-		const generateImagesResponse = await generateImages(cards[i], cfg);
-		console.log('Generate Images Response' + JSON.stringify(generateImagesResponse, null, 2));
-		cards[i].image = generateImagesResponse;
+		var done = false;
+		while (!done) {
+			try {
+				console.log('Invoking generateImage');
+				const generateImageResponse = await generateImage(cards[i], cfg);
+				console.log('Generate Image Response' + JSON.stringify(generateImageResponse, null, 2));
+				cards[i].image = generateImageResponse;
+				done = true;
+			} catch(err) {
+				console.log("Unfit generateImageResponse response");
+			}
+		}
 	}
 	return cards;
 }
 
-async function generateImages(cards, cfg) {
-	for (var i = 0; i < parseInt(cards.length); i++) {
-		console.log('Invoking getImage');
-		var image = await getImage(/*data.conversation_id*/96593, cards[i].title, cfg);
-		console.log('Get Image Response' + JSON.stringify(image, null, 2));
-		console.log(image.dialogue.answer);
-		if (image.dialogue.answer.indexOf("http")) {
-			cards[i].image = image.dialogue.answer.substr(image.dialogue.answer.indexOf("http"));
-		} else {
-			//retry
-			await generateImages({});
-		}
+async function generateImage(card, cfg) {
+	console.log('Invoking getImage');
+	var image = await getImage(/*data.conversation_id*/96593, card.title, cfg);
+	console.log('Get Image Response' + JSON.stringify(image, null, 2));
+	console.log(image.dialogue.answer);
+	if (image.dialogue.answer.indexOf("http")) {
+		return image.dialogue.answer.substr(image.dialogue.answer.indexOf("http"));
+	} else {
+		//retry
+		throw "Unfit generateImage response";
 	}
 }
 

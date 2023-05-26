@@ -6,7 +6,8 @@
 		const body = {
 			"conversation_id": conversation_id,
 			"dialogue":{
-				"question": "I need a JSON cards block on the topic " + topic + " which has " +  items + " items"
+				"question": "Tell something new about " + topic + " as JSON cards with " + items + " items"
+				//"I need a JSON cards block on the topic " + topic + " which has " +  items + " items"
 			}
 		};
 		return await callAPI(CREATE_QUERY_ENDPOINT, body);

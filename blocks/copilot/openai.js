@@ -1,7 +1,7 @@
 import { initCards, initImage } from "./conversation.js";
 import { getCards, getImage } from "./query.js";
 
-	async function generate(topic, count) {
+	async function generate(topic, count, cfg) {
 		/* Stubbed values for now */
 		/*return [{
 			image: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg',
@@ -15,22 +15,22 @@ import { getCards, getImage } from "./query.js";
 			image: 'https://images.pexels.com/photos/8438951/pexels-photo-8438951.jpeg',
 			text: 'Ethical considerations are crucial in AI development, as decisions made by AI systems can have significant social, economic, and ethical implications. Ensuring fairness, transparency, and accountability is essential for responsible AI deployment.'
 		}];*/
-		try {				
-			var data = await initCards();
-			var cards_response = await getCards(data.conversation_id, topic, count);	
+		try {
+			var data = await initCards(cfg);
+			var cards_response = await getCards(data.conversation_id, topic, count, cfg);
 
 			while(!cards_response.dialogue.answer.cards) {
-				cards_response = await getCards(data.conversation_id, topic, count);
+				cards_response = await getCards(data.conversation_id, topic, count, cfg);
 				if(cards_response.dialogue.answer.cards) {
 					return await parseCards(cards_response);
-				}		
+				}
 			}
 		}
 		catch(err) {
 			console.log("RATM!!!");
 		}
-	}	
-	
+	}
+
 	async function parseCards(data) {
 		var cards = [];
 		console.log(data.dialogue.answer.cards);
@@ -40,22 +40,22 @@ import { getCards, getImage } from "./query.js";
 				"image":"",
 				"text":data.dialogue.answer.cards[i].description
 			});
-			await generateImages(cards);
+			await generateImages(cards, cfg);
 		}
 		return cards;
 	}
-	
-	async function generateImages(cards) {
+
+	async function generateImages(cards, cfg) {
 		for(var i = 0; i < parseInt(cards.length); i ++) {
-			var image = await getImage(/*data.conversation_id*/96593, cards[i].title);
+			var image = await getImage(/*data.conversation_id*/96593, cards[i].title, cfg);
 			console.log(image.dialogue.answer);
 			if(image.dialogue.answer.indexOf("http")) {
 				cards[i].image = image.dialogue.answer.substr(image.dialogue.answer.indexOf("http"));
 			} else {
-				//retry 
+				//retry
 				await generateImages({});
 			}
 		}
 	}
-	
+
 export { generate };

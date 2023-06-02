@@ -12,7 +12,27 @@ export default function decorate(block) {
 	
 	function renderHero(){};
 	
-	function renderColumn(){};
+	function renderColumn(block_name, content){
+		const html = `
+			<table border="1">
+			<tr>
+			   <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block_name}</td>
+			</tr>
+			${content.map((item) => {
+			  return `
+			  <tr>
+				<td>${item.text}</td>
+				<td>
+					  <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
+				</td>
+			  </tr>
+			  `;
+			}).join('')};
+			</table>
+			`;
+			
+		return html;		
+	};
 	
 	function renderCarousel(){};
 	
@@ -40,10 +60,10 @@ export default function decorate(block) {
 
 	const templates = {
 		"website" : [
-			{"hero" : {count: 1, text_size: 0} },
+			//{"hero" : {count: 1, text_size: 10} },
 			{"cards" : {count: 3, text_size: 50} },
-			{"column" : {count: 1, text_size: 100} },
-			{"carousel" : {count: 1, text_size: 20} }
+			{"column" : {count: 1, text_size: 100} }
+			//{"carousel" : {count: 1, text_size: 20} }
 		],
 		"poster" : [
 			{"hero" : {count: 1, text_size: 0} },
@@ -127,6 +147,7 @@ export default function decorate(block) {
 	console.log(jsonRes);
 	
 	var design = templates[jsonRes.template];
+	var preview_html = "";
 		
 	for(var i = 0; i < design.length; i++) {
 		var block_name = Object.keys(design[i])[0];
@@ -144,11 +165,13 @@ export default function decorate(block) {
 		console.log(content);
 		
 		if (content) {
-			document.getElementById("preview").innerHTML = blocks_renderer[block_name](block_name, content);
-			clipboardData = new Blob([table], { type: 'text/html' });
-			window.parent.document.getElementById('hlx-sk-palette-copilot').classList.add('hlx-sk-hidden');
+			preview_html += blocks_renderer[block_name](block_name, content);
 		}
 	}
+	
+	document.getElementById("preview").innerHTML = preview_html;
+	clipboardData = new Blob([preview_html], { type: 'text/html' });
+	window.parent.document.getElementById('hlx-sk-palette-copilot').classList.add('hlx-sk-hidden');
 	
 	clearInterval(myInterval);
 	clearInterval(myInterval2);

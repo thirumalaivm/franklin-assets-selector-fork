@@ -2,27 +2,63 @@ import { generate } from "./openai.js";
 import { initAzureAPI, callAzureAPI } from "./azure.js";
 import { readBlockConfig } from "../../scripts/lib-franklin.js";
 
-const templates = {
-	"website" : [
-		{"hero" : {count: 1, text_size: 0} },
-		{"cards" : {count: 3, text_size: 50} },
-		{"column" : {count: 1, text_size: 100} },
-		{"carousel" : {count: 1, text_size: 20} }
-	],
-	"poster" : [
-		{"hero" : {count: 1, text_size: 0} },
-		{"column" : {count: 1, text_size: 100} }
-	],
-	"brochure" : [
-		{"cards" : {count: 3, text_size: 50} }
-	],
-	"pamphlet" : [
-		{"hero" : {count: 1, text_size: 0} },
-		{"cards" : {count: 3, text_size: 50} }
-	]
-};
-
 export default function decorate(block) {
+	const blocks_renderer = {
+		"hero" : renderHero,
+		"cards" : renderCards,
+		"column" : renderColumn,
+		"carousel" : renderCarousel
+	};
+	
+	function renderHero(){};
+	
+	function renderColumn(){};
+	
+	function renderCarousel(){};
+	
+	function renderCards(block_name, content) {
+		const html = `
+			<table border="1">
+			<tr>
+			   <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block_name}</td>
+			</tr>
+			${content.map((item) => {
+			  return `
+			  <tr>
+				<td>${item.text}</td>
+				<td>
+					  <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
+				</td>
+			  </tr>
+			  `;
+			}).join('')};
+			</table>
+			`;
+			
+		return html;
+	};
+
+	const templates = {
+		"website" : [
+			{"hero" : {count: 1, text_size: 0} },
+			{"cards" : {count: 3, text_size: 50} },
+			{"column" : {count: 1, text_size: 100} },
+			{"carousel" : {count: 1, text_size: 20} }
+		],
+		"poster" : [
+			{"hero" : {count: 1, text_size: 0} },
+			{"column" : {count: 1, text_size: 100} }
+		],
+		"brochure" : [
+			{"cards" : {count: 3, text_size: 50} }
+		],
+		"pamphlet" : [
+			{"hero" : {count: 1, text_size: 0} },
+			{"cards" : {count: 3, text_size: 50} }
+		]
+	};
+
+  var clipboardData = "";
   const cfg = readBlockConfig(block);
   block.innerHTML = `
     <h1>Franklin Authoring Copilot</h1>
@@ -53,7 +89,12 @@ export default function decorate(block) {
 	<div id="preview">
 	</div>
     `;
-
+	
+  document.getElementById("copy").addEventListener("click", async function (event) {
+	const data = [new ClipboardItem({ [blob.type]: clipboardData })];
+	navigator.clipboard.write(data);
+  });
+ 
   document.getElementById("container").style.display = "block";
   document.getElementById("result").style.display = "none";
   
@@ -84,8 +125,6 @@ export default function decorate(block) {
 	//Call chat api
 	const jsonRes = await callAzureAPI(/*"Design a brochure on hiking"*/promptStr, cfg, "user");
 	console.log(jsonRes);
-	console.log(jsonRes.template);
-	console.log(jsonRes.topic);
 	
 	var design = templates[jsonRes.template];
 		
@@ -94,9 +133,9 @@ export default function decorate(block) {
 		
 		console.log("Generating " + jsonRes.template);
 		console.log("Topic " + jsonRes.topic);
-		console.log("Items " + design[i][block_name].count);
+		console.log("Block " + design[i][block_name]);
 		
-		const content = await generate(jsonRes.topic, design[i][block_name].count, cfg);
+		const content = await generate(jsonRes.topic, design[i][block_name], cfg);
 
 		document.getElementById("loading").style.display = "none";
 		document.getElementById("gif").style.display = "none";
@@ -105,27 +144,8 @@ export default function decorate(block) {
 		console.log(content);
 		
 		if (content) {
-			const table = `
-			<table border="1">
-			<tr>
-			   <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block_name}</td>
-			</tr>
-			${content.map((item) => {
-			  return `
-			  <tr>
-				<td>${item.text}</td>
-				<td>
-					  <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
-				</td>
-			  </tr>
-			  `;
-			}).join('')};
-			</table>
-			`;
-			document.getElementById("preview").innerHTML = table;
-			const blob = new Blob([table], { type: 'text/html' });
-			const data = [new ClipboardItem({ [blob.type]: blob })];
-			navigator.clipboard.write(data);
+			document.getElementById("preview").innerHTML = blocks_renderer[block_name](block_name, content);
+			clipboardData = new Blob([table], { type: 'text/html' });
 			window.parent.document.getElementById('hlx-sk-palette-copilot').classList.add('hlx-sk-hidden');
 		}
 	}
@@ -134,8 +154,4 @@ export default function decorate(block) {
 	clearInterval(myInterval2);
     
   });
-  
-  async function generateBlock(block_name, block, topic, cfg) {
-	
-  }
 }

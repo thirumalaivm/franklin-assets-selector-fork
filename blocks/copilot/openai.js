@@ -1,19 +1,16 @@
 import { initCards, initImage } from "./conversation.js";
-import { getCard, getImage } from "./query.js";
+import { getCard, getImage, getText } from "./query.js";
 
-var topic_var;
-
-async function generate(topic, count, cfg) {
+async function generate(topic, block, cfg) {
 	try {
-		topic_var = topic;
 		var cards = [];
 		var data = await initCards(cfg);
 		console.log('Init cards Response' + JSON.stringify(data, null, 2));
-		for (var i = 0; i < count; i++) {
+		for (var i = 0; i < block.count; i++) {
 			var done = false;
 			while (!done) {
 				console.log('Invoking getCard');
-				var card_response = await getCard(data.conversation_id, topic, count, cfg);
+				var card_response = await getCard(data.conversation_id, topic, block.num_words, cfg);
 				console.log('Get Card Response' + JSON.stringify(card_response, null, 2));
 				if (card_response.dialogue.answer) {
 					console.log('Invoking parseCard');
@@ -68,8 +65,12 @@ async function parseCard(data, cfg) {
 }
 
 async function generateImage(card, cfg) {
+	console.log('Invoking getText');
+	var text_response = await getText(card.text, 10, cfg);
+	var summary = text_response.generations[0][0].text;
+	console.log("getText Response " + summary);
 	console.log('Invoking getImage');
-	var image = await getImage(/*data.conversation_id*/96593, topic_var, cfg);
+	var image = await getImage(/*data.conversation_id*/96593, summary, cfg);
 	console.log('Get Image Response' + JSON.stringify(image, null, 2));
 	console.log(image.dialogue.answer);
 	if (image.dialogue.answer.image_url[0]) {

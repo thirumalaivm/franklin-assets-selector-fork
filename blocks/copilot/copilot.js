@@ -1,5 +1,27 @@
 import { generate } from "./openai.js";
+import { initAzureAPI, callAzureAPI } from "./azure.js";
 import { readBlockConfig } from "../../scripts/lib-franklin.js";
+
+const templates = {
+	"website" : [
+		{"hero" : {count: 1, text_size: 0} },
+		{"cards" : {count: 3, text_size: 50} },
+		{"column" : {count: 1, text_size: 100} },
+		{"carousel" : {count: 1, text_size: 20} }
+	],
+	"poster" : [
+		{"hero" : {count: 1, text_size: 0} },
+		{"column" : {count: 1, text_size: 100} }
+	],
+	"brochure" : [
+		{"cards" : {count: 3, text_size: 50} }
+	],
+	"pamphlet" : [
+		{"hero" : {count: 1, text_size: 0} },
+		{"cards" : {count: 3, text_size: 50} }
+	]
+};
+
 export default function decorate(block) {
   const cfg = readBlockConfig(block);
   block.innerHTML = `
@@ -7,19 +29,8 @@ export default function decorate(block) {
 
 	<div id="container">
 		<form id="myForm">
-		  <label for="blockSelect">Block:</label>
-		  <select id="blockSelect" required>
-			<option value="">Select a block</option>
-			<option value="cards">Cards</option>
-			<option value="columns">Columns</option>
-			<option value="carousel">Carousel</option>
-		  </select>
-
-		  <label for="topicInput">Topic:</label>
-		  <input type="text" id="topicInput" required>
-
-		  <label for="itemsInput">Items:</label>
-		  <input type="number" id="itemsInput" required>
+		  <label for="prompt">What do you wish to create?</label>
+		  <input type="text" id="prompt" required>
 
 		  <button type="submit">Submit</button>
 		</form>
@@ -45,7 +56,7 @@ export default function decorate(block) {
 
   document.getElementById("container").style.display = "block";
   document.getElementById("result").style.display = "none";
-
+  
   document.getElementById('myForm').addEventListener('submit', async function (event) {
     event.preventDefault(); // Prevent form submission
 	
@@ -65,45 +76,66 @@ export default function decorate(block) {
 		document.getElementById('myForm').submit();
 	};
 	
-    // Get the input values
-    const block = document.getElementById('blockSelect').value;
-    const topic = document.getElementById('topicInput').value;
-    const item_count = document.getElementById('itemsInput').value;
-    const content = await generate(topic, item_count, cfg);
+	
+    // Get the input value
+	const promptStr = document.getElementById('prompt').value;
+    //Prepare chat api
+	await initAzureAPI(cfg);
+	//Call chat api
+	const jsonRes = await callAzureAPI(/*"Design a brochure on hiking"*/promptStr, cfg, "user");
+	console.log(jsonRes);
+	console.log(jsonRes.template);
+	console.log(jsonRes.topic);
+	
+	var design = templates[jsonRes.template];
+		
+	for(var i = 0; i < design.length; i++) {
+		var block_name = Object.keys(design[i])[0];
+		
+		console.log("Generating " + jsonRes.template);
+		console.log("Topic " + jsonRes.topic);
+		console.log("Items " + design[i][block_name].count);
+		
+		const content = await generate(jsonRes.topic, design[i][block_name].count, cfg);
 
-	document.getElementById("loading").style.display = "none";
-	document.getElementById("gif").style.display = "none";
-	document.getElementById("buttons").style.display = "block"; 
+		document.getElementById("loading").style.display = "none";
+		document.getElementById("gif").style.display = "none";
+		document.getElementById("buttons").style.display = "block"; 
+				
+		console.log(content);
+		
+		if (content) {
+			const table = `
+			<table border="1">
+			<tr>
+			   <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block_name}</td>
+			</tr>
+			${content.map((item) => {
+			  return `
+			  <tr>
+				<td>${item.text}</td>
+				<td>
+					  <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
+				</td>
+			  </tr>
+			  `;
+			}).join('')};
+			</table>
+			`;
+			document.getElementById("preview").innerHTML = table;
+			const blob = new Blob([table], { type: 'text/html' });
+			const data = [new ClipboardItem({ [blob.type]: blob })];
+			navigator.clipboard.write(data);
+			window.parent.document.getElementById('hlx-sk-palette-copilot').classList.add('hlx-sk-hidden');
+		}
+	}
 	
 	clearInterval(myInterval);
 	clearInterval(myInterval2);
-		
-	console.log(content);
-    if (content) {
-	const table = `
-	<table border="1">
-	<tr>
-	   <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block}</td>
-	</tr>
-	${content.map((item) => {
-	  return `
-	  <tr>
-		<td>${item.text}</td>
-		<td>
-			  <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
-		</td>
-	  </tr>
-	  `;
-	}).join('')};
-	</table>
-	`;
-	document.getElementById("preview").innerHTML = table;
-	const blob = new Blob([table], { type: 'text/html' });
-	const data = [new ClipboardItem({ [blob.type]: blob })];
-	navigator.clipboard.write(data);
-	window.parent.document.getElementById('hlx-sk-palette-copilot').classList.add('hlx-sk-hidden');
-    }
     
   });
-
+  
+  async function generateBlock(block_name, block, topic, cfg) {
+	
+  }
 }

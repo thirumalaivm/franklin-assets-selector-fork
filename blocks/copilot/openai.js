@@ -72,8 +72,8 @@ async function generateImage(card, cfg) {
 	var image = await getImage(/*data.conversation_id*/96593, topic_var, cfg);
 	console.log('Get Image Response' + JSON.stringify(image, null, 2));
 	console.log(image.dialogue.answer);
-	if (image.dialogue.answer.indexOf("http")) {
-		return image.dialogue.answer.substr(image.dialogue.answer.indexOf("http"));
+	if (image.dialogue.answer.image_url[0]) {
+		return image.dialogue.answer.image_url[0];
 	} else {
 		//retry
 		throw "Unfit generateImage response";

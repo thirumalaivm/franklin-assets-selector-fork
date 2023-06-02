@@ -3,9 +3,9 @@
 	const CREATE_QUERY_ENDPOINT = '/v2/query';
 	
 	var queries = [
-		"tell me something about {topic} in 50 words or less",
-		"tell me something new about {topic} in 50 words or less",
-		"tell me something different about {topic} in 50 words or less"
+		"tell me something about {topic} in {num_words} words or less",
+		"tell me something new about {topic} in {num_words} words or less",
+		"tell me something different about {topic} in {num_words} words or less"
 	]
 	
 	var counter = 0;
@@ -14,7 +14,7 @@
 		const body = {
 			"conversation_id": conversation_id,
 			"dialogue":{
-				"question": queries[counter%3].replaceAll("{topic}", topic)
+				"question": queries[counter%3].replaceAll("{topic}", topic).replaceAll("{num_words}", topic)
 				//"I need a JSON cards block on the topic " + topic + " which has " +  items + " items"
 			}
 		};

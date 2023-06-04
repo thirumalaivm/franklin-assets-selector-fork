@@ -11,6 +11,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  getMetadata,
 } from './lib-franklin.js';
 
 import decoratePolarisAssets from './lib-polaris.js';
@@ -104,8 +105,17 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  if (getMetadata('omit-header') !== 'true') {
+    loadHeader(doc.querySelector('header'));
+  } else {
+    document.querySelector('header').remove();
+  }
+
+  if (getMetadata('omit-footer') !== 'true') {
+    loadFooter(doc.querySelector('footer'));
+  } else {
+    document.querySelector('footer').remove();
+  }
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);

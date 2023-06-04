@@ -1,89 +1,79 @@
 import { generate } from "./openai.js";
-import { initAzureAPI, callAzureAPI } from "./azure.js";
+import { initiateChat, callAzureChatCompletionAPI } from "./azure.js";
 import { readBlockConfig } from "../../scripts/lib-franklin.js";
 
+const blocks_renderer = {
+	"hero": renderHero,
+	"cards": renderTable,
+	"column": renderTable,
+	"carousel": renderTable
+};
+
+function renderHero(block_name, content) {
+	const html = `
+	${content.map((item) => {
+		return `
+			<img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
+			<h1>${item.text}</h1>
+			<hr>
+		  `;
+	}).join('')}
+	`;
+	return html;
+};
+
+function renderTable(block_name, content) {
+	const html = `
+		<table border="1">
+		<tr>
+		   <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block_name}</td>
+		</tr>
+		${content.map((item) => {
+		return `
+		  <tr>
+			<td>${item.text}</td>
+			<td>
+				  <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
+			</td>
+		  </tr>
+		  `;
+	}).join('')}
+		</table>
+		<hr>
+		`;
+
+	return html;
+};
+
+const templates = {
+	"website": [
+		{"hero" : {count: 1, text_size: 10} },
+		{ "cards": { count: 3, text_size: 20 } },
+		{ "column": { count: 2, text_size: 30 } },
+		{"carousel" : {count: 3, text_size: 10} }
+	],
+	"poster": [
+		{ "hero": { count: 1, text_size: 10 } },
+		{ "column": { count: 2, text_size: 30 } }
+	],
+	"brochure": [
+		{ "cards": { count: 4, text_size: 30 } }
+	],
+	"pamphlet": [
+		{ "hero": { count: 1, text_size: 10 } },
+		{ "cards": { count: 3, text_size: 50 } }
+	]
+};
+
 export default function decorate(block) {
-	const blocks_renderer = {
-		"hero" : renderHero,
-		"cards" : renderCards,
-		"column" : renderColumn,
-		"carousel" : renderCarousel
-	};
-	
-	function renderHero(){};
-	
-	function renderColumn(block_name, content){
-		const html = `
-			<table border="1">
-			<tr>
-			   <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block_name}</td>
-			</tr>
-			${content.map((item) => {
-			  return `
-			  <tr>
-				<td>${item.text}</td>
-				<td>
-					  <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
-				</td>
-			  </tr>
-			  `;
-			}).join('')};
-			</table>
-			`;
-			
-		return html;		
-	};
-	
-	function renderCarousel(){};
-	
-	function renderCards(block_name, content) {
-		const html = `
-			<table border="1">
-			<tr>
-			   <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block_name}</td>
-			</tr>
-			${content.map((item) => {
-			  return `
-			  <tr>
-				<td>${item.text}</td>
-				<td>
-					  <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
-				</td>
-			  </tr>
-			  `;
-			}).join('')};
-			</table>
-			`;
-			
-		return html;
-	};
 
-	const templates = {
-		"website" : [
-			//{"hero" : {count: 1, text_size: 10} },
-			{"cards" : {count: 3, text_size: 50} },
-			{"column" : {count: 1, text_size: 100} }
-			//{"carousel" : {count: 1, text_size: 20} }
-		],
-		"poster" : [
-			{"hero" : {count: 1, text_size: 0} },
-			{"column" : {count: 1, text_size: 100} }
-		],
-		"brochure" : [
-			{"cards" : {count: 3, text_size: 50} }
-		],
-		"pamphlet" : [
-			{"hero" : {count: 1, text_size: 0} },
-			{"cards" : {count: 3, text_size: 50} }
-		]
-	};
+	let clipboardData = "";
+	const cfg = readBlockConfig(block);
+	block.innerHTML = `
 
-  var clipboardData = "";
-  const cfg = readBlockConfig(block);
-  block.innerHTML = `
-    <h1>Franklin Authoring Copilot</h1>
 
 	<div id="container">
+		<h4>Franklin Authoring Copilot</h4>
 		<form id="myForm">
 		  <label for="prompt">What do you wish to create?</label>
 		  <input type="text" id="prompt" required>
@@ -91,7 +81,7 @@ export default function decorate(block) {
 		  <button type="submit">Submit</button>
 		</form>
 	</div>
-	
+
 	<div id="result">
 		<div id="loading">
 			AI at work
@@ -105,76 +95,81 @@ export default function decorate(block) {
 			<button id="regenerate">Regenerate</button>
 		</div>
 	</div>
-	
+
 	<div id="preview">
 	</div>
     `;
-	
-  document.getElementById("copy").addEventListener("click", async function (event) {
-	const data = [new ClipboardItem({ [blob.type]: clipboardData })];
-	navigator.clipboard.write(data);
-  });
- 
-  document.getElementById("container").style.display = "block";
-  document.getElementById("result").style.display = "none";
-  
-  document.getElementById('myForm').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Prevent form submission
-	
-	document.getElementById("container").style.display = "none"; 
-	document.getElementById("result").style.display = "block";
-	document.getElementById("buttons").style.display = "none"; 
-	
-	const myInterval = setInterval(function() {
-		document.getElementById("loading").innerHTML = document.getElementById("loading").innerHTML + "..."; 
-	}, 200);
-	
-	const myInterval2 = setInterval(function() {
-		document.getElementById("loading").innerHTML = "AI at work"; 
-	}, 2000);
-	
-	document.getElementById('regenerate').onclick = function() {
+
+	document.getElementById("copy").addEventListener("click", async function (event) {
+		const data = [new ClipboardItem({ [clipboardData.type]: clipboardData })];
+		navigator.clipboard.write(data);
+	});
+
+	document.getElementById('regenerate').onclick = function () {
 		document.getElementById('myForm').submit();
 	};
-	
-	
-    // Get the input value
-	const promptStr = document.getElementById('prompt').value;
-    //Prepare chat api
-	await initAzureAPI(cfg);
-	//Call chat api
-	const jsonRes = await callAzureAPI(/*"Design a brochure on hiking"*/promptStr, cfg, "user");
-	console.log(jsonRes);
-	
-	var design = templates[jsonRes.template];
-	var preview_html = "";
-		
-	for(var i = 0; i < design.length; i++) {
-		var block_name = Object.keys(design[i])[0];
-		
-		console.log("Generating " + jsonRes.template);
-		console.log("Topic " + jsonRes.topic);
-		console.log("Block " + design[i][block_name]);
-		
-		const content = await generate(jsonRes.topic, design[i][block_name], cfg);
+
+	document.getElementById("container").style.display = "flex";
+	document.getElementById("container").style["flexDirection"] = "column";
+	document.getElementById("container").style["textAlign"] = "center";
+	document.getElementById("result").style.display = "none";
+
+	document.getElementById('myForm').addEventListener('submit', async function (event) {
+		event.preventDefault(); // Prevent form submission
+		document.getElementById("container").style.display = "none";
+		document.getElementById("result").style.display = "block";
+		document.getElementById("buttons").style.display = "none";
+
+		const myInterval = setInterval(function () {
+			document.getElementById("loading").innerHTML = document.getElementById("loading").innerHTML + "...";
+		}, 200);
+
+		const myInterval2 = setInterval(function () {
+			document.getElementById("loading").innerHTML = "AI at work";
+		}, 2000);
+
+
+		// Get the input value
+		const promptStr = document.getElementById('prompt').value;
+		//Prepare chat api
+		console.log("[copilot] Initiate chat with Azure to train it to parse prompt to JSON");
+		const conversation = await initiateChat();
+		console.log("[copilot] Chat initiated");
+		//Call chat api
+		conversation.push({
+			role: 'user',
+			content: `Parse and return only the JSON representation for "${promptStr}" without anything else`,
+		  });
+		console.log("[copilot] Call chat api to parse prompt to JSON");
+		const response = await callAzureChatCompletionAPI(conversation);
+		conversation.push(response);
+		console.log(`[copilot] Parsed Prompt ${response.content}`);
+		const respContent = JSON.parse(response.content);
+		console.log(`[copilot] Prompt parsed to JSON ${JSON.stringify(respContent, null, 2)}`);
+		const ingridients = templates[respContent.template];
+		var preview_html = "";
+
+		console.log(`[copilot]Generating ${respContent.template} for the topic ${respContent.topic} `);
+		for (var i = 0; i < ingridients.length; i++) {
+			var block_name = Object.keys(ingridients[i])[0];
+			console.log(`[copilot] Generating block ${block_name}...`);
+			const content = await generate(respContent.topic, ingridients[i][block_name], cfg);
+			console.log(`[copilot] Generated content for block ${block_name} as follows ${JSON.stringify(content, null, 2)}`);
+
+			if (content) {
+				preview_html += blocks_renderer[block_name](block_name, content);
+			}
+		}
 
 		document.getElementById("loading").style.display = "none";
 		document.getElementById("gif").style.display = "none";
-		document.getElementById("buttons").style.display = "block"; 
-				
-		console.log(content);
-		
-		if (content) {
-			preview_html += blocks_renderer[block_name](block_name, content);
-		}
-	}
-	
-	document.getElementById("preview").innerHTML = preview_html;
-	clipboardData = new Blob([preview_html], { type: 'text/html' });
-	window.parent.document.getElementById('hlx-sk-palette-copilot').classList.add('hlx-sk-hidden');
-	
-	clearInterval(myInterval);
-	clearInterval(myInterval2);
-    
-  });
+		document.getElementById("buttons").style.display = "block";
+
+		document.getElementById("preview").innerHTML = preview_html;
+		clipboardData = new Blob([preview_html], { type: 'text/html' });
+
+		clearInterval(myInterval);
+		clearInterval(myInterval2);
+
+	});
 }

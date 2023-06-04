@@ -1,78 +1,62 @@
-var messages = [];
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-console */
+const API_KEY = '64087d1089dc4308b9a3fd079ac0fab2';
+const MAX_RETRIES = 3;
 
-const AZURE_CHAT_API = 'https://eastus.api.cognitive.microsoft.com/openai/deployments/satyam-oai-deployment/chat/completions?api-version=2023-03-15-preview&api-key=${apiKey}';
+function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+async function callAzureChatCompletionAPI(conversation) {
+  let retries = 0;
+  console.log('Calling Azure Chat Completion API...');
+  const AZURE_CHAT_API = `https://eastus.api.cognitive.microsoft.com/openai/deployments/satyam-oai-deployment/chat/completions?api-version=2023-03-15-preview&api-key=${API_KEY}`;
 
-const maxRetries = 3;
-let retries = 0;
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
 
-async function initAzureAPI(cfg) {
-	messages = [];
-	return await callAzureAPI("parse this sentence as json 'Create a travel website of Forts in Jaipur' as follows {\"topic\": \"Forts in Jaipur\", \"template\": \"website\", \"action\": \"create\"} Now parse this sentence similarly 'Create a travel website on hiking'", cfg, "system");	
+  const payload = {};
+  payload.messages = conversation;
+  requestOptions.body = JSON.stringify(payload);
+
+  while (retries < MAX_RETRIES) {
+    const response = await fetch(AZURE_CHAT_API, requestOptions);
+    if (response.ok) {
+      const data = await response.json();
+      // console.log(`Here's the Azure Chat Completion API Response: ${JSON.stringify(data, null, 2)}`);
+      return data.choices[0].message;
+    }
+    retries += 1;
+    const delay = 1000;
+    console.log(`Azure Chat Completion API Retrying in ${delay}ms...`);
+    await wait(delay);
+  }
+  throw new Error('Azure Chat Completion API Max retries reached. Giving up!!');
 }
 
-async function callAzureAPI(msg, cfg, role) {
-	var key = "64087d1089dc4308b9a3fd079ac0fab2";
+async function initiateChat() {
+  console.log('Initiating chat...');
+  const conversation = [];
 
-	const requestOptions = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	};
-	
-	if(role === "system") {
-		messages.push({
-			"role": role,
-			"content": msg
-		});
-	}
-	else if(role === "user") {
-		messages.push({
-			"role": role,
-			"content": "Do the same for '" + msg + "'"
-		});
-	}
+  const firstPrompt = 'The json representation of the sentence "Create a travel website of Forts in Jaipur" '
+  + 'is {"topic": "Forts in Jaipur", "template": "website", "action": "create"}. Similarly, The json representation '
+  + 'of the sentence "Build a poster on tourist places in Ladakh" '
+  + 'is {"topic": "Tourist places in Ladakh", "template": "poster", "action": "build"} '
+  + 'Now, return the JSON for "Create a travel website of Forts in New Delhi".';
+  conversation.push({
+    role: 'system',
+    content: firstPrompt,
+  });
+  const firstResponse = await callAzureChatCompletionAPI(conversation);
+  conversation.push(firstResponse);
 
-	requestOptions.body = JSON.stringify({"messages":messages});
-	console.log(AZURE_CHAT_API.replaceAll("${apiKey}", key/*cfg.apiKey*/));
-	console.log(requestOptions);
-	
-	var response;
-	await fetch(AZURE_CHAT_API.replaceAll("${apiKey}", key/*cfg.apiKey*/), requestOptions)
-		.then(response => {
-
-		  // Check that the response is valid and reject an error
-		  // response to prevent subsequent attempt to parse json
-		  if(!response.ok) {
-			 return Promise.reject('Response not ok with status ' + response.status);
-		  }
-
-		  return response;
-		})
-		.then(response => response.json())
-		.then(data => {
-			// Handle the API response data here
-			console.log(data);
-			response = data.choices[0].message;
-		})
-		.catch(error => {
-			// Handle any errors that occurred during the API call
-			console.error('Error:', error);
-
-			if (retries < maxRetries) {
-				retries++;
-				const delay = 5;//Math.pow(2, retries) * 1000; // Exponential delay in milliseconds
-				console.log(`Retrying in ${delay}ms...`);
-				setTimeout(callAzureAPI, delay, msg, cfg); // Retry the API call after the delay
-			} else {
-				console.error('Max retries reached. Unable to call the API ${endpoint}');
-			}
-		});
-		
-	messages.push(response);
-	
-	return JSON.parse(response.content);
+  console.log('Chat initiated.');
+  return conversation;
 }
 
-
-export { callAzureAPI, initAzureAPI };
+export { callAzureChatCompletionAPI, initiateChat };

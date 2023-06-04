@@ -1,56 +1,46 @@
-import { getAccessToken } from "./ims.js";
+/* eslint-disable no-console */
+/* eslint-disable no-await-in-loop */
+import { getAccessToken } from './ims.js';
 
 const BASE_URL = 'https://firefall-stage.adobe.io';
 
-const maxRetries = 3;
-let retries = 0;
+const MAX_RETRIES = 3;
 
-async function callAPI(endpoint, body, cfg) {
-	const headers = {
-		'Content-Type': 'application/json',
-		'x-gw-ims-org-id': '1234@AdobeOrg',
-		'x-api-key': 'franklin_firefall_service',
-		'Authorization': 'Bearer ' + await getAccessToken(cfg)
-	};
+function wait(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 
-	const requestOptions = {
-		method: 'POST',
-		headers: headers
-	};
+export default async function callAPI(endpoint, body, cfg) {
+  let retries = 0;
+  const headers = {
+    'Content-Type': 'application/json',
+    'x-gw-ims-org-id': '1234@AdobeOrg',
+    'x-api-key': 'franklin_firefall_service',
+    Authorization: `Bearer ${await getAccessToken(cfg)}`,
+  };
 
-	requestOptions.body = JSON.stringify(body);
-	var response;
-	await fetch(BASE_URL + endpoint, requestOptions)
-		.then(response => {
+  const requestOptions = {
+    method: 'POST',
+    headers,
+  };
 
-		  // Check that the response is valid and reject an error
-		  // response to prevent subsequent attempt to parse json
-		  if(!response.ok) {
-			 return Promise.reject('Response not ok with status ' + response.status);
-		  }
+  requestOptions.body = JSON.stringify(body);
 
-		  return response;
-		})
-		.then(response => response.json())
-		.then(data => {
-			// Handle the API response data here
-			console.log(data);
-			response = data;
-		})
-		.catch(error => {
-			// Handle any errors that occurred during the API call
-			console.error('Error:', error);
-
-			if (retries < maxRetries) {
-				retries++;
-				const delay = 5;//Math.pow(2, retries) * 1000; // Exponential delay in milliseconds
-				console.log(`Retrying in ${delay}ms...`);
-				setTimeout(callAPI, delay, endpoint, body, cfg); // Retry the API call after the delay
-			} else {
-				console.error('Max retries reached. Unable to call the API ${endpoint}');
-			}
-		});
-	return response;
+  while (retries < MAX_RETRIES) {
+    const response = await fetch(BASE_URL + endpoint, requestOptions);
+    if (response.ok) {
+      const data = await response.json();
+      console.log(`Here's the Firefall API Response: ${JSON.stringify(data, null, 2)}`);
+      return data;
+    }
+    retries += 1;
+    const delay = 1000;
+    console.log(`Attempt ${retries}/${MAX_RETRIES} Firefall API Retrying in ${delay}ms...`);
+    await wait(delay);
+  }
+  throw new Error('Firefall API Max retries reached. Giving up!!');
 }
 
 export { callAPI };

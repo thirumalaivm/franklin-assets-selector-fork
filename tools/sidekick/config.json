@@ -23,7 +23,7 @@
     },
     {
       "id": "copilot",
-      "title": "Franklin Copilot",
+      "title": "Franklin Authoring Copilot",
       "environments": [
         "edit"
       ],

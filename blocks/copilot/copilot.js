@@ -24,10 +24,10 @@ function renderTable(block_name, content) {
   </tr>
   ${content.map((item) => `
     <tr>
-    <td>${item.text}</td>
     <td>
-        <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
+      <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
     </td>
+    <td>${item.text}</td>
     </tr>
     `).join('')}
   </table>
@@ -40,7 +40,7 @@ function renderTable(block_name, content) {
 const blocks_renderer = {
   hero: renderHero,
   cards: renderTable,
-  column: renderTable,
+  columns: renderTable,
   carousel: renderTable,
 };
 

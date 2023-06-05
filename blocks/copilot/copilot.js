@@ -48,12 +48,12 @@ const templates = {
   webpage: [
     { hero: { count: 1, text_size: 10 } },
     { cards: { count: 3, text_size: 20 } },
-    { column: { count: 2, text_size: 30 } },
+    { columns: { count: 2, text_size: 30 } },
     { carousel: { count: 3, text_size: 10 } },
   ],
   poster: [
     { hero: { count: 1, text_size: 10 } },
-    { column: { count: 2, text_size: 30 } },
+    { columns: { count: 2, text_size: 30 } },
   ],
   brochure: [
     { cards: { count: 4, text_size: 30 } },

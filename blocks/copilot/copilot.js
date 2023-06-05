@@ -45,7 +45,7 @@ const blocks_renderer = {
 };
 
 const templates = {
-  website: [
+  webpage: [
     { hero: { count: 1, text_size: 10 } },
     { cards: { count: 3, text_size: 20 } },
     { column: { count: 2, text_size: 30 } },

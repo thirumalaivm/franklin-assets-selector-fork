@@ -6,9 +6,9 @@ const BASE_URL = 'https://firefall-stage.adobe.io';
 
 const MAX_RETRIES = 3;
 
-function wait(ms) {
+function wait(ms, retries) {
   return new Promise((resolve) => {
-    setTimeout(resolve, ms);
+    setTimeout(resolve, Math.pow(2, retries) * ms);
   });
 }
 
@@ -27,6 +27,8 @@ export default async function callAPI(endpoint, body, cfg) {
   };
 
   requestOptions.body = JSON.stringify(body);
+  
+  console.log(`[firefall] ${requestOptions.body}`);
 
   while (retries < MAX_RETRIES) {
     const response = await fetch(BASE_URL + endpoint, requestOptions);
@@ -37,8 +39,8 @@ export default async function callAPI(endpoint, body, cfg) {
     }
     retries += 1;
     const delay = 1000;
-    console.log(`Attempt ${retries}/${MAX_RETRIES} Firefall API Retrying in ${delay}ms...`);
-    await wait(delay);
+    console.log(`Attempt ${retries}/${MAX_RETRIES} Firefall API Retrying in ${Math.pow(2, retries) * delay}ms...`);
+    await wait(delay, retries);
   }
   throw new Error('Firefall API Max retries reached. Giving up!!');
 }

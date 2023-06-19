@@ -147,15 +147,19 @@ export default function decorate(block) {
     let preview_html = '';
 
     console.log(`[copilot]Generating ${respContent.template} for the topic ${respContent.topic} `);
+    const tasks = [];
+    const blocks = [];
     for (let i = 0; i < ingridients.length; i += 1) {
       const block_name = Object.keys(ingridients[i])[0];
       console.log(`[copilot] Generating block ${block_name}...`);
-      const content = await generate(respContent.topic, ingridients[i][block_name], cfg);
-      console.log(`[copilot] Generated content for block ${block_name} as follows ${JSON.stringify(content, null, 2)}`);
+      tasks.push(generate(respContent.topic, ingridients[i][block_name], cfg));
+      blocks.push(block_name);
+    }
 
-      if (content) {
-        preview_html += blocks_renderer[block_name](block_name, content);
-      }
+    const results = await Promise.all(tasks);
+    for (let i = 0; i < results.length; i += 1) {
+      console.log(`[copilot] Generated content for block ${blocks[i]} as follows ${JSON.stringify(results[i], null, 2)}`);
+      preview_html += blocks_renderer[blocks[i]](blocks[i], results[i]);
     }
 
     document.getElementById('loading').style.display = 'none';

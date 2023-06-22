@@ -2,7 +2,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable camelcase */
 import { generate } from './openai.js';
-import { initiateChat, callAzureChatCompletionAPI } from './azure.js';
+import { initiateChat, callAzureChatCompletionAPI, initiateSynonymChat } from './azure.js';
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 function renderHero(block_name, content) {
@@ -97,7 +97,7 @@ export default function decorate(block) {
   <div id="preview">
   </div>
     `;
-
+	
   document.getElementById('copy').addEventListener('click', async (event) => {
     const data = [new ClipboardItem({ [clipboardData.type]: clipboardData })];
     navigator.clipboard.write(data);
@@ -143,6 +143,46 @@ export default function decorate(block) {
     console.log(`[copilot] Parsed Prompt ${response.content}`);
     const respContent = JSON.parse(response.content);
     console.log(`[copilot] Prompt parsed to JSON ${JSON.stringify(respContent, null, 2)}`);
+	
+	let text_adjective = "";
+	if(respContent.text_adjective && respContent.text_adjective != null) {
+		
+		// Prepare synonym chat api
+		console.log('[copilot] Initiate Synonym chat with Azure to train it to get prescribed vocab');
+		const synonym_conversation = await initiateSynonymChat();
+		console.log('[copilot] Synonym Chat initiated');
+		console.log(synonym_conversation);
+		
+		// Call chat api
+		synonym_conversation.push({
+		  role: 'user',
+		  content: `"${respContent.text_adjective}"`,
+		});
+		console.log('[copilot] Call chat api to get synonym');
+		const response = await callAzureChatCompletionAPI(synonym_conversation);
+		console.log(response);
+		synonym_conversation.push(response);
+		console.log(`[copilot] Chat Response Synonym ${response.content}`);
+		
+		text_adjective = response.content;
+
+	}
+	
+	let image_adjective = "";
+	if(respContent.image_adjective && respContent.image_adjective != null) {
+		image_adjective = respContent.image_adjective;
+	}
+	
+	let image_tone = "";
+	if(respContent.image_tone && respContent.image_tone != null) {
+		image_tone = respContent.image_tone;
+	}
+		
+	let generationConfig = {
+		"text_adjective" : text_adjective, 
+		"image_adjective" : image_adjective, 
+		"image_tone" : image_tone};
+	
     const ingridients = templates[respContent.template];
     let preview_html = '';
 
@@ -152,7 +192,7 @@ export default function decorate(block) {
     for (let i = 0; i < ingridients.length; i += 1) {
       const block_name = Object.keys(ingridients[i])[0];
       console.log(`[copilot] Generating block ${block_name}...`);
-      tasks.push(generate(respContent.topic, ingridients[i][block_name], cfg));
+      tasks.push(generate(respContent.topic, ingridients[i][block_name], generationConfig, cfg));
       blocks.push(block_name);
     }
 

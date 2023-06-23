@@ -10,7 +10,13 @@ async function generateImage(card, generationConfig, cfg) {
   const summary = textResponse.generations[0][0].text;
   console.log(`getText Response ${summary}`);
   console.log('Invoking getImage');
-  const image = await getImage(/* data.conversation_id */96593, summary, generationConfig.image_adjective, generationConfig.image_tone, cfg);
+  const image = await getImage(
+    /* data.conversation_id */96593,
+    summary,
+    generationConfig.image_adjective,
+    generationConfig.image_tone,
+    cfg,
+  );
   console.log(`Get Image Response${JSON.stringify(image, null, 2)}`);
   console.log(image.dialogue.answer);
   if (image.dialogue.answer.image_url[0]) {
@@ -20,7 +26,7 @@ async function generateImage(card, generationConfig, cfg) {
   throw new Error('Unfit generateImage response');
 }
 
-export default async function generate(topic, { count, text_size }, generationConfig,  cfg) {
+export default async function generate(topic, { count, text_size }, generationConfig, cfg) {
   let attempts = 0;
   const cards = [];
   /* Initiate conversation with Firefall */
@@ -31,13 +37,7 @@ export default async function generate(topic, { count, text_size }, generationCo
     let done = false;
     while (!done) {
       console.log('[openai]Generating text with Firefall');
-	  
-	  if(generationConfig.text_adjective.toLowerCase().startsWith("more")) {
-		  text_size = 50;
-	  } else if(generationConfig.text_adjective.toLowerCase().startsWith("less")) {
-		  text_size = 10;
-	  }  
-	  
+
       const generatedText = await generateText(data.conversation_id, topic, text_size, cfg);
       console.log(`[openai]Firefall generated Text Response ${JSON.stringify(generatedText, null, 2)}`);
       if (generatedText.dialogue.answer) {

@@ -45,23 +45,64 @@ const blocks_renderer = {
 };
 
 const templates = {
-  webpage: [
-    { hero: { count: 1, text_size: 10 } },
-    { cards: { count: 3, text_size: 20 } },
-    { columns: { count: 2, text_size: 30 } },
-    { carousel: { count: 3, text_size: 10 } },
-  ],
-  poster: [
-    { hero: { count: 1, text_size: 10 } },
-    { columns: { count: 2, text_size: 30 } },
-  ],
-  brochure: [
-    { cards: { count: 4, text_size: 30 } },
-  ],
-  pamphlet: [
-    { hero: { count: 1, text_size: 10 } },
-    { cards: { count: 3, text_size: 50 } },
-  ],
+  default: {
+    webpage: [
+      { hero: { count: 1, text_size: 20 } },
+      { cards: { count: 5, text_size: 30 } },
+      { columns: { count: 4, text_size: 50 } },
+      { carousel: { count: 4, text_size: 20 } },
+    ],
+    poster: [
+      { hero: { count: 1, text_size: 20 } },
+      { columns: { count: 4, text_size: 50 } },
+    ],
+    brochure: [
+      { cards: { count: 6, text_size: 50 } },
+    ],
+    pamphlet: [
+      { hero: { count: 1, text_size: 20 } },
+      { cards: { count: 5, text_size: 60 } },
+    ],
+  },
+  verbose: {
+    webpage: [
+      { hero: { count: 1, text_size: 10 } },
+      { cards: { count: 8, text_size: 60 } },
+      { columns: { count: 5, text_size: 100 } },
+      { carousel: { count: 5, text_size: 20 } },
+    ],
+    poster: [
+      { hero: { count: 1, text_size: 50 } },
+      { columns: { count: 6, text_size: 70 } },
+    ],
+    brochure: [
+      { cards: { count: 8, text_size: 80 } },
+    ],
+    pamphlet: [
+      { hero: { count: 1, text_size: 30 } },
+      { cards: { count: 5, text_size: 80 } },
+    ],
+  },
+  concise: {
+    webpage: [
+      { hero: { count: 1, text_size: 10 } },
+      { cards: { count: 3, text_size: 15 } },
+      { columns: { count: 2, text_size: 20 } },
+      { carousel: { count: 3, text_size: 10 } },
+    ],
+    poster: [
+      { hero: { count: 1, text_size: 10 } },
+      { columns: { count: 2, text_size: 20 } },
+    ],
+    brochure: [
+      { cards: { count: 4, text_size: 20 } },
+    ],
+    pamphlet: [
+      { hero: { count: 1, text_size: 10 } },
+      { cards: { count: 3, text_size: 30 } },
+    ],
+  },
+
 };
 
 export default function decorate(block) {
@@ -97,13 +138,13 @@ export default function decorate(block) {
   <div id="preview">
   </div>
     `;
-	
-  document.getElementById('copy').addEventListener('click', async (event) => {
+
+  document.getElementById('copy').addEventListener('click', async () => {
     const data = [new ClipboardItem({ [clipboardData.type]: clipboardData })];
     navigator.clipboard.write(data);
   });
 
-  document.getElementById('regenerate').onclick = function () {
+  document.getElementById('regenerate').onclick = () => {
     document.getElementById('myForm').submit();
   };
 
@@ -138,52 +179,57 @@ export default function decorate(block) {
       content: `Parse and return only the JSON representation for "${promptStr}" without anything else`,
     });
     console.log('[copilot] Call chat api to parse prompt to JSON');
-    const response = await callAzureChatCompletionAPI(conversation);
+    let response = await callAzureChatCompletionAPI(conversation);
     conversation.push(response);
     console.log(`[copilot] Parsed Prompt ${response.content}`);
     const respContent = JSON.parse(response.content);
     console.log(`[copilot] Prompt parsed to JSON ${JSON.stringify(respContent, null, 2)}`);
-	
-	let text_adjective = "";
-	if(respContent.text_adjective && respContent.text_adjective != null) {
-		
-		// Prepare synonym chat api
-		console.log('[copilot] Initiate Synonym chat with Azure to train it to get prescribed vocab');
-		const synonym_conversation = await initiateSynonymChat();
-		console.log('[copilot] Synonym Chat initiated');
-		console.log(synonym_conversation);
-		
-		// Call chat api
-		synonym_conversation.push({
-		  role: 'user',
-		  content: `"${respContent.text_adjective}"`,
-		});
-		console.log('[copilot] Call chat api to get synonym');
-		const response = await callAzureChatCompletionAPI(synonym_conversation);
-		console.log(response);
-		synonym_conversation.push(response);
-		console.log(`[copilot] Chat Response Synonym ${response.content}`);
-		
-		text_adjective = response.content;
 
-	}
-	
-	let image_adjective = "";
-	if(respContent.image_adjective && respContent.image_adjective != null) {
-		image_adjective = respContent.image_adjective;
-	}
-	
-	let image_tone = "";
-	if(respContent.image_tone && respContent.image_tone != null) {
-		image_tone = respContent.image_tone;
-	}
-		
-	let generationConfig = {
-		"text_adjective" : text_adjective, 
-		"image_adjective" : image_adjective, 
-		"image_tone" : image_tone};
-	
-    const ingridients = templates[respContent.template];
+    let text_adjective = 'default';
+    if (respContent.text_adjective && respContent.text_adjective != null) {
+      // Prepare synonym chat api
+      console.log('[copilot] Initiate Synonym chat with Azure to train it to get prescribed vocab');
+      const synonym_conversation = await initiateSynonymChat();
+      console.log('[copilot] Synonym Chat initiated');
+      console.log(synonym_conversation);
+
+      // Call chat api
+      synonym_conversation.push({
+        role: 'user',
+        content: `"${respContent.text_adjective}"`,
+      });
+      console.log('[copilot] Call chat api to get synonym');
+      response = await callAzureChatCompletionAPI(synonym_conversation);
+      console.log(response);
+      synonym_conversation.push(response);
+      console.log(`[copilot] Chat Response Synonym ${response.content}`);
+
+      text_adjective = response.content || text_adjective;
+      if (text_adjective.toLowerCase().includes('verbose')) {
+        text_adjective = 'verbose';
+      } else if (text_adjective.toLowerCase().includes('concise')) {
+        text_adjective = 'concise';
+      }
+    }
+    respContent.text_adjective = text_adjective;
+
+    let image_adjective = '';
+    if (respContent.image_adjective && respContent.image_adjective != null) {
+      image_adjective = respContent.image_adjective;
+    }
+
+    let image_tone = '';
+    if (respContent.image_tone && respContent.image_tone != null) {
+      image_tone = respContent.image_tone;
+    }
+
+    console.log(`[copilot]Here's the normalized parsed prompt ${JSON.stringify(respContent, null, 2)}`);
+    const generationConfig = {
+      image_adjective,
+      image_tone,
+    };
+
+    const ingridients = templates[text_adjective][respContent.template];
     let preview_html = '';
 
     console.log(`[copilot]Generating ${respContent.template} for the topic ${respContent.topic} `);

@@ -205,12 +205,13 @@ export default function decorate(block) {
       console.log(`[copilot] Chat Response Synonym ${response.content}`);
 
       text_adjective = response.content || text_adjective;
-      if (text_adjective.toLowerCase.includes('verbose')) {
+      if (text_adjective.toLowerCase().includes('verbose')) {
         text_adjective = 'verbose';
-      } else if (text_adjective.toLowerCase.includes('concise')) {
+      } else if (text_adjective.toLowerCase().includes('concise')) {
         text_adjective = 'concise';
       }
     }
+    respContent.text_adjective = text_adjective;
 
     let image_adjective = '';
     if (respContent.image_adjective && respContent.image_adjective != null) {
@@ -222,6 +223,7 @@ export default function decorate(block) {
       image_tone = respContent.image_tone;
     }
 
+    console.log(`[copilot]Here's the normalized parsed prompt ${JSON.stringify(respContent, null, 2)}`);
     const generationConfig = {
       image_adjective,
       image_tone,

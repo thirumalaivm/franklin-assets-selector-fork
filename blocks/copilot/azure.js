@@ -65,7 +65,13 @@ async function initiateSynonymChat() {
 
   const conversation = [];
 
-  const firstPrompt = 'Whenever I say some synonym of "verbose" just replace it with "more". For e.g. "verbose" becomes "more" and whenever I say some synonym of "concise" just replace it with "less". For e.g. "concise" becomes "less" and give me one word answers only';
+  const firstPrompt = `
+  Whenever I say some synonym of "verbose" just replace it with "verbose".
+  For e.g. "wordy" becomes "verbose".
+  And whenever I say some synonym of "concise" just replace it with "concise".
+  For e.g. "brief" becomes "concise".
+  And give me one word answers only'
+  `;
   conversation.push({
     role: 'system',
     content: firstPrompt,

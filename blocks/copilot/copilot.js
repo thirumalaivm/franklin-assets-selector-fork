@@ -1,41 +1,11 @@
 /* eslint-disable no-console */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable camelcase */
+import template from './copilot-template.js';
 import { generate } from './openai.js';
 import { initiateChat, callAzureChatCompletionAPI, initiateSynonymChat } from './azure.js';
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
-function renderHero(block_name, content) {
-  const html = `
-  ${content.map((item) => `
-      <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
-      <h1>${item.text}</h1>
-      <hr>
-      `).join('')}
-  `;
-  return html;
-}
-
-function renderTable(block_name, content) {
-  const html = `
-  <table border="1">
-  <tr>
-      <td colspan="2" style="background-color: #ff8012; color: #ffffff;  height:23px;">${block_name}</td>
-  </tr>
-  ${content.map((item) => `
-    <tr>
-    <td>
-      <img loading="lazy" alt="" type="image/jpeg" src=${item.image} width="200" height="300">
-    </td>
-    <td>${item.text}</td>
-    </tr>
-    `).join('')}
-  </table>
-  <hr>
-  `;
-
-  return html;
-}
 
 const blocks_renderer = {
   hero: renderHero,
@@ -44,100 +14,11 @@ const blocks_renderer = {
   carousel: renderTable,
 };
 
-const templates = {
-  default: {
-    webpage: [
-      { hero: { count: 1, text_size: 20 } },
-      { cards: { count: 5, text_size: 30 } },
-      { columns: { count: 4, text_size: 50 } },
-      { carousel: { count: 4, text_size: 20 } },
-    ],
-    poster: [
-      { hero: { count: 1, text_size: 20 } },
-      { columns: { count: 4, text_size: 50 } },
-    ],
-    brochure: [
-      { cards: { count: 6, text_size: 50 } },
-    ],
-    pamphlet: [
-      { hero: { count: 1, text_size: 20 } },
-      { cards: { count: 5, text_size: 60 } },
-    ],
-  },
-  verbose: {
-    webpage: [
-      { hero: { count: 1, text_size: 10 } },
-      { cards: { count: 8, text_size: 60 } },
-      { columns: { count: 5, text_size: 100 } },
-      { carousel: { count: 5, text_size: 20 } },
-    ],
-    poster: [
-      { hero: { count: 1, text_size: 50 } },
-      { columns: { count: 6, text_size: 70 } },
-    ],
-    brochure: [
-      { cards: { count: 8, text_size: 80 } },
-    ],
-    pamphlet: [
-      { hero: { count: 1, text_size: 30 } },
-      { cards: { count: 5, text_size: 80 } },
-    ],
-  },
-  concise: {
-    webpage: [
-      { hero: { count: 1, text_size: 10 } },
-      { cards: { count: 3, text_size: 15 } },
-      { columns: { count: 2, text_size: 20 } },
-      { carousel: { count: 3, text_size: 10 } },
-    ],
-    poster: [
-      { hero: { count: 1, text_size: 10 } },
-      { columns: { count: 2, text_size: 20 } },
-    ],
-    brochure: [
-      { cards: { count: 4, text_size: 20 } },
-    ],
-    pamphlet: [
-      { hero: { count: 1, text_size: 10 } },
-      { cards: { count: 3, text_size: 30 } },
-    ],
-  },
-
-};
 
 export default function decorate(block) {
   let clipboardData = '';
   const cfg = readBlockConfig(block);
-  block.innerHTML = `
-
-
-  <div id="container">
-    <h4>Franklin Authoring Copilot</h4>
-    <form id="myForm">
-      <label for="prompt">What do you wish to create?</label>
-      <input type="text" id="prompt" required>
-
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-
-  <div id="result">
-    <div id="loading">
-      AI at work
-    </div>
-    <div id="gif">
-      <img src="https://i.pinimg.com/originals/ca/a4/44/caa44463bac0ceaf3e5b5a1a227cdce6.gif"
-        height="78px" width="90px"></img>
-    </div>
-    <div id="buttons">
-      <button id="copy">Copy to Clipboard</button>
-      <button id="regenerate">Regenerate</button>
-    </div>
-  </div>
-
-  <div id="preview">
-  </div>
-    `;
+  block.innerHTML = template();
 
   document.getElementById('copy').addEventListener('click', async () => {
     const data = [new ClipboardItem({ [clipboardData.type]: clipboardData })];

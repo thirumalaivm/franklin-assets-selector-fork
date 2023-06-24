@@ -8,6 +8,7 @@ function wait(ms) {
     setTimeout(resolve, ms);
   });
 }
+
 async function callAzureChatCompletionAPI(conversation) {
   let retries = 0;
   console.log('Calling Azure Chat Completion API...');
@@ -43,11 +44,11 @@ async function initiateChat() {
   console.log('Initiating chat...');
   const conversation = [];
 
-  const firstPrompt = 'The json representation of the sentence "Create a travel website of Forts in Jaipur" '
-  + 'is {"topic": "Forts in Jaipur", "template": "website", "action": "create"}. Similarly, The json representation '
-  + 'of the sentence "Build a poster on tourist places in Ladakh" '
-  + 'is {"topic": "Tourist places in Ladakh", "template": "poster", "action": "build"} '
-  + 'Now, return the JSON for "Create a travel website of Forts in New Delhi".';
+  const firstPrompt = 'The json representation of the sentence "Create a travel website of Forts in Jaipur with concise text and vivid images in sepia tone" '
+  + 'is {"topic": "Forts in Jaipur", "template": "website", "action": "create", "text_adjective":"concise", "image_adjective":"vivid", "image_tone":"sepia"}. Similarly, The json representation '
+  + 'of the sentence "Build a poster on tourist places in Ladakh containing less words and bright pictures" '
+  + 'is {"topic": "Tourist places in Ladakh", "template": "poster", "action": "build", "text_adjective":"less", "image_adjective":"bright", "image_tone" : null} '
+  + 'Now, return the JSON for "Create a travel website of Forts in New Delhi having colourful pics and verbose text".';
   conversation.push({
     role: 'system',
     content: firstPrompt,
@@ -59,4 +60,25 @@ async function initiateChat() {
   return conversation;
 }
 
-export { callAzureChatCompletionAPI, initiateChat };
+async function initiateSynonymChat() {
+  console.log('Preparing synonym chat');
+
+  const conversation = [];
+
+  const firstPrompt = `
+  Consider concise_bucket = ["Succinct","Brief","Terse","Pithy","Compact","Short","Compendious","Laconic","Condensed","Abridged","Synoptic","Epigrammatic","Curt","Tersely","Clipped"]  
+  and   
+  verbose_bucket = ["Wordy","Long-winded","Prolix","Loquacious","Circumlocutory","Garrulous","Rambling","Verbose","Periphrastic","Pompous","Repetitive","Tautological","Rhetorical","Bombastic","Grandiloquent"]
+  `;
+  conversation.push({
+    role: 'system',
+    content: firstPrompt,
+  });
+  const firstResponse = await callAzureChatCompletionAPI(conversation);
+  conversation.push(firstResponse);
+
+  console.log('Synonym Chat initiated.');
+  return conversation;
+}
+
+export { callAzureChatCompletionAPI, initiateChat, initiateSynonymChat };

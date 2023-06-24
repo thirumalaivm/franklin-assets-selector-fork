@@ -24,11 +24,14 @@ async function generateText(conversation_id, topic, num_words, cfg) {
   return callAPI(QUERY_ENDPOINT, body, cfg);
 }
 
-async function getImage(conversation_id, title, cfg) {
+async function getImage(conversation_id, title, adjective, tone, cfg) {
+  if(tone != "") {
+    tone = " in " + tone + " tone";
+  }
   const body = {
     conversation_id,
     dialogue: {
-      question: `Generate an image for ${title}`,
+      question: `Generate a ${adjective} image ${tone} for "${title}" `,
     },
   };
   return callAPI(QUERY_ENDPOINT, body, cfg);

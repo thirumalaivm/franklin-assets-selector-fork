@@ -21,7 +21,7 @@ async function sendUserMessage(messageInput, chatHistory) {
   if (message !== '') {
     appendMessage(`You: ${message}`, chatHistory);
     await wait(500);
-    appendMessage('<b>Copilot:</b> Aye Aye Captain...', chatHistory);
+    appendMessage('Copilot: Aye Aye Captain...', chatHistory);
     // Handle the message (e.g., send it to an AI model for processing)
     // ... Your code here ...
     messageInput.value = '';
@@ -58,6 +58,7 @@ export default function decorate(block) {
     placeholderAnimation.classList.add('visible');
     const generatedBlocksMarkup = await executePrompt(prompt, cfg);
     placeholderAnimation.classList.remove('visible');
+    console.log(`[copilot]${generatedBlocksMarkup}`);
     previewStage.innerHTML = generatedBlocksMarkup;
     sendSystemMessage('Done! Please take a look.', chatHistory);
   });

@@ -66,11 +66,9 @@ async function initiateSynonymChat() {
   const conversation = [];
 
   const firstPrompt = `
-  Whenever I say some synonym of "verbose" just return "verbose".
-  For e.g. when I say "wordy" then return "verbose".
-  And whenever I say some synonym of "concise" just return "concise".
-  For e.g. when I say "brief" then return "concise".
-  Let's get started.'
+  Consider concise_bucket = ["Succinct","Brief","Terse","Pithy","Compact","Short","Compendious","Laconic","Condensed","Abridged","Synoptic","Epigrammatic","Curt","Tersely","Clipped"]
+  and
+  verbose_bucket = ["Wordy","Long-winded","Prolix","Loquacious","Circumlocutory","Garrulous","Rambling","Verbose","Periphrastic","Pompous","Repetitive","Tautological","Rhetorical","Bombastic","Grandiloquent"]
   `;
   conversation.push({
     role: 'system',

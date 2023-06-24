@@ -21,7 +21,7 @@ async function sendUserMessage(messageInput, chatHistory) {
   if (message !== '') {
     appendMessage(`You: ${message}`, chatHistory);
     await wait(500);
-    appendMessage('Copilot: Aye Aye Captain...', chatHistory);
+    appendMessage('<b>Copilot:</b> Aye Aye Captain...', chatHistory);
     // Handle the message (e.g., send it to an AI model for processing)
     // ... Your code here ...
     messageInput.value = '';

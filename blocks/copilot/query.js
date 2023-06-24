@@ -25,7 +25,7 @@ async function generateText(conversation_id, topic, num_words, cfg) {
 }
 
 async function getImage(conversation_id, title, adjective, tone, cfg) {
-  let tonePhrase;
+  let tonePhrase = '';
   if (tone !== '') {
     tonePhrase = ` in ${tone} tone`;
   }

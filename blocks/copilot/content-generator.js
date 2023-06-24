@@ -13,8 +13,8 @@ async function generateImage(card, generationConfig, cfg) {
   const image = await getImage(
     /* data.conversation_id */96593,
     summary,
-    generationConfig.image_adjective,
-    generationConfig.image_tone,
+    generationConfig.imageAdjective,
+    generationConfig.imageTone,
     cfg,
   );
   console.log(`Get Image Response${JSON.stringify(image, null, 2)}`);

@@ -1,5 +1,8 @@
 export default {
   default: {
+    snippet: [
+      { hero: { count: 1, text_size: 20 } },
+    ],
     webpage: [
       { hero: { count: 1, text_size: 20 } },
       { cards: { count: 5, text_size: 30 } },
@@ -19,6 +22,9 @@ export default {
     ],
   },
   verbose: {
+    snippet: [
+      { hero: { count: 1, text_size: 20 } },
+    ],
     webpage: [
       { hero: { count: 1, text_size: 10 } },
       { cards: { count: 8, text_size: 60 } },
@@ -38,6 +44,9 @@ export default {
     ],
   },
   concise: {
+    snippet: [
+      { hero: { count: 1, text_size: 20 } },
+    ],
     webpage: [
       { hero: { count: 1, text_size: 10 } },
       { cards: { count: 3, text_size: 15 } },

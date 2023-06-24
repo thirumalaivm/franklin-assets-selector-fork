@@ -1,47 +1,94 @@
-main .block.copilot h1 {
-  text-align: center;
+.section.copilot-container {
+  padding: unset;
 }
 
-main .block.copilot form {
-  max-width: 400px;
-  margin: 0 auto;
-  background-color: #fff;
+.section > .copilot-wrapper {
+  max-width: unset;
+}
+
+.block.copilot {
+  display: flex;
+}
+
+.block.copilot .chat-container {
+  flex: 0 0 300px;
+  height: 90vh;
+  margin: 20px auto;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-main .block.copilot label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-main .block.copilot input[type="text"] {
-  width: 100%;
-  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.block.copilot .chat-container .chat-history {
+  height: 90%;
+  overflow-y: scroll;
   margin-bottom: 10px;
-}
-
-main .block.copilot button[type="submit"] {
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-main .block.copilot button[type="submit"]:hover {
-  background-color: #45a049;
-}
-
-main .block.copilot #result {
-  margin-top: 20px;
   padding: 10px;
+  border: 1px solid #ccc;
   background-color: #f9f9f9;
-  border: 1px solid #ddd;
+}
+
+.block.copilot .chat-container .input-container {
+  display: flex;
+}
+
+.block.copilot .chat-container #message-input {
+  flex-grow: 1;
+  padding: 5px;
   border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 5px;
+}
+
+.block.copilot .chat-container #send-button {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  overflow: unset;
+}
+
+.block.copilot .preview-container {
+  flex: 1;
+  height: 90vh;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.block.copilot .preview-container .preview-stage {
+  width: 100%;
+  height: 95%;
+  background-color: #f9f9f9;
+  overflow-y: scroll;
+}
+
+.block.copilot .preview-container .preview-stage .placeholder-animation {
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-image: url('https://i.pinimg.com/originals/ca/a4/44/caa44463bac0ceaf3e5b5a1a227cdce6.gif');
+  background-size: cover;
+  background-position: center;
+  display: none;
+}
+
+.block.copilot .preview-container .preview-stage .placeholder-animation.visible {
+  display: flex;
+}
+
+.block.copilot .preview-container #copy-button {
+  width: 300px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  overflow: unset;
 }

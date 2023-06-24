@@ -66,11 +66,11 @@ async function initiateSynonymChat() {
   const conversation = [];
 
   const firstPrompt = `
-  Whenever I say some synonym of "verbose" just replace it with "verbose".
-  For e.g. "wordy" becomes "verbose".
-  And whenever I say some synonym of "concise" just replace it with "concise".
-  For e.g. "brief" becomes "concise".
-  And give me one word answers only'
+  Whenever I say some synonym of "verbose" just return "verbose".
+  For e.g. when I say "wordy" then return "verbose".
+  And whenever I say some synonym of "concise" just return "concise".
+  For e.g. when I say "brief" then return "concise".
+  Let's get started.'
   `;
   conversation.push({
     role: 'system',

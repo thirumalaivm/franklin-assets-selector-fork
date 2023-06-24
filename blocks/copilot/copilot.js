@@ -40,7 +40,7 @@ export default function decorate(block) {
       // Call chat api
       synonym_conversation.push({
         role: 'user',
-        content: `"${respContent.text_adjective}"`,
+        content: `Which bucket does "${respContent.text_adjective} text" belong to? Answer in one word only.`,
       });
       console.log('[copilot] Call chat api to get synonym');
       response = await callAzureChatCompletionAPI(synonym_conversation);

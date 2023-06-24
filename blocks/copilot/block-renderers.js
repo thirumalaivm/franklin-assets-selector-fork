@@ -29,3 +29,12 @@ export function renderTable(blockName, content) {
 
   return html;
 }
+
+const blocksRenderer = {
+  hero: renderHero,
+  cards: renderTable,
+  columns: renderTable,
+  carousel: renderTable,
+};
+
+export { blocksRenderer };

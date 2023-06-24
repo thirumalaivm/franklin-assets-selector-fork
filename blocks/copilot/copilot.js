@@ -6,47 +6,10 @@ import { generate } from './openai.js';
 import { initiateChat, callAzureChatCompletionAPI, initiateSynonymChat } from './azure.js';
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
-
-const blocks_renderer = {
-  hero: renderHero,
-  cards: renderTable,
-  columns: renderTable,
-  carousel: renderTable,
-};
-
-
 export default function decorate(block) {
   let clipboardData = '';
   const cfg = readBlockConfig(block);
   block.innerHTML = template();
-
-  document.getElementById('copy').addEventListener('click', async () => {
-    const data = [new ClipboardItem({ [clipboardData.type]: clipboardData })];
-    navigator.clipboard.write(data);
-  });
-
-  document.getElementById('regenerate').onclick = () => {
-    document.getElementById('myForm').submit();
-  };
-
-  document.getElementById('container').style.display = 'flex';
-  document.getElementById('container').style.flexDirection = 'column';
-  document.getElementById('container').style.textAlign = 'center';
-  document.getElementById('result').style.display = 'none';
-
-  document.getElementById('myForm').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent form submission
-    document.getElementById('container').style.display = 'none';
-    document.getElementById('result').style.display = 'block';
-    document.getElementById('buttons').style.display = 'none';
-
-    const myInterval = setInterval(() => {
-      document.getElementById('loading').innerHTML = `${document.getElementById('loading').innerHTML}...`;
-    }, 200);
-
-    const myInterval2 = setInterval(() => {
-      document.getElementById('loading').innerHTML = 'AI at work';
-    }, 2000);
 
     // Get the input value
     const promptStr = document.getElementById('prompt').value;

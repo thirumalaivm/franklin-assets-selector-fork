@@ -52,10 +52,6 @@ export function init(cfg, callback) {
   });
 }
 
-function onClose() {
-  document.getElementById('asset-selector-dialog').close();
-}
-
 async function getAssetPublicUrl(url) {
   const response = await fetch(`${WEB_TOOLS}/asset-bin?src=${url}`, {
     headers: {
@@ -93,30 +89,26 @@ async function handleSelection(selection) {
   ];
   // Write the new clipboard contents
   await navigator.clipboard.write(data);
-  // onClose();
 }
 
 // eslint-disable-next-line no-unused-vars
 function handleNavigateToAsset(asset) {
-  // onClose();
+
 }
 
 export async function renderAssetSelectorWithImsFlow(cfg) {
   const assetSelectorProps = {
     repositoryId: cfg['repository-id'],
     imsOrg: cfg['ims-org-id'],
-    onClose,
     handleSelection,
     handleNavigateToAsset,
     env: cfg.environment.toUpperCase(),
     apiKey: API_KEY,
+    rail: true
   };
   const container = document.getElementById('asset-selector');
   // eslint-disable-next-line no-undef
-  PureJSSelectors.renderAssetSelectorWithAuthFlow(container, assetSelectorProps, () => {
-    const assetSelectorDialog = document.getElementById('asset-selector-dialog');
-    assetSelectorDialog.showModal();
-  });
+  PureJSSelectors.renderAssetSelectorWithAuthFlow(container, assetSelectorProps);
 }
 
 export async function logoutImsFlow() {

@@ -9,6 +9,7 @@ export default function decorate(block) {
   block.textContent = '';
   block.innerHTML = `
     <div class="asset-overlay">
+      <img id="loading" src="${cfg.loading}" />
       <div id="login">
         <p>Welcome to the Asset Selector! After signing in you'll have the option to select which assets to use.</p>
         <button id="as-login">Sign In</button>
@@ -17,11 +18,9 @@ export default function decorate(block) {
     <div class="action-container">
         <button id="as-cancel">Sign Out</button>
     </div>
-    <dialog id="asset-selector-dialog">
-        <div id="asset-selector" style="height: calc(100vh - 80px); width: calc(100vw - 60px); margin: -20px;">
-        </div>
-    </dialog>
-    `;
+    <div id="asset-selector">
+    </div>
+  `;
   block.querySelector('#as-login').addEventListener('click', (e) => {
     e.preventDefault();
     renderAssetSelectorWithImsFlow(cfg);
@@ -31,6 +30,17 @@ export default function decorate(block) {
     e.preventDefault();
     logoutImsFlow();
   });
+
+  // give a little time for onAccessTokenReceived() to potentially come in
+  setTimeout(() => {
+    if (block.querySelector('.asset-overlay').style.display !== 'none') {
+      // at this point the overlay is still visible, meaning that we haven't
+      // gotten an event indicating the user is logged in. Display the
+      // sign in interface
+      block.querySelector('#loading').style.display = 'none';
+      block.querySelector('#login').style.display = 'flex';
+    }
+  }, 2000);
 
   // this will be sent by the auth service if the user has a token, meaning
   // they're logged in. if that happens, hide the login overlay and show

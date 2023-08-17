@@ -11,7 +11,7 @@ export default function decorate(block) {
     <div class="asset-overlay">
       <img id="loading" src="${cfg.loading}" />
       <div id="login">
-        <p>Welcome to the Asset Selector! After signing in you'll have the option to select which assets to use.</p>
+        <p>Welcome to the Asset Selector! <br/> After sign-in you'll have the option to select assets to use.</p>
         <button id="as-login">Sign In</button>
       </div>
     </div>

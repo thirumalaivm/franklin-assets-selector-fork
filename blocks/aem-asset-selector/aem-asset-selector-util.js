@@ -70,6 +70,7 @@ async function getAssetPublicUrl(url) {
 }
 
 async function handleSelection(selection) {
+  console.log("Asset selected")
   const selectedAsset = selection[0];
   let maxRendition = null;
   // eslint-disable-next-line no-underscore-dangle
@@ -91,6 +92,12 @@ async function handleSelection(selection) {
   await navigator.clipboard.write(data);
 }
 
+async function onDrop(e) {
+  console.log("Asset dropped")
+  const data = JSON.parse(e.dataTransfer.getData('collectionviewdata'));
+  console.log('data received: ', data);
+}
+
 // eslint-disable-next-line no-unused-vars
 function handleNavigateToAsset(asset) {
 
@@ -102,6 +109,7 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     imsOrg: cfg['ims-org-id'],
     handleSelection,
     handleNavigateToAsset,
+    onDrop,
     env: cfg.environment.toUpperCase(),
     apiKey: API_KEY,
     rail: true

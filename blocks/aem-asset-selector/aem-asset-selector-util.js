@@ -93,20 +93,54 @@ async function handleSelection(selection) {
 
 // eslint-disable-next-line no-unused-vars
 function handleNavigateToAsset(asset) {
+}
 
+function dragStart(e){
+  console.log("## dragStart");
+}
+
+function dragEnd(e){
+  console.log("## dragEnd");
+}
+
+function dragMove(e){
+  console.log("## dragMove");
+}
+
+function drop(e, element) {
+  console.log("## dragMove");
 }
 
 export async function renderAssetSelectorWithImsFlow(cfg) {
+  console.log("## renderAssetSelectorWithImsFlow");
+
   const assetSelectorProps = {
     repositoryId: cfg['repository-id'],
     imsOrg: cfg['ims-org-id'],
+    rail: true,
+    acvConfig: {
+      dragOptions: {
+        iframe: true,
+        allowList: {
+          '*': true,
+        },
+        iframe_dragStart: dragStart,
+        iframe_dragMove: dragMove,
+        iframe_dragEnd: dragEnd,
+      }
+    },
     handleSelection,
     handleNavigateToAsset,
+    renderDrag: true,
     env: cfg.environment.toUpperCase(),
     apiKey: API_KEY,
-    rail: true
   };
+
+  console.log("## assetSelectorProps:");
+  console.log(assetSelectorProps);
+  console.log("## -------------------");
   const container = document.getElementById('asset-selector');
+
   // eslint-disable-next-line no-undef
   PureJSSelectors.renderAssetSelectorWithAuthFlow(container, assetSelectorProps);
 }

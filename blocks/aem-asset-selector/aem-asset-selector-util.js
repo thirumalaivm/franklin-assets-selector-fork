@@ -4,7 +4,7 @@ const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
 const API_KEY = 'franklin';
 const WEB_TOOLS = 'https://master-sacred-dove.ngrok-free.app';
-//TODO: change this to Asset Link IMS client ID
+// TODO: change this to Asset Link IMS client ID
 const IMS_CLIENT_ID = 'p66302-franklin';
 
 let imsInstance = null;
@@ -30,7 +30,7 @@ function load(cfg) {
     modalMode: true,
     imsEnvironment,
     env: imsEnvironment,
-    onAccessTokenReceived: cfg.onAccessTokenReceived || (() => {}),
+    onAccessTokenReceived: cfg.onAccessTokenReceived || (() => { }),
   };
   // eslint-disable-next-line no-undef
   const registeredTokenService = PureJSSelectors.registerAssetsSelectorsAuthService(imsProps);
@@ -38,7 +38,7 @@ function load(cfg) {
 }
 
 export function init(cfg, callback) {
-  if(cfg.environment) {
+  if (cfg.environment) {
     if (cfg.environment.toUpperCase() === 'STAGE') {
       imsEnvironment = IMS_ENV_STAGE;
     } else if (cfg.environment.toUpperCase() === 'PROD') {
@@ -113,10 +113,10 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     apiKey: API_KEY,
   };
 
-  if(cfg['repository-id']) {
+  if (cfg['repository-id']) {
     assetSelectorProps.repositoryId = cfg['repository-id'];
   }
-  if(cfg['ims-org-id']) {
+  if (cfg['ims-org-id']) {
     assetSelectorProps.imsOrg = cfg['ims-org-id'];
   }
   const container = document.getElementById('asset-selector');

@@ -118,20 +118,28 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     repositoryId: cfg['repository-id'],
     imsOrg: cfg['ims-org-id'],
     rail: true,
-    acvConfig: {
-      dragOptions: {
-        iframe: true,
-        allowList: {
-          '*': true,
-        },
-        iframe_dragStart: dragStart,
-        iframe_dragMove: dragMove,
-        iframe_dragEnd: dragEnd,
-      }
+    // acvConfig: {
+    //   dragOptions: {
+    //     iframe: true,
+    //     allowList: {
+    //       '*': true,
+    //     },
+    //     iframe_dragStart: dragStart,
+    //     iframe_dragMove: dragMove,
+    //     iframe_dragEnd: dragEnd,
+    //   }
+    // },
+    dragOptions: {
+      iframe: true,
+      allowList: {
+        '*': true,
+      },
+      iframe_dragStart: dragStart,
+      iframe_dragMove: dragMove,
+      iframe_dragEnd: dragEnd,
     },
     handleSelection,
     handleNavigateToAsset,
-    renderDrag: true,
     env: cfg.environment.toUpperCase(),
     apiKey: API_KEY,
   };

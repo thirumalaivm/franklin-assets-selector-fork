@@ -17,7 +17,7 @@
       "environments": [
         "edit"
       ],
-      "url": "http://localhost:3000/aem-asset-selector-stage",
+      "url": "https://rail--aem-assets-boilerplate--hlxsites.hlx.page/aem-asset-selector-stage",
       "isPalette": true,
       "includePaths": [ "**.docx**" ],
       "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const AS_MFE = 'https://experience.adobe.com/solutions/CQ-assets-selectors/assets/resources/asset-selectors.js';
+const AS_MFE = 'https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/assets-selectors.js';
 const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
 const API_KEY = 'franklin';
@@ -115,8 +115,6 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
   console.log("## renderAssetSelectorWithImsFlow");
 
   const assetSelectorProps = {
-    repositoryId: cfg['repository-id'],
-    imsOrg: cfg['ims-org-id'],
     rail: true,
     // acvConfig: {
     //   dragOptions: {
@@ -144,9 +142,13 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     apiKey: API_KEY,
   };
 
-  console.log("## assetSelectorProps:");
-  console.log(assetSelectorProps);
-  console.log("## -------------------");
+  if(cfg['repository-id']) {
+    assetSelectorProps.repositoryId = cfg['repository-id'];
+  }
+  if(cfg['ims-org-id']) {
+    assetSelectorProps.imsOrg = cfg['ims-org-id'];
+  }
+
   const container = document.getElementById('asset-selector');
 
   // eslint-disable-next-line no-undef

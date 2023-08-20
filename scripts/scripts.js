@@ -42,6 +42,57 @@ async function loadFonts() {
   }
 }
 
+function replaceImageSrc(pictureElement, newSrc) {
+  const imgElement = pictureElement.querySelector('img');
+
+  if (imgElement) {
+    // Copy over the query parameters from the existing src
+    const existingSrc = imgElement.getAttribute('src');
+    const queryStringIndex = existingSrc.indexOf('?');
+    const existingQueryParams = queryStringIndex !== -1 ? existingSrc.slice(queryStringIndex) : '';
+    const finalSrc = newSrc + existingQueryParams;
+
+    // Update the src attribute of the img element
+    imgElement.setAttribute('src', finalSrc);
+  }
+
+  // Update the srcset attribute of source elements
+  const sourceElements = pictureElement.querySelectorAll('source');
+  sourceElements.forEach((sourceElement) => {
+    const existingSrcset = sourceElement.getAttribute('srcset');
+
+    // Replace the existing source URL with the new source URL while retaining query parameters
+    const newSrcset = existingSrcset.replace(/([^,]+\?[^,]+)(?:,|$)/g, (match, src) => newSrc + src.substring(src.indexOf('?')));
+
+    // Update the srcset attribute of the source element
+    sourceElement.setAttribute('srcset', newSrcset);
+  });
+}
+
+function decoratePictures(main) {
+  const pictureElements = main.querySelectorAll('picture');
+
+  // Iterate over each picture element
+  pictureElements.forEach((pictureElement) => {
+    const nextSibling = pictureElement.parentNode.nextElementSibling;
+
+    if (nextSibling) {
+      if (nextSibling.tagName === 'A' && nextSibling.textContent.trim() === '//External Image//') {
+        const newSrc = nextSibling.getAttribute('href');
+        replaceImageSrc(pictureElement, newSrc);
+        nextSibling.parentNode.removeChild(nextSibling);
+      } else if (nextSibling.tagName === 'P') {
+        const anchorElement = nextSibling.querySelector('a:first-child');
+        if (anchorElement && anchorElement.textContent.trim() === '//External Image//') {
+          const newSrc = anchorElement.getAttribute('href');
+          replaceImageSrc(pictureElement, newSrc);
+          anchorElement.parentNode.removeChild(anchorElement);
+        }
+      }
+    }
+  });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -62,6 +113,7 @@ function buildAutoBlocks(main) {
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
+  decoratePictures(main);
   decorateButtons(main);
   decorateIcons(main);
   buildAutoBlocks(main);

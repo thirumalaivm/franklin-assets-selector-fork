@@ -23,6 +23,8 @@ import {
   loadCSS,
 } from './lib-franklin.js';
 
+import decoratePictures from './assets.js';
+
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 /**
@@ -72,6 +74,7 @@ function buildAutoBlocks(main) {
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
+  decoratePictures(main);
   decorateButtons(main);
   decorateIcons(main);
   buildAutoBlocks(main);

@@ -44,13 +44,14 @@ async function loadFonts() {
 
 function replaceImageSrc(pictureElement, newSrc) {
   const imgElement = pictureElement.querySelector('img');
+  const adaptedNewSrc = newSrc.replace(/.jpg$/, ".webp");
 
   if (imgElement) {
     // Copy over the query parameters from the existing src
     const existingSrc = imgElement.getAttribute('src');
     const queryStringIndex = existingSrc.indexOf('?');
     const existingQueryParams = queryStringIndex !== -1 ? existingSrc.slice(queryStringIndex) : '';
-    const finalSrc = newSrc + existingQueryParams;
+    const finalSrc = adaptedNewSrc + existingQueryParams + "&quality=60";
 
     // Update the src attribute of the img element
     imgElement.setAttribute('src', finalSrc);
@@ -62,7 +63,7 @@ function replaceImageSrc(pictureElement, newSrc) {
     const existingSrcset = sourceElement.getAttribute('srcset');
 
     // Replace the existing source URL with the new source URL while retaining query parameters
-    const newSrcset = existingSrcset.replace(/([^,]+\?[^,]+)(?:,|$)/g, (match, src) => newSrc + src.substring(src.indexOf('?')));
+    const newSrcset = existingSrcset.replace(/([^,]+\?[^,]+)(?:,|$)/g, (match, src) => adaptedNewSrc + src.substring(src.indexOf('?')));
 
     // Update the srcset attribute of the source element
     sourceElement.setAttribute('srcset', newSrcset);

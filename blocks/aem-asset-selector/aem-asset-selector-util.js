@@ -57,7 +57,6 @@ const AS_MFE = 'https://experience.adobe.com/solutions/CQ-assets-selectors/stati
 const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
 const API_KEY = 'franklin';
-const WEB_TOOLS = 'https://master-sacred-dove.ngrok-free.app';
 const REL_DOWNLOAD = 'http://ns.adobe.com/adobecloud/rel/download';
 const REL_RENDITIONS = 'http://ns.adobe.com/adobecloud/rel/rendition';
 // TODO: change this to Asset Link IMS client ID
@@ -167,29 +166,6 @@ export function init(cfg, callback) {
 }
 
 /**
- * Generates a URL that can be used to retrieve an asset's binary
- * without authentication.
- * @param {string} url URL to the asset in AEM.
- * @returns {Promise} Resolves with the public asset URL.
- */
-async function getAssetPublicUrl(url) {
-  const response = await fetch(`${WEB_TOOLS}/asset-bin?src=${url}`, {
-    headers: {
-      Authorization: `Bearer ${imsInstance.getImsToken()}`,
-      'x-api-key': API_KEY,
-    },
-  });
-  if (!response) {
-    throw new Error('No response from request');
-  }
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}: ${response.statusText}`);
-  }
-  const json = await response.json();
-  return json['asset-url'];
-}
-
-/**
  * Retrieves the rendition that should be copied into the clipboard for
  * the given asset.
  * @param {Asset} asset Asset whose copy rendition should be retrieved.
@@ -214,24 +190,6 @@ function getCopyRendition(asset) {
       }
     });
   return maxRendition;
-}
-
-/**
- * Uses the navigator global object to write a clipboard item to the clipboard.
- * The clipboard item's content will be an <img /> tag with the given URL as
- * its src property.
- * @param {string} assetPublicUrl URL to use as the image's src.
- * @returns {Promise} Resolves when the item has been written to the clipboard.
- */
-async function copyToClipboardWithHtml(assetPublicUrl) {
-  const assetMarkup = `<img src="${assetPublicUrl}"  />`;
-
-  const data = [
-    // eslint-disable-next-line no-undef
-    new ClipboardItem({ 'text/html': new Blob([assetMarkup], { type: 'text/html' }) }),
-  ];
-  // Write the new clipboard contents
-  return navigator.clipboard.write(data);
 }
 
 async function loadImageIntoHtmlElement(url) {
@@ -302,36 +260,6 @@ async function copyToClipboardWithBinary(assetPublicUrl, mimeType, asset) {
   ];
 
   return navigator.clipboard.write(data);
-}
-
-/**
- * Copies the given asset to the clipboard, without using the Repository API,
- * and therefore avoiding calls directly to AEM. The primary case for using
- * this method would be if AEM's CORS policies would deny requests from the
- * asset selector.
- * @param {Asset} asset Asset repository metadata, as provided by the asset
- *  selector.
- * @returns {Promise<boolean>} Resolves with true if the asset was
- *  copied successfully, otherwise resolves with false.
- */
-export async function copyAssetWithoutRapi(asset) {
-  const maxRendition = getCopyRendition(asset);
-  if (!maxRendition) {
-    logMessage('No rendition to copy found');
-    return false;
-  }
-  try {
-    const assetPublicUrl = await getAssetPublicUrl(maxRendition.href.substring(0, maxRendition.href.indexOf('?')));
-    if (!assetPublicUrl) {
-      logMessage('Unable to generate public url for copy');
-      return false;
-    }
-    await copyToClipboardWithHtml(assetPublicUrl);
-  } catch (e) {
-    logMessage('Error copying asset to clipboard', e);
-    return false;
-  }
-  return true;
 }
 
 /**

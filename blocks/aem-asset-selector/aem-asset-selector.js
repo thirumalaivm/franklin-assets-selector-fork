@@ -15,7 +15,6 @@ import {
   init,
   renderAssetSelectorWithImsFlow,
   logoutImsFlow,
-  copyAssetWithoutRapi,
   copyAssetWithRapi,
 } from './aem-asset-selector-util.js';
 
@@ -54,8 +53,7 @@ export default async function decorate(block) {
     if (selected) {
       copy.classList.add('disabled');
       copy.innerText = 'Copying...';
-      const copyMethod = cfg['use-rapi'] ? copyAssetWithRapi : copyAssetWithoutRapi;
-      const success = await copyMethod(selected);
+      const success = await copyAssetWithRapi(selected);
       if (success) {
         copy.innerText = 'Copied!';
       } else {

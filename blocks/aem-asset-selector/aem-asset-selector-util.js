@@ -428,6 +428,64 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     hideTreeNav: true,
     runningInUnifiedShell: false,
     noWrap: true,
+    filterSchema: [
+      {
+        header: 'File Type',
+        groupKey: 'TopGroup',
+        fields: [
+          {
+            element: 'checkbox',
+            name: 'type',
+            defaultValue: ['image/*'],
+            readOnly: true,
+            options: [
+              {
+                label: 'Directories',
+                value: 'directory',
+              },
+              {
+                label: 'Images',
+                value: 'image/*',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        fields:
+              [
+                {
+                  element: 'checkbox',
+                  name: 'type',
+                  options: [
+                    {
+                      label: 'JPG',
+                      value: 'image/jpeg',
+                    },
+                    {
+                      label: 'PNG',
+                      value: 'image/png',
+                    },
+                    {
+                      label: 'TIFF',
+                      value: 'image/tiff',
+                    },
+                    {
+                      label: 'GIF',
+                      value: 'image/gif',
+                    },
+                    {
+                      label: 'WEBP',
+                      value: 'image/webp',
+                    },
+                  ],
+                  columns: 2,
+                },
+              ],
+        header: 'Mime Types',
+        groupKey: 'MimeTypeGroup',
+      },
+    ],
   };
 
   if (cfg['repository-id']) {
@@ -435,6 +493,9 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
   }
   if (cfg['ims-org-id']) {
     assetSelectorProps.imsOrg = cfg['ims-org-id'];
+  }
+  if (cfg['ims-token']) {
+    assetSelectorProps.imsToken = cfg['ims-token'];
   }
 
   // eslint-disable-next-line no-undef

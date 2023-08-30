@@ -10,6 +10,8 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
+/* eslint-disable no-console */
+
 /**
  * @typedef Links
  */
@@ -72,16 +74,6 @@ const SUPPORTED_RENDITIONS_FORMATS = [
 
 let imsInstance = null;
 let imsEnvironment = IMS_ENV_PROD;
-
-/**
- * Logs a message to the console.
- * @param  {...any} theArgs Arguments to pass to the console log
- *  statement.
- */
-function logMessage(...theArgs) {
-  // eslint-disable-next-line no-console
-  console.log.apply(null, theArgs);
-}
 
 /**
  * Retrieves the value of a rel from repository metadata.
@@ -274,17 +266,17 @@ async function copyToClipboardWithBinary(assetPublicUrl, mimeType, asset) {
 export async function copyAssetWithRapi(asset) {
   // eslint-disable-next-line no-underscore-dangle
   if (!asset) {
-    logMessage('Asset metadata does not contain sufficient information');
+    console.log('Asset metadata does not contain sufficient information');
     return false;
   }
   const rendition = getCopyRendition(asset);
   if (!rendition) {
-    logMessage('No rendition to copy found');
+    console.log('No rendition to copy found');
     return false;
   }
   const download = getRel(rendition, REL_DOWNLOAD);
   if (!download || !download.href) {
-    logMessage('Rendition does not contain sufficient information');
+    console.log('Rendition does not contain sufficient information');
     return false;
   }
   try {
@@ -295,17 +287,17 @@ export async function copyAssetWithRapi(asset) {
       },
     });
     if (!res.ok) {
-      logMessage(`Download request for rendition binary failed with status code ${res.status}: ${res.statusText}`);
+      console.log(`Download request for rendition binary failed with status code ${res.status}: ${res.statusText}`);
       return false;
     }
     const downloadJson = await res.json();
     if (!downloadJson) {
-      logMessage('Rendition download JSON not provided');
+      console.log('Rendition download JSON not provided');
       return false;
     }
     await copyToClipboardWithBinary(downloadJson.href, downloadJson.type, asset);
   } catch (e) {
-    logMessage('Error copying asset using R-API to clipboard', e);
+    console.log('Error copying asset using R-API to clipboard', e);
     return false;
   }
 
@@ -331,7 +323,7 @@ function handleAssetSelection(selection, cfg) {
   if (cfg) {
     if (selection.length && cfg.onAssetSelected) {
       if (selection.length > 1) {
-        logMessage('Multiple items received in selection, but only the first will be used');
+        console.log('Multiple items received in selection, but only the first will be used');
       }
       cfg.onAssetSelected(selection[0]);
     } else if (!selection.length && cfg.onAssetDeselected) {
@@ -356,6 +348,64 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     hideTreeNav: true,
     runningInUnifiedShell: false,
     noWrap: true,
+    filterSchema: [
+      {
+        header: 'File Type',
+        groupKey: 'TopGroup',
+        fields: [
+          {
+            element: 'checkbox',
+            name: 'type',
+            defaultValue: ['image/*'],
+            readOnly: true,
+            options: [
+              {
+                label: 'Directories',
+                value: 'directory',
+              },
+              {
+                label: 'Images',
+                value: 'image/*',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        fields:
+              [
+                {
+                  element: 'checkbox',
+                  name: 'type',
+                  options: [
+                    {
+                      label: 'JPG',
+                      value: 'image/jpeg',
+                    },
+                    {
+                      label: 'PNG',
+                      value: 'image/png',
+                    },
+                    {
+                      label: 'TIFF',
+                      value: 'image/tiff',
+                    },
+                    {
+                      label: 'GIF',
+                      value: 'image/gif',
+                    },
+                    {
+                      label: 'WEBP',
+                      value: 'image/webp',
+                    },
+                  ],
+                  columns: 2,
+                },
+              ],
+        header: 'Mime Types',
+        groupKey: 'MimeTypeGroup',
+      },
+    ],
   };
 
   if (cfg['repository-id']) {
@@ -363,6 +413,9 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
   }
   if (cfg['ims-org-id']) {
     assetSelectorProps.imsOrg = cfg['ims-org-id'];
+  }
+  if (cfg['ims-token']) {
+    assetSelectorProps.imsToken = cfg['ims-token'];
   }
 
   // eslint-disable-next-line no-undef

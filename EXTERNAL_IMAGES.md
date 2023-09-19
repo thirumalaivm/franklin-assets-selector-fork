@@ -10,6 +10,6 @@ The *image marker* text must be a pre-configured value. You can configure it [he
 
 ## How does this work?
 During the page rendering process, the frontend code changes the `src` attribute of the `img` tags on the page with the one specified via external image marker hyperlink. The author can specify query paramaters in the hyperlinked external url.
-For e.g. in the above example, the author has specified the image format as `webp` and `quality=60`. Like
+For e.g. in the above example, the author has specified the image format as `webp` and `quality=60`.
 
-Additonally, while changing the `img` tag's `src` attribute, the original query parameters as present in the markup are appended to the hyperlinked external url. Do note that it entirely depends on the image delivery source on how to interpret(or ignore) these additional parameters.
+Additonally, while changing the `img` tag's `src` attribute, the original query parameters as present in the markup are appended to the hyperlinked external url. Do note that it is upto the image delivery source on how it interprets(or may ignore) these additional parameters.

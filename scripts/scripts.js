@@ -66,6 +66,50 @@ function buildAutoBlocks(main) {
   }
 }
 
+/**
+ * Gets the extension of a URL.
+ * @param {string} url The URL
+ * @returns {string} The extension
+ * @private
+ * @example
+ * get_url_extension('https://example.com/foo.jpg');
+ * // returns 'jpg'
+ * get_url_extension('https://example.com/foo.jpg?bar=baz');
+ * // returns 'jpg'
+ * get_url_extension('https://example.com/foo');
+ * // returns ''
+ * get_url_extension('https://example.com/foo.jpg#qux');
+ * // returns 'jpg'
+ */
+function getUrlExtension(url) {
+  return url.split(/[#?]/)[0].split('.').pop().trim();
+}
+
+/**
+ * Checks if an element is an external image.
+ * @param {Element} element The element
+ * @param {string} externalImageMarker The marker for external images
+ * @returns {boolean} Whether the element is an external image
+ * @private
+ */
+function isExternalImage(element, externalImageMarker) {
+  // if the element is not an anchor, it's not an external image
+  if (element.tagName !== 'A') return false;
+
+  // if the element is an anchor with the external image marker as text content,
+  // it's an external image
+  if (element.textContent.trim() === externalImageMarker) {
+    return true;
+  }
+
+  // if the element is an anchor with the href as text content and the href has
+  // an image extension, it's an external image
+  if (element.textContent.trim() === element.getAttribute('href')) {
+    const ext = getUrlExtension(element.getAttribute('href'));
+    return ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase());
+  }
+}
+
 /*
   * Appends query params to a URL
   * @param {string} url The URL to append query params to
@@ -145,10 +189,10 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
   * @example
   * decorateExternalImages(main, '//External Image//');
   */
-function decorateExternalImages(ele, deliveryMarker = '//External Image//') {
+function decorateExternalImages(ele, deliveryMarker) {
   const extImages = ele.querySelectorAll('a');
   extImages.forEach((extImage) => {
-    if (extImage.textContent.trim() === deliveryMarker) {
+    if (isExternalImage(extImage, deliveryMarker)) {
       const extImageSrc = extImage.getAttribute('href');
       const extPicture = createOptimizedPicture(extImageSrc);
 
@@ -179,8 +223,13 @@ function decorateExternalImages(ele, deliveryMarker = '//External Image//') {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
-  // hopefully forward compatible button decoration
+  // decorate external images with explicit external image marker
+  decorateExternalImages(main, '//External Image//');
+
+  // decorate external images with implicit external image marker
   decorateExternalImages(main);
+
+  // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
   buildAutoBlocks(main);

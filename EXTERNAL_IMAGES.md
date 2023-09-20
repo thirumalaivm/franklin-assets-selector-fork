@@ -24,7 +24,7 @@ To summarize, most of the logic for this [is here](https://github.com/hlxsites/f
 
 ```
 export function decorateMain(main) {
-  // decorate external images with implicit external image marker
+  // decorate external images with implicit external image detection
   decorateExternalImages(main);
   ...
 }

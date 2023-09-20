@@ -85,6 +85,18 @@ function appendQueryParams(url, params) {
   return url.toString();
 }
 
+/**
+ * Creates an optimized picture element for an external image
+ * @param {string} src The image source URL
+ * @param {string} alt The image alt text
+ * @param {boolean} eager Whether to load the image eagerly
+ * @param {object[]} breakpoints The breakpoints to use
+ * @returns {Element} The picture element
+ * @example
+ * createOptimizedExternalPicture('https://example.com/image.jpg', 'Example Image', true, [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]);
+ * // returns a picture element with a webp source and a fallback source
+ *
+ */
 export function createOptimizedExternalPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
 

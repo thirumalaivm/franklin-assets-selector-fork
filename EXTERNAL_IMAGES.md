@@ -4,12 +4,18 @@
 This document explains a mechanism for getting images served from external URLs on AEM Franklin pages. You may find this useful if you want to have your images served from an external assets repository.
 
 ## Process
-During the page authoring process, the author has to specify the external URL from which the image is served. This is done by having the image placed on the Word/Google Document and immediately followed by a external image marker hyperlink containing the publicly accessible image URL.
+During the page authoring process, the author has to specify the external URL from which the image is served. This is done by placing external image markers containing the hyperlinked publicly accessible image URLs on the Word/Google Document. The image markers are then replaced with the actual images during the page rendering process.
 
-The *image marker* text must be a pre-configured value. You can configure it [here](https://github.com/hlxsites/franklin-assets-selector/blob/787672d9bab10063e0600196d2858bf6219a825b/scripts/assets.js#L34). By default, this implementation uses `//External Image//` as the marker. Here's [an example page and document](https://ext-images--franklin-assets-selector--hlxsites.hlx.page/external-images-example?view-doc-source=true)
+### Note for site developers
+The *image marker* text must be a pre-configured value. You can configure it [here](https://github.com/hlxsites/franklin-assets-selector/blob/b97d5617197780777ce14d1d5a0acf191a61b50a/scripts/scripts.js#L138). By default, this implementation uses `//External Image//` as the marker.
+
+Also note that for creating optimized `picture` tags for external images, you must use `createOptimizedExternalPicture` function instead of `createOptimizedPicture` function. You can find the implementation of `createOptimizedExternalPicture` [here](https://github.com/hlxsites/franklin-assets-selector/blob/b97d5617197780777ce14d1d5a0acf191a61b50a/scripts/scripts.js#L88-L128) and here's a [usage example](https://github.com/hlxsites/franklin-assets-selector/blob/b97d5617197780777ce14d1d5a0acf191a61b50a/blocks/cards/cards.js#L15).
+
+
+### Note for site authors
+Here's [an example page and document](https://ext-images--franklin-assets-selector--hlxsites.hlx.page/external-images-example?view-doc-source=true) that shows how to use external images in AEM Franklin pages.
 
 ## How does this work?
-During the page rendering process, the frontend code changes the `src` attribute of the `img` tags on the page with the one specified via external image marker hyperlink. The author can specify query paramaters in the hyperlinked external url.
-For e.g. in the above example, the author has specified the image format as `webp` and `quality=60`.
+During the page rendering process, the frontend code replaces the external image markers on the page with the `picture` tags with `src`/`srcset` attributes set as the external image's url as specified in the external image marker placed on the Word / Google Document during the page authoring process.
 
-Additonally, while changing the `img` tag's `src` attribute, the original query parameters as present in the markup are appended to the hyperlinked external url. Do note that it is upto the image delivery source on how it interprets(or may ignore) these additional parameters.
+Authors can optionally specify query paramaters in the hyperlinked external url and they would be retained in the `picture` tag's `src`/`srcset` attributes. These are useful for specifying image delivery parameters such as image width, height, format, etc. as understood by the external image delivery service.

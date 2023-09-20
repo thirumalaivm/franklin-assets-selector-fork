@@ -4,7 +4,7 @@
 This document explains a mechanism for getting images served from external URLs on AEM Franklin pages. You may find this useful if you want to have your images served from an external assets repository.
 
 ## Process
-During the page authoring process, the author has to specify the external URL from which the image is served. This is done by placing external image markers containing the hyperlinked publicly accessible image URLs on the Word/Google Document. The image markers are then replaced with the actual images during the page rendering process.
+During the page authoring process, the author has to specify the external URL from which the image is served. This is done by placing external image links containing the hyperlinked publicly accessible image URLs on the Word/Google Document. The image links are then replaced with the actual images during the page rendering process.
 
 ### Note for site authors
 Here's [an example page and document](https://ext-images--franklin-assets-selector--hlxsites.hlx.page/external-images-example?view-doc-source=true) that shows how to use external images in AEM Franklin pages.

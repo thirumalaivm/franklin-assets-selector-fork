@@ -13,7 +13,7 @@ governing permissions and limitations under the License.
 import {
   sampleRUM,
   buildBlock,
-  createOptimizedPicture,
+  createOptimizedPicture as libCreateOptimizedPicture,
   decorateButtons,
   decorateIcons,
   decorateSections,
@@ -86,22 +86,20 @@ function appendQueryParams(url, params) {
 }
 
 /**
- * Creates an optimized picture element for an external image
+ * Creates an optimized picture element for an image.
+ * If the image is not an absolute URL, it will be passed to libCreateOptimizedPicture.
  * @param {string} src The image source URL
  * @param {string} alt The image alt text
  * @param {boolean} eager Whether to load the image eagerly
  * @param {object[]} breakpoints The breakpoints to use
  * @returns {Element} The picture element
- * @example
- * createOptimizedExternalPicture('https://example.com/image.jpg', 'Example Image', true, [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]);
- * // returns a picture element with a webp source and a fallback source
  *
  */
-export function createOptimizedExternalPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
+export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
 
   // Fallback to createOptimizedPicture if src is not an absolute URL
-  if (!isAbsoluteUrl) return createOptimizedPicture(src, alt, eager, breakpoints);
+  if (!isAbsoluteUrl) return libCreateOptimizedPicture(src, alt, eager, breakpoints);
 
   const url = new URL(src);
   const picture = document.createElement('picture');

@@ -9,7 +9,7 @@ During the page authoring process, the author has to specify the external URL fr
 ### Note for site developers
 The *image marker* text must be a pre-configured value. You can configure it [here](https://github.com/hlxsites/franklin-assets-selector/blob/b97d5617197780777ce14d1d5a0acf191a61b50a/scripts/scripts.js#L138). By default, this implementation uses `//External Image//` as the marker.
 
-Also note that for creating optimized `picture` tags for external images, you must use `createOptimizedExternalPicture` function instead of `createOptimizedPicture` function. You can find the implementation of `createOptimizedExternalPicture` [here](https://github.com/hlxsites/franklin-assets-selector/blob/b97d5617197780777ce14d1d5a0acf191a61b50a/scripts/scripts.js#L88-L128) and here's a [usage example](https://github.com/hlxsites/franklin-assets-selector/blob/b97d5617197780777ce14d1d5a0acf191a61b50a/blocks/cards/cards.js#L15).
+Also note that for creating optimized `picture` tags for external images, you must override `createOptimizedPicture` function. You can find the overidden implementation of `createOptimizedPicture` [here](https://github.com/hlxsites/franklin-assets-selector/blob/b97d5617197780777ce14d1d5a0acf191a61b50a/scripts/scripts.js#L88-L128) and here's a [usage example](https://github.com/hlxsites/franklin-assets-selector/blob/b97d5617197780777ce14d1d5a0acf191a61b50a/blocks/cards/cards.js#L15).
 
 
 ### Note for site authors

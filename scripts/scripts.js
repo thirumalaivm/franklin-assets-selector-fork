@@ -108,6 +108,8 @@ function isExternalImage(element, externalImageMarker) {
     const ext = getUrlExtension(element.getAttribute('href'));
     return ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase());
   }
+
+  return false;
 }
 
 /*

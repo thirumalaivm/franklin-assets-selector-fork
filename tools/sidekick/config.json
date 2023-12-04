@@ -7,18 +7,29 @@
       "environments": [
         "edit"
       ],
-      "url": "/aem-asset-selector",
+      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html",
       "isPalette": true,
       "includePaths": [ "**.docx**" ],
       "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
     },
     {
-      "id": "asset-library-stage",
-      "title": "AEM Assets Library Stage",
+      "id": "asset-library-polaris",
+      "title": "AEM Assets Library (Polaris)",
       "environments": [
         "edit"
       ],
-      "url": "/aem-asset-selector-stage",
+      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html?repository-id=delivery-p66302-e574366.adobeaemcloud.com",
+      "isPalette": true,
+      "includePaths": [ "**.docx**" ],
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
+    },
+    {
+      "id": "asset-library-polaris-local",
+      "title": "AEM Assets Library Local (Polaris)",
+      "environments": [
+        "edit"
+      ],
+      "url": "https://localhost.corp.adobe.com/packages/%40assets/selectors/src/renderer/franklin/asset-selector.html?ims-client-id=p66302-franklin&repository-id=delivery-p66302-e574366.adobeaemcloud.com",
       "isPalette": true,
       "includePaths": [ "**.docx**" ],
       "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"

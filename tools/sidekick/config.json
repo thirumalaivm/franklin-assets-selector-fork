@@ -1,13 +1,15 @@
 {
   "project": "franklin-asset-selector",
+  "host": "main--franklin-assets-selector--hlxsites.hlx.live",
   "plugins": [
     {
       "id": "asset-library",
       "title": "AEM Assets Library",
       "environments": ["edit"],
-      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html",
+      "url": "https://localhost.corp.adobe.com/packages/%40assets/selectors/src/renderer/franklin/asset-selector.html?ims-client-id=p66302-franklin",
       "isPalette": true,
       "includePaths": ["**.docx**"],
+      "passConfig": true,
       "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
     }
   ]

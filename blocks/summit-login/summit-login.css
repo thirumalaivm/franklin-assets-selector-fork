@@ -1,0 +1,15 @@
+#nav {
+    margin-left: 5rem;
+    margin-top: 1.2rem;
+}
+
+.embed-container div:has(> picture), .embed-container div:has(>p>picture) {
+    border: 3px solid black;
+    margin: 1rem;
+    width: 47rem;
+}
+
+.embed > div {
+    width: 76rem;
+    margin-left: -13rem;
+}

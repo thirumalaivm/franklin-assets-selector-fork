@@ -4,10 +4,14 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
     var signoutButton = document.querySelector('li > a[title="Sign out"]');
     var loginButton = document.querySelector('li > a[title="Login"]');
     var cookieName = "polaris-delivery-token";
-    var cookieValue = "some-random-token";
     var comingSoonPlaceHolder = window.location.origin + "/resources/summit/coming-soon.jpeg";
     var errorLoadingPlaceHolder = window.location.origin + "/resources/summit/oops-loading.jpeg";
+
+    // JWT related variables
     var securedImages = [];
+    var secretKey = "cm-p129624-e1269699";
+    var JWTexpiry = "2024-05-26T20:28:33.213+05:30";
+    var roles = "admin";
 
     function logOutUser() {
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -99,13 +103,21 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         securedImages.forEach((img) => {
             if(isLoggedIn()) {
                 var srcUrl = img.parentElement.getAttribute("data-original-source");
-                fetch(srcUrl).then((resp) => {
-                    if(resp.status == 200) {
-                        img.setAttribute("src" , srcUrl);
-                        img.parentElement.querySelectorAll("source").forEach((el) => {
-                            el.setAttribute("srcset", srcUrl);
-                        });
+                fetch(srcUrl, {
+                    headers: {
+                        'x-asset-delivery-token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6ImFkbWluIiwiZXhwaXJ5IjoiMjAyNC0wNS0yNlQyMDoyODozMy4yMTMrMDU6MzAifQ.pPevSmHnWup_t7IQgYDRsPHBhAjTdLLz02g9nt9ul1A'
                     }
+                }).then(resp => resp.blob())
+                .then(blob => {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            const base64Data = reader.result;
+                            img.setAttribute("src" , base64Data);
+                            img.parentElement.querySelectorAll("source").forEach((el) => {
+                                el.setAttribute("srcset", base64Data);
+                            });
+                        };
+                        reader.readAsDataURL(blob);
                 });
                 if (img.width == 0 || img.src == comingSoonPlaceHolder) {
                     img.setAttribute("src" , errorLoadingPlaceHolder);
@@ -131,11 +143,13 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
                 img.parentElement.setAttribute("data-original-source", srcUrl);
             }
         });
+        var securedHost = new URL(document.querySelector("picture[data-original-source]:not([data-original-source=''])").getAttribute("data-original-source")).host;
+        secretKey = securedHost.replace("delivery", "cm").replace("-cmstg.adobeaemcloud.com", "").replace(".adobeaemcloud.com", "");
     }
 
     function generateJwtAndUpdateDOM() {
         // Define the secret key
-        const secret = new TextEncoder().encode('cm-p30902-e145436');
+        const secret = new TextEncoder().encode(secretKey);
     
         // Define the JWT header
         const header = {
@@ -145,8 +159,8 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
     
         // Define the JWT claims
         const jwtClaims = {
-            "roles": "admin",
-            "expiry": "2024-05-26T20:28:33.213+05:30",
+            "roles": roles,
+            "expiry": JWTexpiry
         };
  
         new jose.SignJWT(jwtClaims)
@@ -157,7 +171,6 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
                 toggleLoginButtons();
                 updateUserName();
                 updateImageLinks();
-
                 console.log('JWT generated successfully : ' + token);
             });
     }

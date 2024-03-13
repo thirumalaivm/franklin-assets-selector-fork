@@ -5,7 +5,7 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
     var loginButton = document.querySelector('li > a[title="Login"]');
     var cookieName = "polaris-delivery-token";
     var comingSoonPlaceHolder = window.location.origin + "/resources/summit/coming-soon.jpeg";
-    var errorLoadingPlaceHolder = window.location.origin + "/resources/summit/oops-loading.jpeg";
+    var errorLoadingPlaceHolder = window.location.origin + "/resources/summit/loading.jpeg";
 
     // JWT related variables
     var securedImages = [];
@@ -134,15 +134,22 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         });
     }
 
+    function matchesPolarisDeliveryUrl(srcUrl) {
+        // code to match regex for host matching "delivery-pxxxx-exxxx" and URI starts with either adobe/assets/deliver or adobe/dynamicmedia/deliver
+        const regex = /^(https?:\/\/delivery-p[0-9]+-e[0-9-cmstg]+\.adobeaemcloud\.com\/(adobe\/assets\/deliver|adobe\/dynamicmedia\/deliver)\/(.*))/gm;
+        return srcUrl.match(regex) != null;
+    }
+
     // ToDo : this part need to be udpated with decorator
     function identifySecuredImages() {
-        document.querySelectorAll(".embed img[loading='lazy']").forEach((img) => {
-            if(img.width == 0) {
+        document.querySelectorAll("img[loading='lazy']").forEach((img) => {
+            if(!img.getAttribute("width") && matchesPolarisDeliveryUrl(img.getAttribute("src"))) {
                 securedImages.push(img);
                 var srcUrl = img.getAttribute("src");
                 img.parentElement.setAttribute("data-original-source", srcUrl);
             }
         });
+        console.log("Total secured images found : " + securedImages.length);
         var securedHost = new URL(document.querySelector("picture[data-original-source]:not([data-original-source=''])").getAttribute("data-original-source")).host;
         secretKey = securedHost.replace("delivery", "cm").replace("-cmstg.adobeaemcloud.com", "").replace(".adobeaemcloud.com", "");
     }

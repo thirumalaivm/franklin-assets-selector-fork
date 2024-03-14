@@ -85,6 +85,9 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         document.querySelector(".user-input").addEventListener("click", (event) => {
             document.querySelector('.user-input').closest(".nav-drop").click();
         });
+        document.querySelector(".popular-collections img").addEventListener("click", (event) => {
+            window.location.href = "/product/sofa-set";
+        });
     }
 
     function updateUserName() {
@@ -100,12 +103,17 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
 
     // ToDo : this part need to be udpated with decorator
     function updateImageLinks() {
+        try {
+         var deliveryToken = document.cookie.split(';').filter((item) => item.indexOf(cookieName) != -1)[0].split('=')[1];
+        } catch (e) {
+            // do nothind as user is logged out hence no cookie is found
+        }
         securedImages.forEach((img) => {
             if(isLoggedIn()) {
                 var srcUrl = img.parentElement.getAttribute("data-original-source");
                 fetch(srcUrl, {
                     headers: {
-                        'x-asset-delivery-token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6ImFkbWluIiwiZXhwaXJ5IjoiMjAyNC0wNS0yNlQyMDoyODozMy4yMTMrMDU6MzAifQ.pPevSmHnWup_t7IQgYDRsPHBhAjTdLLz02g9nt9ul1A'
+                        'x-asset-delivery-token' : deliveryToken
                     }
                 }).then(resp => resp.blob())
                 .then(blob => {
@@ -142,7 +150,7 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
 
     // ToDo : this part need to be udpated with decorator
     function identifySecuredImages() {
-        document.querySelectorAll("img[loading='lazy']").forEach((img) => {
+        document.querySelectorAll("picture img").forEach((img) => {
             if(!img.getAttribute("width") && matchesPolarisDeliveryUrl(img.getAttribute("src"))) {
                 securedImages.push(img);
                 var srcUrl = img.getAttribute("src");
@@ -223,6 +231,14 @@ function generateJwtAndUpdateDOM() {
         });
     }
 
+    function changeCursorOnHover() {
+        document.querySelectorAll("img").forEach((el) => {
+            el.addEventListener("mouseover", (event) => {
+                el.style.cursor = "pointer";
+            });
+        });
+    }
+
     function init() {
         styleUpTheLimitedEdition();
         appendLoginForm();
@@ -230,6 +246,7 @@ function generateJwtAndUpdateDOM() {
         addEventListeners();
         updateUserName();
         identifySecuredImages();
+        changeCursorOnHover();
         
         // Call the function to generate the JWT
         if(isLoggedIn()) generateJwtAndUpdateDOM();

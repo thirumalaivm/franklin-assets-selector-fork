@@ -1,4 +1,5 @@
-import * as jose from "https://cdnjs.cloudflare.com/ajax/libs/jose/5.2.3/index.js";
+// import * as jose from "https://cdnjs.cloudflare.com/ajax/libs/jose/5.2.3/index.js";
+import {SignJWT} from 'https://cdnjs.cloudflare.com/ajax/libs/jose/5.2.3/jwt/sign.js';
 
 waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
     var signoutButton = document.querySelector('li > a[title="Sign out"]');
@@ -46,9 +47,9 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         var limitedEdition = Array.from(document.querySelectorAll("li")).filter((el) => el.innerHTML.indexOf("Limited") != -1)[0];
         limitedEdition.style.color= "red";
         limitedEdition.style.fontWeight = "bold";
-        limitedEdition.addEventListener("click", (event) => {
-            window.location.href = "/furniture-street#limited-editions";
-        });
+        // limitedEdition.addEventListener("click", (event) => {
+        //     window.location.href = "/furniture-street#limited-editions";
+        // });
     }
 
     function appendLoginForm() {
@@ -183,7 +184,8 @@ function generateJwtAndUpdateDOM() {
             "expiry": JWTexpiry
         };
  
-        new jose.SignJWT(jwtClaims)
+        // new jose.SignJWT(jwtClaims)
+        new SignJWT(jwtClaims)
             .setProtectedHeader(header)
             .sign(secret)
             .then((token) => {

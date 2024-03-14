@@ -154,7 +154,7 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         secretKey = securedHost.replace("delivery", "cm").replace("-cmstg.adobeaemcloud.com", "").replace(".adobeaemcloud.com", "");
     }
 
-    function generateJwtAndUpdateDOM() {
+function generateJwtAndUpdateDOM() {
         // Define the secret key
         const secret = new TextEncoder().encode(secretKey);
     
@@ -182,6 +182,47 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
             });
     }
 
+    function updatePDPdetails() {
+        var picture = document.querySelector(".summit-pdp picture");
+        picture.setAttribute("data-original-source", "https://s7g10.scene7.com/is/image/genaibeta/popular-collection-1");
+        picture.querySelectorAll("source").forEach((el) => {
+            el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta/popular-collection-1");
+        });
+
+
+        var kidsTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Kids") != -1)[0];
+        kidsTheme.addEventListener('click', (event) => {
+            var picture = document.querySelector(".summit-pdp picture");
+            picture.querySelectorAll("source").forEach((el) => {
+                el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/popular-collection-1?genReplace=bg,set%20the%20backgound%20theme%20to%20kids%20room&op_gen=get)");
+            });
+        });
+
+        var athleteTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Athlete") != -1)[0];
+        athleteTheme.addEventListener('click', (event) => {
+            var picture = document.querySelector(".summit-pdp picture");
+            picture.querySelectorAll("source").forEach((el) => {
+                el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/popular-collection-1?genReplace=bg,set%20the%20backgound%20theme%20to%20athlete%20room&op_gen=get)");
+            });
+        });
+
+        var gardenTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Garden") != -1)[0];
+        gardenTheme.addEventListener('click', (event) => {
+            var picture = document.querySelector(".summit-pdp picture");
+            picture.querySelectorAll("source").forEach((el) => {
+                el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/popular-collection-1?genReplace=bg,set%20the%20backgound%20theme%20to%20garden&op_gen=get)");
+            });
+        });
+
+        var mountainTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Mountain") != -1)[0];
+        mountainTheme.addEventListener('click', (event) => {
+            var picture = document.querySelector(".summit-pdp picture");
+            picture.querySelectorAll("source").forEach((el) => {
+                el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/popular-collection-1?genReplace=bg,set%20the%20backgound%20theme%20to%20mountain&op_gen=get)");
+            });
+        });
+    }
+
     function init() {
         styleUpTheLimitedEdition();
         appendLoginForm();
@@ -192,10 +233,12 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         
         // Call the function to generate the JWT
         if(isLoggedIn()) generateJwtAndUpdateDOM();
-        updateImageLinks();
+        else updateImageLinks();
+        
     }
 
-    init();
+    if(window.location.pathname.indexOf("furniture-street") != -1) init();
+    if(window.location.pathname.indexOf("sofa-set") != -1) updatePDPdetails();
 
 });
 

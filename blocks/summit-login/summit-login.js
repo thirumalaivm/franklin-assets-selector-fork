@@ -142,10 +142,13 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
 
     // ToDo : this part need to be udpated with decorator
     function identifySecuredImages() {
-        document.querySelectorAll("img[loading='lazy']").forEach((img) => {
-            if(!img.getAttribute("width") && matchesPolarisDeliveryUrl(img.getAttribute("src"))) {
+        document.querySelectorAll("img[loading='eager']").forEach((img) => {
+            //if(!img.getAttribute("width") && matchesPolarisDeliveryUrl(img.getAttribute("src"))) {
+            if(img.getAttribute('src').includes(comingSoonPlaceHolder))
+            {
                 securedImages.push(img);
                 var srcUrl = img.getAttribute("src");
+                if(img.parentElement.getAttribute('data-original-source') == null)
                 img.parentElement.setAttribute("data-original-source", srcUrl);
             }
         });

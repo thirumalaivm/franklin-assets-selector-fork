@@ -85,9 +85,11 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         document.querySelector(".user-input").addEventListener("click", (event) => {
             document.querySelector('.user-input').closest(".nav-drop").click();
         });
-        document.querySelector(".popular-collections img").addEventListener("click", (event) => {
-            window.location.href = "/product/sofa-set";
-        });
+        if (window.location.pathname.indexOf("furniture-street") != -1) {
+            document.querySelector(".popular-collections img").addEventListener("click", (event) => {
+                window.location.href = "/product/sofa-set";
+            });
+        }
     }
 
     function updateUserName() {
@@ -151,10 +153,13 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
     // ToDo : this part need to be udpated with decorator
     function identifySecuredImages() {
         document.querySelectorAll("picture img").forEach((img) => {
-            if(!img.getAttribute("width") && matchesPolarisDeliveryUrl(img.getAttribute("src"))) {
+            //if(!img.getAttribute("width") && matchesPolarisDeliveryUrl(img.getAttribute("src"))) {
+            if(img.getAttribute('src').includes(comingSoonPlaceHolder) || matchesPolarisDeliveryUrl(img.getAttribute("src"))) {    
                 securedImages.push(img);
                 var srcUrl = img.getAttribute("src");
-                img.parentElement.setAttribute("data-original-source", srcUrl);
+                if(img.parentElement.getAttribute('data-original-source') == null) {
+                    img.parentElement.setAttribute("data-original-source", srcUrl);
+                }
             }
         });
         console.log("Total secured images found : " + securedImages.length);
@@ -191,42 +196,43 @@ function generateJwtAndUpdateDOM() {
     }
 
     function updatePDPdetails() {
-        var picture = document.querySelector(".summit-pdp picture");
-        picture.setAttribute("data-original-source", "https://s7g10.scene7.com/is/image/genaibeta/popular-collection-1");
-        picture.querySelectorAll("source").forEach((el) => {
-            el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta/popular-collection-1");
-        });
-
-
-        var kidsTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Kids") != -1)[0];
-        kidsTheme.addEventListener('click', (event) => {
+        var RedTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Red") != -1)[0];
+        RedTheme.addEventListener('click', (event) => {
             var picture = document.querySelector(".summit-pdp picture");
+            var imgUrl = "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/LeatherSofa?genReplace=bg,red%20wall%20with%20sunlight%20and%20shadows&op_gen=get)";
+            picture.querySelector("img").setAttribute("src", imgUrl);
             picture.querySelectorAll("source").forEach((el) => {
-                el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/popular-collection-1?genReplace=bg,set%20the%20backgound%20theme%20to%20kids%20room&op_gen=get)");
+                el.setAttribute("srcset", imgUrl);
             });
         });
 
-        var athleteTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Athlete") != -1)[0];
-        athleteTheme.addEventListener('click', (event) => {
+        var yellowTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Yellow") != -1)[0];
+        yellowTheme.addEventListener('click', (event) => {
             var picture = document.querySelector(".summit-pdp picture");
+            var imgUrl = "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/LeatherSofa?genReplace=bg,yellow%20wall%20with%20shadows%20and%20sunlight&op_gen=get)";
+            picture.querySelector("img").setAttribute("src", imgUrl);
             picture.querySelectorAll("source").forEach((el) => {
-                el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/popular-collection-1?genReplace=bg,set%20the%20backgound%20theme%20to%20athlete%20room&op_gen=get)");
+                el.setAttribute("srcset", imgUrl);
             });
         });
 
-        var gardenTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Garden") != -1)[0];
-        gardenTheme.addEventListener('click', (event) => {
+        var greyTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Grey") != -1)[0];
+        greyTheme.addEventListener('click', (event) => {
             var picture = document.querySelector(".summit-pdp picture");
+            var imgUrl = "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/LeatherSofa?genReplace=bg,grey%20wall%20with%20shadows%20and%20sunlight&op_gen=get)";
+            picture.querySelector("img").setAttribute("src", imgUrl);
             picture.querySelectorAll("source").forEach((el) => {
-                el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/popular-collection-1?genReplace=bg,set%20the%20backgound%20theme%20to%20garden&op_gen=get)");
+                el.setAttribute("srcset", imgUrl);
             });
         });
 
-        var mountainTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Mountain") != -1)[0];
-        mountainTheme.addEventListener('click', (event) => {
+        var blueTheme = Array.from(document.querySelectorAll(".summit-pdp-bg-theme div div")).filter((el) => el.innerHTML.indexOf("Blue") != -1)[0];
+        blueTheme.addEventListener('click', (event) => {
             var picture = document.querySelector(".summit-pdp picture");
+            var imgUrl = "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/LeatherSofa?genReplace=bg,blue%20wall%20with%20sunlight%20and%20shadows&op_gen=get)";
+            picture.querySelector("img").setAttribute("src", imgUrl);
             picture.querySelectorAll("source").forEach((el) => {
-                el.setAttribute("srcset", "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=ai(genaibeta/popular-collection-1?genReplace=bg,set%20the%20backgound%20theme%20to%20mountain&op_gen=get)");
+                el.setAttribute("srcset", imgUrl);
             });
         });
     }
@@ -250,12 +256,15 @@ function generateJwtAndUpdateDOM() {
         
         // Call the function to generate the JWT
         if(isLoggedIn()) generateJwtAndUpdateDOM();
-        else updateImageLinks();
+        updateImageLinks();
+        
+        if(window.location.pathname.indexOf("sofa-set") != -1) updatePDPdetails();
         
     }
 
-    if(window.location.pathname.indexOf("furniture-street") != -1) init();
-    if(window.location.pathname.indexOf("sofa-set") != -1) updatePDPdetails();
+    init();
+    // if(window.location.pathname.indexOf("furniture-street") != -1) init();
+    // if(window.location.pathname.indexOf("sofa-set") != -1) updatePDPdetails();
 
 });
 

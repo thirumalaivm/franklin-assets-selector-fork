@@ -136,6 +136,11 @@ header nav[aria-expanded="true"] .nav-hamburger-icon::after {
     display: none;
     visibility: hidden;
   }
+
+  header nav .nav-sections ul > li > ul {
+    margin-top: 0;
+    display:block;
+  }
 }
 
 /* brand */
@@ -180,6 +185,7 @@ header nav .nav-sections ul > li {
 
 header nav .nav-sections ul > li > ul {
   margin-top: 0;
+  display:none;
 }
 
 header nav .nav-sections ul > li > ul > li {

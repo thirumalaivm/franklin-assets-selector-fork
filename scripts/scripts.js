@@ -98,7 +98,7 @@ function isExternalImage(element, externalImageMarker) {
   // an image extension, it's an external image
   if (element.textContent.trim() === element.getAttribute('href')) {
     const ext = getUrlExtension(element.getAttribute('href'));
-    return ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase());
+    return (ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase()) || element.getAttribute('href').includes('/is/image/'));
   }
 
   return false;

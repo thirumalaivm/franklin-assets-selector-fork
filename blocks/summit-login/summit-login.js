@@ -25,7 +25,7 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
 
     function logInUser() {
         var username = document.querySelector("input[name='uname']").value;
-        var password = document.querySelector("input[name='uname']").value;
+        var password = document.querySelector("input[name='psw']").value;
         if (username && password) {
             document.querySelector(".login-error").setAttribute("hidden", "");
             generateJwtAndUpdateDOM();

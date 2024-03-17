@@ -17,6 +17,7 @@ import {
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 let comingSoonPlaceHolder = window.location.origin + "/resources/summit/coming-soon.jpeg";
+let summitHost = "delivery-p129624-e1269699";
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -96,7 +97,7 @@ function isExternalImage(element, externalImageMarker) {
 
   // if the element is an anchor with the href as text content and the href has
   // an image extension, it's an external image
-  if (element.textContent.trim() === element.getAttribute('href')) {
+  if ((element.textContent.trim() === element.getAttribute('href')) || element.getAttribute('href').includes(summitHost)) {
     const ext = getUrlExtension(element.getAttribute('href'));
     return (ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase()) || element.getAttribute('href').includes('/is/image/'));
   }

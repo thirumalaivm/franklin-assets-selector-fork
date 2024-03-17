@@ -24,7 +24,15 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
     }
 
     function logInUser() {
-        generateJwtAndUpdateDOM();
+        var username = document.querySelector("input[name='uname']").value;
+        var password = document.querySelector("input[name='uname']").value;
+        if (username && password) {
+            document.querySelector(".login-error").setAttribute("hidden", "");
+            generateJwtAndUpdateDOM();
+        } else {
+            document.querySelector('.user-input').closest(".nav-drop").click();
+            document.querySelector(".login-error").removeAttribute("hidden");
+        }
     }
 
     function isLoggedIn() {
@@ -64,11 +72,15 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
                                     '</div>' +    
                                     '<button class="login-button" type="submit">Login</button>' +
                                     '<br>' +
+                                    '<div class="login-error" hidden>' +
+                                        '<span style="color: red;">Please enter username and password<span/>' +
+                                        '<br>' +
+                                    '</div>' +
                                     '<label>' +
                                         '<input type="checkbox" checked="checked" name="remember"> Remember me' +
                                     '</label>' +
                                 '</div>' +
-                            '</form>' + 
+                            '</form>' +
                         '</div>';                     
         loginButton.parentElement.innerHTML = loginMarkup;
         loginButton = document.querySelector('.login-button');

@@ -30,4 +30,29 @@
     flex: 1;
     order: unset;
   }
+
+  .columns.summit-pdp-bg-theme > div > div > h5{
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #4CAF50; /* Green border */
+    color: #ffffff;
+    background-color: #4CAF50; /* Green background */
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  }
+
+  .columns.summit-pdp-bg-theme > div > div > h5:hover{
+    background-color: #45a049; /* Darker green background */
+    border-color: #45a049;
+  }
+
+  .columns.summit-pdp-bg-theme > div > div > h5:hover {
+    background-color: #3e8e41; /* Even darker green background */
+    border-color: #3e8e41;
+  }
 }

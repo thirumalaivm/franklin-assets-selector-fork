@@ -4,27 +4,27 @@ export default function decorate(block) {
         '<main class="container">\n' +
             '<div class="slider-container" id="new-products">\n'+
                 '<div class="main-product-container">\n'+
-                    '<img id="display-image" src="https://s7g10.scene7.com/is/image/genaibeta/LeatherSofa?wid=1200" alt="Main" class="main-product"/>\n'+
+                    '<img id="display-image" src="https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=is(genaibeta/LeatherSofa?wid=3000)&layer=1&src=is(genaibeta/LeatherSofa?wid=3000)&mask=is(genaibeta/Mask3?wid=3000)&cache=off" alt="Main" class="main-product"/>\n'+
                 '</div>\n'+
                 '<div class="slides-wrapper">\n'+
                     '<div class="slides-container">\n'+
                         '<ul class="slider-list">\n'+
-                            '<li class="slider-item">\n'+
+                            '<li id="image1" class="slider-item">\n'+
                                 '<a href="#">\n'+
                                 '<img src="https://s7g10.scene7.com/is/image/genaibeta/LeatherSofa?wid=200&hei=170" alt="New Product 1" />\n'+
                                 '</a>\n'+
                             '</li>\n'+
-                            '<li class="slider-item">\n'+
+                            '<li id="image2" class="slider-item">\n'+
                                 '<a href="#">\n'+
                                 '<img src="https://s7ap1.scene7.com/is/image/varun/SofaRight?wid=200&hei=170" alt="New Product 2" />\n'+
                                 '</a>\n'+
                             '</li>\n'+
-                            '<li class="slider-item">\n'+
+                            '<li id="image3" class="slider-item">\n'+
                                 '<a href="#">\n'+
                                 '<img src="https://s7ap1.scene7.com/is/image/varun/SofaLeft?wid=200&hei=170" alt="New Product 3" />\n'+
                                 '</a>\n'+
                             '</li>\n'+
-                            '<li class="slider-item">\n'+
+                            '<li id="image4" class="slider-item">\n'+
                                 '<a href="#">\n'+
                                 '<img src="https://s7ap1.scene7.com/is/image/varun/SofaBack?wid=200&hei=170" alt="New Product 4" />\n'+
                                 '</a>\n'+
@@ -114,29 +114,88 @@ waitForElement("#pdp-carousel").then(() => {
 
     document.getElementById("video-card").addEventListener("click", function() {
         const picture = document.getElementById("display-image");
-        const container = picture.parentElement;
+        if(picture){
+          const container = picture.parentElement;
+  
+          const videoChild = document.createElement('div');
+          videoChild.id="s7smartcropvideo_div";
+          videoChild.class="smart-crop-video main-product";
+  
+          container.removeChild(picture);
+          container.appendChild(videoChild);
+          loadScript('https://s7g10.scene7.com/s7viewers/html5/js/SmartCropVideoViewer.js', function() {
+              var s7smartcropvideoviewer = new s7viewers.SmartCropVideoViewer({
+                  "containerId" : "s7smartcropvideo_div",
+                  "params" : { 
+                    "serverurl" : "https://s7g10.scene7.com/is/image/",
+                    "contenturl" : "https://s7g10.scene7.com/is/content/", 
+                    "config" : "genaibeta/SmartCropVideo",
+                    "videoserverurl": "https://s7g10.scene7.com/is/content",
+                    "asset" : "genaibeta/Original%20Video-AVS",
+                  }
+              })
+              s7smartcropvideoviewer.init(); 
+          });
+        }
+    })
 
-        const videoChild = document.createElement('div');
-        videoChild.id="s7smartcropvideo_div";
-        videoChild.class="smart-crop-video main-product";
-
-        container.removeChild(picture);
-        container.appendChild(videoChild);
+    document.getElementById("image1").addEventListener("click", function() {
+      const picture = document.getElementById("display-image");
+      if(picture){
+        picture.src="https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=is(genaibeta/LeatherSofa?wid=3000)&layer=1&src=is(genaibeta/LeatherSofa?wid=3000)&mask=is(genaibeta/Mask3?wid=3000)&cache=off";
+      } else {
+        const videoChild = document.getElementById('s7smartcropvideo_div');
+        const parent = videoChild.parentElement;
+        const imageChild = document.createElement('img');
+        imageChild.src = "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=is(genaibeta/LeatherSofa?wid=3000)&layer=1&src=is(genaibeta/LeatherSofa?wid=3000)&mask=is(genaibeta/Mask3?wid=3000)&cache=off";
+        imageChild.id = "display-image";
+        parent.removeChild(videoChild);
+        parent.appendChild(imageChild);
+      }
+    })
+    document.getElementById("image2").addEventListener("click", function() {
+      const picture = document.getElementById("display-image");
+      if(picture){
+        picture.src="https://s7ap1.scene7.com/is/image/varun/SofaRight?wid=1200";
+      } else {
+        const videoChild = document.getElementById('s7smartcropvideo_div');
+        const parent = videoChild.parentElement;
+        const imageChild = document.createElement('img');
+        imageChild.src = "https://s7ap1.scene7.com/is/image/varun/SofaRight?wid=1200";
+        imageChild.id = "display-image";
+        parent.removeChild(videoChild);
+        parent.appendChild(imageChild);
+      }
+    })
+    document.getElementById("image3").addEventListener("click", function() {
+      const picture = document.getElementById("display-image");
+      if(picture){
+        picture.src="https://s7ap1.scene7.com/is/image/varun/SofaLeft?wid=1200";
+      } else {
+        const videoChild = document.getElementById('s7smartcropvideo_div');
+        const parent = videoChild.parentElement;
+        const imageChild = document.createElement('img');
+        imageChild.src = "https://s7ap1.scene7.com/is/image/varun/SofaLeft?wid=1200";
+        imageChild.id = "display-image";
+        parent.removeChild(videoChild);
+        parent.appendChild(imageChild);
+      }
+    })
+    document.getElementById("image4").addEventListener("click", function() {
+      const picture = document.getElementById("display-image");
+      if(picture){
+        picture.src="https://s7ap1.scene7.com/is/image/varun/SofaBack?wid=1200";
+      } else {
+        const videoChild = document.getElementById('s7smartcropvideo_div');
+        const parent = videoChild.parentElement;
+        const imageChild = document.createElement('img');
+        imageChild.src = "https://s7ap1.scene7.com/is/image/varun/SofaBack?wid=1200";
+        imageChild.id = "display-image";
+        parent.removeChild(videoChild);
+        parent.appendChild(imageChild);
+      }
     })
     
-    loadScript('https://s7g10.scene7.com/s7viewers/html5/js/SmartCropVideoViewer.js', function() {
-        var s7smartcropvideoviewer = new s7viewers.SmartCropVideoViewer({
-            "containerId" : "s7smartcropvideo_div",
-            "params" : { 
-              "serverurl" : "https://s7g10.scene7.com/is/image/",
-              "contenturl" : "https://s7g10.scene7.com/is/content/", 
-              "config" : "genaibeta/SmartCropVideo",
-              "videoserverurl": "https://s7g10.scene7.com/is/content",
-              "asset" : "genaibeta/Original%20Video-AVS",
-            }
-        })
-        s7smartcropvideoviewer.init(); 
-    });
 
     class Slider {
         constructor(id, mediaQueries) {

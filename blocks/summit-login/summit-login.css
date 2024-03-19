@@ -44,6 +44,41 @@ p:contains("ULTIMATE CASH BACK") {
 
 @media (width >= 900px) {
     #nav {
-        margin-left: 5rem;
+        margin-left: 14.5rem;
+    }
+}
+
+@media (width < 1230px) {
+    .carousel-slide-content {
+        --slide-content-width: 60%;
+    }
+    .summit-carousel picture {
+        align-content: space-around;
+    }
+    .carousel-slide-content {
+        display: none;
+    }
+    .carousel-navigation-buttons {
+        display: none !important;
+    }
+
+    @media (width < 450px) {
+        .summit-carousel {
+            margin-top: -20rem !important;
+        }
+    }
+
+    @media (width < 330px) {
+        .summit-carousel {
+            margin-top: -140% !important;
+        }
+    }
+}
+
+.summit-carousel {
+    margin-top: -4rem;
+
+    picture {
+        display: grid;
     }
 }

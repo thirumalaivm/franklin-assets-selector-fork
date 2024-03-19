@@ -259,6 +259,11 @@ function generateJwtAndUpdateDOM() {
         });
     }
 
+    function adjustDiscountTemplateCSS() {
+        var discountImg = Array.from(document.querySelectorAll("img")).filter((img) => img.getAttribute("src").includes("/is/image/varun/Sofa1") == true)[0];
+        discountImg.closest("picture").style.display = "grid";
+    }
+
     function init() {
         styleUpTheLimitedEdition();
         appendLoginForm();
@@ -267,6 +272,7 @@ function generateJwtAndUpdateDOM() {
         updateUserName();
         identifySecuredImages();
         changeCursorOnHover();
+        adjustDiscountTemplateCSS();
         
         // Call the function to generate the JWT
         if(isLoggedIn()) generateJwtAndUpdateDOM();

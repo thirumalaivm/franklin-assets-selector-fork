@@ -13,6 +13,7 @@
 
 .columns > div > .columns-img-col {
   order: 0;
+  padding-bottom: 2rem;
 }
 
 .columns > div > .columns-img-col img {
@@ -31,3 +32,12 @@
     order: unset;
   }
 }
+
+/* code to adjust video size on the summit page */
+/* .embed > div {
+   width: 75rem !important;
+  margin-left: -12.4rem;
+  resize: both; 
+  overflow: auto; 
+} */
+

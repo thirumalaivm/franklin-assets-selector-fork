@@ -16,6 +16,9 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
+let comingSoonPlaceHolder = window.location.origin + "/resources/summit/coming-soon.jpeg";
+let summitHost = "delivery-p129624-e1269699";
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -94,9 +97,9 @@ function isExternalImage(element, externalImageMarker) {
 
   // if the element is an anchor with the href as text content and the href has
   // an image extension, it's an external image
-  if (element.textContent.trim() === element.getAttribute('href')) {
+  if (((element.textContent.trim() === element.getAttribute('href')) || element.getAttribute('href').includes(summitHost)) && !element.getAttribute('href').includes("s7viewers")) {
     const ext = getUrlExtension(element.getAttribute('href'));
-    return ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase());
+    return (ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase()) || element.getAttribute('href').includes('/is/image/'));
   }
 
   return false;
@@ -121,6 +124,12 @@ function appendQueryParams(url, params) {
   return url.toString();
 }
 
+function matchesPolarisDeliveryUrl(srcUrl) {
+  // code to match regex for host matching "delivery-pxxxx-exxxx" and URI starts with either adobe/assets/deliver or adobe/dynamicmedia/deliver
+  const regex = /^(https?:\/\/delivery-p[0-9]+-e[0-9-cmstg]+\.adobeaemcloud\.com\/(adobe\/assets\/deliver|adobe\/dynamicmedia\/deliver)\/(.*))/gm;
+  return srcUrl.match(regex) != null;
+}
+
 /**
  * Creates an optimized picture element for an image.
  * If the image is not an absolute URL, it will be passed to libCreateOptimizedPicture.
@@ -142,6 +151,16 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
   const { pathname } = url;
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
+  if (matchesPolarisDeliveryUrl(src)) {
+    // Load placeholder image
+    const placeholderImg = document.createElement('img');
+    placeholderImg.setAttribute('src', comingSoonPlaceHolder); // Set placeholder image URL
+    placeholderImg.setAttribute('alt', alt);
+    picture.setAttribute('data-original-source',src);
+    picture.appendChild(placeholderImg);
+    return picture;
+  }
+  
   // webp
   breakpoints.forEach((br) => {
     const source = document.createElement('source');
@@ -195,12 +214,22 @@ function decorateExternalImages(ele, deliveryMarker) {
         if (child.tagName === 'SOURCE') {
           const srcset = child.getAttribute('srcset');
           if (srcset) {
-            child.setAttribute('srcset', appendQueryParams(new URL(srcset, extImageSrc), searchParams));
+              const queryParams = appendQueryParams(new URL(srcset, extImageSrc), searchParams);
+              if (srcset.includes("/is/image/")) {
+                child.setAttribute('srcset', queryParams.replaceAll("%24", "$"));
+              } else {
+                child.setAttribute('srcset', queryParams);
+              }   
           }
         } else if (child.tagName === 'IMG') {
           const src = child.getAttribute('src');
           if (src) {
-            child.setAttribute('src', appendQueryParams(new URL(src, extImageSrc), searchParams));
+            const queryParams = appendQueryParams(new URL(src, extImageSrc), searchParams);
+            if (src.includes("/is/image/")) {
+              child.setAttribute('src', queryParams.replaceAll("%24", "$"));
+            } else {
+              child.setAttribute('src', queryParams);
+            }  
           }
         }
       });
@@ -223,7 +252,7 @@ export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
-  buildAutoBlocks(main);
+  //buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
 }

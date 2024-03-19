@@ -1,0 +1,84 @@
+#nav {
+    margin-top: 1.2rem;
+}
+
+.summit-pdp {
+    width: 85rem;
+    text-align: center;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    background-color: #f2f2f2;
+}
+
+p:contains("ULTIMATE CASH BACK") {
+    margin-left: 10rem;
+    margin-right: 10rem;
+    background-color: #ff8b00cc;
+    border-radius: 1rem;
+    font-weight: bold;
+}
+
+/** Item cashback banner */
+.summit-pdp p:nth-child(1) {
+    margin-left: 10rem;
+    margin-right: 10rem;
+    background-color: #ff8b00cc;
+    border-radius: 1rem;
+    font-weight: bold;
+}
+
+/** Item inventory number  */
+.summit-pdp p:nth-child(3) {
+    color: #999;
+    font-size: 69%;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 5px 0 20px 0;
+}    
+
+/** Item name */
+.summit-pdp p:nth-child(2) {
+    font-size: 2.1rem;
+}    
+
+@media (width >= 900px) {
+    #nav {
+        margin-left: 14.5rem;
+    }
+}
+
+@media (width < 1230px) {
+    .carousel-slide-content {
+        --slide-content-width: 60%;
+    }
+    .summit-carousel picture {
+        align-content: space-around;
+    }
+    .carousel-slide-content {
+        display: none;
+    }
+    .carousel-navigation-buttons {
+        display: none !important;
+    }
+
+    @media (width < 450px) {
+        .summit-carousel {
+            margin-top: -20rem !important;
+        }
+    }
+
+    @media (width < 330px) {
+        .summit-carousel {
+            margin-top: -140% !important;
+        }
+    }
+}
+
+.summit-carousel {
+    margin-top: -4rem;
+
+    picture {
+        display: grid;
+    }
+}

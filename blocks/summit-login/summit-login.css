@@ -41,3 +41,12 @@ p:contains("ULTIMATE CASH BACK") {
 .summit-pdp p:nth-child(2) {
     font-size: 2.1rem;
 }    
+
+
+.summit-carousel {
+    margin-top: -4rem;
+
+    picture {
+        display: grid;
+    }
+}

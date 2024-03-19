@@ -44,8 +44,6 @@ p:contains("ULTIMATE CASH BACK") {
 
 
 .summit-carousel {
-    margin-top: -4rem;
-
     picture {
         display: grid;
     }

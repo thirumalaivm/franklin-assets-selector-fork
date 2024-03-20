@@ -100,7 +100,11 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         });
         if (window.location.pathname.indexOf("furniture-street") != -1) {
             document.querySelector(".popular-collections img").addEventListener("click", (event) => {
-                window.location.href = "/product/sofa-set";
+                if(window.location.pathname.indexOf("v2/") == -1) {
+                    window.location.href = "/product/sofa-set";
+                } else {
+                    window.location.href = "/v2/product/sofa-set";
+                }
             });
         }
     }

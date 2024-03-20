@@ -97,7 +97,7 @@ function isExternalImage(element, externalImageMarker) {
 
   // if the element is an anchor with the href as text content and the href has
   // an image extension, it's an external image
-  if (((element.textContent.trim() === element.getAttribute('href')) || element.getAttribute('href').includes(summitHost)) && !element.getAttribute('href').includes("s7viewers")) {
+  if (((element.textContent.trim() === element.getAttribute('href')) || element.getAttribute('href').includes(summitHost) || element.getAttribute('href').includes("varun/Sofa1")) && !element.getAttribute('href').includes("s7viewers")) {
     const ext = getUrlExtension(element.getAttribute('href'));
     return (ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase()) || element.getAttribute('href').includes('/is/image/'));
   }

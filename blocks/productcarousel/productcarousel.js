@@ -77,6 +77,20 @@ export default function decorate(block) {
 }
 
 waitForElement("#pdp-carousel").then(() => {
+
+    // Preload images
+    const imageUrls = [
+      'https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=is(genaibeta/LeatherSofa?wid=3000)&layer=1&src=is(genaibeta/LeatherSofa?wid=3000)&mask=is(genaibeta/Mask3?wid=3000)&cache=off',
+      'https://s7ap1.scene7.com/is/image/varun/SofaRight?wid=1200',
+      'https://s7ap1.scene7.com/is/image/varun/SofaLeft?wid=1200',
+      'https://s7ap1.scene7.com/is/image/varun/SofaBack?wid=1200'
+    ];
+
+    imageUrls.forEach((url) => {
+      const img = new Image();
+      img.src = url;
+    });
+    
     var redWall = document.getElementById("red-wall");
     redWall.addEventListener('click', () => {
         var picture = document.getElementById("display-image");
@@ -126,29 +140,33 @@ waitForElement("#pdp-carousel").then(() => {
           loadScript('https://s7g10.scene7.com/s7viewers/html5/js/SmartCropVideoViewer.js', function() {
               var s7smartcropvideoviewer = new s7viewers.SmartCropVideoViewer({
                   "containerId" : "s7smartcropvideo_div",
-                  "params" : { 
+                  "params" : {
                     "serverurl" : "https://s7g10.scene7.com/is/image/",
-                    "contenturl" : "https://s7g10.scene7.com/is/content/", 
+                    "contenturl" : "https://s7g10.scene7.com/is/content/",
                     "config" : "genaibeta/SmartCropVideo",
                     "videoserverurl": "https://s7g10.scene7.com/is/content",
-                    "asset" : "genaibeta/Original%20Video-AVS",
+                    "asset" : "genaibeta/Processed%20Video-AVS",
                   }
               })
-              s7smartcropvideoviewer.init(); 
+              s7smartcropvideoviewer.init();
           });
         }
     })
 
     document.getElementById("image1").addEventListener("click", function() {
       const picture = document.getElementById("display-image");
-      if(picture){
+      console.log(picture);
+      if(picture !== null){
+        console.log("picture is not null");
         picture.src="https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=is(genaibeta/LeatherSofa?wid=3000)&layer=1&src=is(genaibeta/LeatherSofa?wid=3000)&mask=is(genaibeta/Mask3?wid=3000)&cache=off";
       } else {
+        console.log("picture is null");
         const videoChild = document.getElementById('s7smartcropvideo_div');
         const parent = videoChild.parentElement;
         const imageChild = document.createElement('img');
-        imageChild.src = "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=is(genaibeta/LeatherSofa?wid=3000)&layer=1&src=is(genaibeta/LeatherSofa?wid=3000)&mask=is(genaibeta/Mask3?wid=3000)&cache=off";
+        imageChild.classList.add("main-product");
         imageChild.id = "display-image";
+        imageChild.src = "https://s7g10.scene7.com/is/image/genaibeta?layer=0&src=is(genaibeta/LeatherSofa?wid=3000)&layer=1&src=is(genaibeta/LeatherSofa?wid=3000)&mask=is(genaibeta/Mask3?wid=3000)&cache=off";
         parent.removeChild(videoChild);
         parent.appendChild(imageChild);
       }
@@ -156,13 +174,14 @@ waitForElement("#pdp-carousel").then(() => {
     document.getElementById("image2").addEventListener("click", function() {
       const picture = document.getElementById("display-image");
       if(picture){
-        picture.src="https://s7ap1.scene7.com/is/image/varun/SofaRight?wid=1200";
+        picture.src="https://s7ap1.scene7.com/is/image/varun/SofaRight";
       } else {
         const videoChild = document.getElementById('s7smartcropvideo_div');
         const parent = videoChild.parentElement;
         const imageChild = document.createElement('img');
-        imageChild.src = "https://s7ap1.scene7.com/is/image/varun/SofaRight?wid=1200";
+        imageChild.src = "https://s7ap1.scene7.com/is/image/varun/SofaRight";
         imageChild.id = "display-image";
+        imageChild.classList.add("main-product");
         parent.removeChild(videoChild);
         parent.appendChild(imageChild);
       }
@@ -170,13 +189,14 @@ waitForElement("#pdp-carousel").then(() => {
     document.getElementById("image3").addEventListener("click", function() {
       const picture = document.getElementById("display-image");
       if(picture){
-        picture.src="https://s7ap1.scene7.com/is/image/varun/SofaLeft?wid=1200";
+        picture.src="https://s7ap1.scene7.com/is/image/varun/SofaLeft";
       } else {
         const videoChild = document.getElementById('s7smartcropvideo_div');
         const parent = videoChild.parentElement;
         const imageChild = document.createElement('img');
-        imageChild.src = "https://s7ap1.scene7.com/is/image/varun/SofaLeft?wid=1200";
+        imageChild.src = "https://s7ap1.scene7.com/is/image/varun/SofaLeft";
         imageChild.id = "display-image";
+        imageChild.classList.add("main-product");
         parent.removeChild(videoChild);
         parent.appendChild(imageChild);
       }
@@ -184,13 +204,14 @@ waitForElement("#pdp-carousel").then(() => {
     document.getElementById("image4").addEventListener("click", function() {
       const picture = document.getElementById("display-image");
       if(picture){
-        picture.src="https://s7ap1.scene7.com/is/image/varun/SofaBack?wid=1200";
+        picture.src="https://s7ap1.scene7.com/is/image/varun/SofaBack";
       } else {
         const videoChild = document.getElementById('s7smartcropvideo_div');
         const parent = videoChild.parentElement;
         const imageChild = document.createElement('img');
-        imageChild.src = "https://s7ap1.scene7.com/is/image/varun/SofaBack?wid=1200";
+        imageChild.src = "https://s7ap1.scene7.com/is/image/varun/SofaBack";
         imageChild.id = "display-image";
+        imageChild.classList.add("main-product");
         parent.removeChild(videoChild);
         parent.appendChild(imageChild);
       }

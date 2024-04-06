@@ -6,5 +6,5 @@ indices:
         select: a
         values: |
           attribute(el, 'href')
-        # match(attribute(el, 'href'), 'https:\/\/[^\/]+\/adobe\/assets\/urn:aaid:aem:.*')
+        #  match(attribute(el, 'href'), 'https:\/\/[^\/]+\/adobe\/assets\/urn:aaid:aem:.*')
 

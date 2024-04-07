@@ -14,7 +14,7 @@
       "id": "asset-usage-report",
       "title": "Assets Report",
       "environments": ["edit"],
-      "url": "https://asset-usage-report--franklin-assets-selector--hlxsites.hlx.live/tools/asset-report/report.html",
+      "url": "https://asset-usage-report--franklin-assets-selector--hlxsites.hlx.live/tools/asset-selector/usage-report/report.html",
       "includePaths": ["**.docx**"]
     }
   ]

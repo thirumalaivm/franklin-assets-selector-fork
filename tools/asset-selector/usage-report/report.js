@@ -8,8 +8,8 @@ fetch('/assets-index.json')
         const rows = data.data;
         const processedUrls = [];
         rows.forEach(row => {
-            // Extract the array of URLs
-            const urls = JSON.parse(row['aem-assets']);
+            const { path, 'polaris-assets' : polarisAssets, 'dm-next-assets': dmNextAssets, 'scene7-assets': dmClassicAssets } = row;
+            const urls = [...JSON.parse(polarisAssets), ...JSON.parse(dmNextAssets), ...JSON.parse(dmClassicAssets)];
 
             // Create cards for each URL
             urls.forEach(url => {

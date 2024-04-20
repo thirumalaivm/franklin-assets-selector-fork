@@ -40,6 +40,16 @@ export function decorateMain(main) {
 ```
 
 ## How does this work?
-During the page rendering process, the frontend code replaces the anchor tags identified as exteernal images on the page with the `picture` tags with `src`/`srcset` attributes set as the external image's url as specified in the external image link placed on the Word / Google Document during the page authoring process.
+During the page rendering process, the frontend code replaces the anchor tags identified as external images on the page with the `picture` tags with `src`/`srcset` attributes set as the external image's url as specified in the external image link placed on the Word / Google Document during the page authoring process.
 
 Authors can optionally specify query paramaters in the hyperlinked external url and they would be retained in the `picture` tag's `src`/`srcset` attributes. These are useful for specifying image delivery parameters such as image width, height, format, etc. as understood by the external image delivery service.
+
+## Extended Usecase of leveraging DM OpenAPI for Streamlining AEM Franklin Development
+
+For clients utilizing the `AEM Assets` repository to distribute their assets, the burden of maintaining asset integrity due to frequent edits, updates, and deletions performed within AEM is alleviated. Thanks to `Dynamic Media OpenAPI`, synchronization with every DOCX document becomes seamless.
+
+Simply incorporate the necessary `asset-library` configuration into AEM sidekick plugin, as outlined in [here](https://github.com/anuraggupta228/franklinvideo/commit/04d710632f5c614ba7efd52cd9f720f6f4cb58dd)
+
+Once `asset-library` in integrated then simply perform copy/paste through plugin for any asset into target DOCX. Here is one crafted sample on how it might look like - [Check Here](https://docs.google.com/document/d/1fSoGW0X27sZD6KTaZ--7KwNRPBHwO5qjuAnQS1jDa9U/edit?usp=sharing)
+
+And voilà! It’s done! Not only have we minimized redundancy and alleviated the cumbersome task for clients to update every DOCX document with `Dynamic Media Open API` but the LHS still preserves at 100 for mobile as well as desktop - [Witness Here!](https://pagespeed.web.dev/analysis/https-ext-images-with-dm-openapi--franklinvideo--anuraggupta228-hlx-live-dm-open-api-with-aem-franklin/ve6qh6qoey?form_factor=mobile)

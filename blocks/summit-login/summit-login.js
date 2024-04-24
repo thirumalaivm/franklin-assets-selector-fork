@@ -159,6 +159,27 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
                 });
             }
         });
+
+        const templates = document.querySelectorAll("[data-is-template=true]");
+        templates.forEach((template) => {
+            template.querySelectorAll("img").forEach((img) => {
+                const oldSrc = img.getAttribute("src");
+                if (isLoggedIn()) {
+                    img.setAttribute("src", oldSrc + "&$name=" + document.querySelector("input[name='uname']").value);
+                } else if (oldSrc.includes("$name=")) {
+                    img.setAttribute("src", oldSrc.replace(/&\$name=[^&]*/, ""));
+                }
+            });
+
+            template.querySelectorAll("source").forEach((source) => {
+                const oldSrcset = source.getAttribute("srcset");
+                if (isLoggedIn()) {
+                    source.setAttribute("srcset", oldSrcset + "&$name=" + document.querySelector("input[name='uname']").value);
+                } else if (oldSrcset.includes("$name=")) {
+                    source.setAttribute("srcset", oldSrcset.replace(/&\$name=[^&]*/, ""));
+                }
+            });
+        });
     }
 
     function matchesPolarisDeliveryUrl(srcUrl) {
@@ -269,17 +290,19 @@ function generateJwtAndUpdateDOM() {
     }
 
     function init() {
-        styleUpTheLimitedEdition();
+        //styleUpTheLimitedEdition();
         appendLoginForm();
         toggleLoginButtons();
         addEventListeners();
         updateUserName();
         identifySecuredImages();
         changeCursorOnHover();
-        adjustDiscountTemplateCSS();
+        // adjustDiscountTemplateCSS();
         
         // Call the function to generate the JWT
-        if(isLoggedIn()) generateJwtAndUpdateDOM();
+        if(isLoggedIn()) {
+            generateJwtAndUpdateDOM();
+        }
         updateImageLinks();
         
         if(window.location.pathname.indexOf("sofa-set") != -1) updatePDPdetails();

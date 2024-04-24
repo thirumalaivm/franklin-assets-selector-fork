@@ -126,8 +126,12 @@ function appendQueryParams(url, params) {
 
 function matchesPolarisDeliveryUrl(srcUrl) {
   // code to match regex for host matching "delivery-pxxxx-exxxx" and URI starts with either adobe/assets/deliver or adobe/dynamicmedia/deliver
-  const regex = /^(https?:\/\/delivery-p[0-9]+-e[0-9-cmstg]+\.adobeaemcloud\.com\/(adobe\/assets\/deliver|adobe\/dynamicmedia\/deliver)\/(.*))/gm;
+  const regex = /^(https?:\/\/delivery-p[0-9]+-e[0-9]+\.adobeaemcloud\.com\/(adobe\/assets|adobe\/dynamicmedia)\/(.*))/gm;
   return srcUrl.match(regex) != null;
+}
+
+function matchDMUrl(srcUrl) {
+  return srcUrl ? srcUrl.includes("/is/image") : false;
 }
 
 /**
@@ -140,7 +144,7 @@ function matchesPolarisDeliveryUrl(srcUrl) {
  * @returns {Element} The picture element
  *
  */
-export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
+export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '1800' }, { width: '750' }]) {
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
 
   // Fallback to createOptimizedPicture if src is not an absolute URL
@@ -160,34 +164,62 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
     picture.appendChild(placeholderImg);
     return picture;
   }
+
+  if (matchDMUrl(src)) {
+    const isTemplateUrl = url.searchParams.get('istemplate') === 'true';
+    if (isTemplateUrl) {
+      picture.setAttribute('data-is-template', 'true');
+    }
+
+    const hasWidthInSrc = url.searchParams.get('src') ? url.searchParams.get('src').includes("wid=") : false;
+    const appendWidParam = !hasWidthInSrc && (url.searchParams.get('wid') ? false : true);
+
+    breakpoints.forEach((br, i) => {
+      const searchParams = appendWidParam ? new URLSearchParams({ wid: br.width}) : new URLSearchParams();
+
+      if (i < breakpoints.length - 1) {
+        const source = document.createElement('source');
+        if (br.media) source.setAttribute('media', br.media);
+        source.setAttribute('srcset', appendQueryParams(url, searchParams));
+        picture.appendChild(source);
+      } else {
+        const img = document.createElement('img');
+        img.setAttribute('loading', eager ? 'eager' : 'lazy');
+        img.setAttribute('alt', alt);
+        picture.appendChild(img);
+        img.setAttribute('src', appendQueryParams(url, searchParams));
+      }
+    });
+  } else {
   
-  // webp
-  breakpoints.forEach((br) => {
-    const source = document.createElement('source');
-    if (br.media) source.setAttribute('media', br.media);
-    source.setAttribute('type', 'image/webp');
-    const searchParams = new URLSearchParams({ width: br.width, format: 'webply' });
-    source.setAttribute('srcset', appendQueryParams(url, searchParams));
-    picture.appendChild(source);
-  });
-
-  // fallback
-  breakpoints.forEach((br, i) => {
-    const searchParams = new URLSearchParams({ width: br.width, format: ext });
-
-    if (i < breakpoints.length - 1) {
+    // webp
+    breakpoints.forEach((br) => {
       const source = document.createElement('source');
       if (br.media) source.setAttribute('media', br.media);
+      source.setAttribute('type', 'image/webp');
+      const searchParams = new URLSearchParams({ width: br.width, format: 'webply' });
       source.setAttribute('srcset', appendQueryParams(url, searchParams));
       picture.appendChild(source);
-    } else {
-      const img = document.createElement('img');
-      img.setAttribute('loading', eager ? 'eager' : 'lazy');
-      img.setAttribute('alt', alt);
-      picture.appendChild(img);
-      img.setAttribute('src', appendQueryParams(url, searchParams));
-    }
-  });
+    });
+
+    // fallback
+    breakpoints.forEach((br, i) => {
+      const searchParams = new URLSearchParams({ width: br.width, format: ext });
+
+      if (i < breakpoints.length - 1) {
+        const source = document.createElement('source');
+        if (br.media) source.setAttribute('media', br.media);
+        source.setAttribute('srcset', appendQueryParams(url, searchParams));
+        picture.appendChild(source);
+      } else {
+        const img = document.createElement('img');
+        img.setAttribute('loading', eager ? 'eager' : 'lazy');
+        img.setAttribute('alt', alt);
+        picture.appendChild(img);
+        img.setAttribute('src', appendQueryParams(url, searchParams));
+      }
+    });
+  }
 
   return picture;
 }

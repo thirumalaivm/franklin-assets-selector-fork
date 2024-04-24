@@ -73,7 +73,7 @@ main .embed {
   }
 
   @media only screen and (max-width: 600px) {
-    main .embed .embed-default {
+    main .embed .mobile-view {
       position: relative;
       left: 0;
       width: 100%; 

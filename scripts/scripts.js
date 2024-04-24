@@ -130,6 +130,18 @@ function matchesPolarisDeliveryUrl(srcUrl) {
   return srcUrl.match(regex) != null;
 }
 
+function createOptimizedSrc(src) {
+  const isDMOpenAPIUrl = /^(https?:\/\/delivery-p[0-9]+-e[0-9-cmstg]+\.adobeaemcloud\.com\/(.*))/gm.test(src);
+  const srcUrl = new URL(src);
+  if (isDMOpenAPIUrl) {
+    srcUrl.searchParams.delete('accept-experimental');
+    srcUrl.searchParams.delete('width');
+    srcUrl.searchParams.delete('height');
+    srcUrl.pathname = srcUrl.pathname.replace('/original/', '/');
+  }
+  return srcUrl.toString();
+}
+
 /**
  * Creates an optimized picture element for an image.
  * If the image is not an absolute URL, it will be passed to libCreateOptimizedPicture.
@@ -204,7 +216,7 @@ function decorateExternalImages(ele, deliveryMarker) {
   const extImages = ele.querySelectorAll('a');
   extImages.forEach((extImage) => {
     if (isExternalImage(extImage, deliveryMarker)) {
-      const extImageSrc = extImage.getAttribute('href');
+      const extImageSrc = createOptimizedSrc(extImage.getAttribute('href'));
       const extPicture = createOptimizedPicture(extImageSrc);
 
       /* copy query params from link to img */

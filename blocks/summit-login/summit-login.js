@@ -161,23 +161,24 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         });
 
         const templates = document.querySelectorAll("[data-is-template=true]");
+        const params = {
+          name: isLoggedIn() ? document.querySelector("input[name='uname']").value : "Guest",
+          guest: isLoggedIn() ? 0 : 1
+        }
+
         templates.forEach((template) => {
             template.querySelectorAll("img").forEach((img) => {
                 const oldSrc = img.getAttribute("src");
-                if (isLoggedIn()) {
-                    img.setAttribute("src", oldSrc + "&$name=" + document.querySelector("input[name='uname']").value);
-                } else if (oldSrc.includes("$name=")) {
-                    img.setAttribute("src", oldSrc.replace(/&\$name=[^&]*/, ""));
-                }
+                img.setAttribute("src", oldSrc.replace(/\$(name|guest)=([^&]*)/g, function(match, p1) {
+                  return `$${p1}=${params[p1]}`;
+                }));
             });
 
             template.querySelectorAll("source").forEach((source) => {
                 const oldSrcset = source.getAttribute("srcset");
-                if (isLoggedIn()) {
-                    source.setAttribute("srcset", oldSrcset + "&$name=" + document.querySelector("input[name='uname']").value);
-                } else if (oldSrcset.includes("$name=")) {
-                    source.setAttribute("srcset", oldSrcset.replace(/&\$name=[^&]*/, ""));
-                }
+                source.setAttribute("srcset", oldSrcset.replace(/\$(name|guest)=([^&]*)/g, function(match, p1) {
+                  return `$${p1}=${params[p1]}`;
+                }));
             });
         });
     }

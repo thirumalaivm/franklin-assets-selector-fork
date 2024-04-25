@@ -141,7 +141,7 @@ export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoi
   }
 
   if (matchDMUrl(src)) {
-    const isTemplateUrl = url.searchParams.get('istemplate') === 'true';
+    const isTemplateUrl = url.search.match(/\$[a-zA-Z0-9]+=[a-zA-Z0-9]+/g);
     if (isTemplateUrl) {
       picture.setAttribute('data-is-template', 'true');
     }

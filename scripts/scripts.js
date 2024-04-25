@@ -112,8 +112,8 @@ function matchDMUrl(srcUrl) {
  * @returns {Element} The picture element
  *
  */
-export function createOptimizedPicture(img, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '1800' }, { width: '750' }]) {
-  const src = img.getAttribute('href');
+export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '1800' }, { width: '750' }]) {
+  const src = extImg.getAttribute('href');
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
 
   // Fallback to createOptimizedPicture if src is not an absolute URL
@@ -125,9 +125,9 @@ export function createOptimizedPicture(img, alt = '', eager = false, breakpoints
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
   let isMemberCollectionImage = false;
-  const memberCollection = document.getElementsByClassName("member-collections");
+  const memberCollection = document.getElementsByClassName('member-collections');
   if (memberCollection && memberCollection.length > 0) {
-    isMemberCollectionImage = memberCollection[0].contains(img);
+    isMemberCollectionImage = memberCollection[0].contains(extImg);
   }
 
   if (isMemberCollectionImage) {

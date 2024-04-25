@@ -168,3 +168,14 @@
       --slide-content-width: auto;
     }
   }
+
+  @media only screen and (max-width: 600px) {
+    .carousel .carousel-slide {
+      min-height: unset;
+    }
+
+    .carousel .carousel-slide .carousel-slide-image picture {
+      position: relative;
+      display: block;
+    }
+  }

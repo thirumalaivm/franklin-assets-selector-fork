@@ -72,14 +72,14 @@ main .embed {
     padding-bottom: 56.25%;
   }
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 1024px) and (orientation: portrait) {
     main .embed .embed-default.mobile-view {
-      padding-bottom: 170%;
+      padding-bottom: 130%;
     }
   }
 
-  @media only screen and (max-width: 860px) {
+  @media only screen and (max-width: 600px) {
     main .embed .embed-default.mobile-view {
-      padding-bottom: 130%;
+      padding-bottom: 170%;
     }
   }

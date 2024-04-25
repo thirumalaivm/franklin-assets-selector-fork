@@ -98,13 +98,6 @@ function appendQueryParams(url, params) {
   return url.toString();
 }
 
-function matchesPolarisDeliveryUrl(srcUrl) {
-  // code to match regex for host matching 'delivery-pxxxx-exxxx'
-  // and URI starts with either adobe/assets/deliver or adobe/dynamicmedia/deliver
-  const regex = /^(https?:\/\/delivery-p[0-9]+-e[0-9]+\.adobeaemcloud\.com\/(adobe\/assets|adobe\/dynamicmedia)\/(.*))/gm;
-  return srcUrl.match(regex) != null;
-}
-
 function matchDMUrl(srcUrl) {
   return srcUrl ? srcUrl.includes('/is/image') : false;
 }
@@ -119,7 +112,8 @@ function matchDMUrl(srcUrl) {
  * @returns {Element} The picture element
  *
  */
-export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '1800' }, { width: '750' }]) {
+export function createOptimizedPicture(img, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '1800' }, { width: '750' }]) {
+  const src = img.getAttribute('href');
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
 
   // Fallback to createOptimizedPicture if src is not an absolute URL
@@ -130,7 +124,13 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
   const { pathname } = url;
   const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
-  if (matchesPolarisDeliveryUrl(src)) {
+  let isMemberCollectionImage = false;
+  const memberCollection = document.getElementsByClassName("member-collections");
+  if (memberCollection && memberCollection.length > 0) {
+    isMemberCollectionImage = memberCollection[0].contains(img);
+  }
+
+  if (isMemberCollectionImage) {
     // Load placeholder image
     const placeholderImg = document.createElement('img');
     placeholderImg.setAttribute('src', comingSoonPlaceHolder); // Set placeholder image URL
@@ -147,7 +147,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
     }
 
     const hasWidthInSrc = url.searchParams.get('src') ? url.searchParams.get('src').includes('wid=') : false;
-    const appendWidParam = !hasWidthInSrc && url.searchParams.get('wid');
+    const appendWidParam = !hasWidthInSrc && !url.searchParams.get('wid');
 
     breakpoints.forEach((br, i) => {
       const searchParams = appendWidParam
@@ -213,7 +213,7 @@ function decorateExternalImages(ele, deliveryMarker) {
   extImages.forEach((extImage) => {
     if (isExternalImage(extImage, deliveryMarker)) {
       const extImageSrc = extImage.getAttribute('href');
-      const extPicture = createOptimizedPicture(extImageSrc);
+      const extPicture = createOptimizedPicture(extImage);
 
       /* copy query params from link to img */
       const extImageUrl = new URL(extImageSrc);

@@ -1,6 +1,5 @@
 import {
   sampleRUM,
-  buildBlock,
   createOptimizedPicture as libCreateOptimizedPicture,
   loadHeader,
   loadFooter,
@@ -16,23 +15,8 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
-let comingSoonPlaceHolder = window.location.origin + "/resources/summit/coming-soon.jpeg";
-let summitHost = "delivery-p129624-e1269699";
-
-/**
- * Builds hero block and prepends to main in a new section.
- * @param {Element} main The container element
- */
-function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
-    main.prepend(section);
-  }
-}
+const comingSoonPlaceHolder = `${window.location.origin}/resources/summit/coming-soon.jpeg`;
+const summitHost = 'delivery-p129624-e1269699';
 
 /**
  * load fonts.css and set a session storage flag
@@ -43,19 +27,6 @@ async function loadFonts() {
     if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
   } catch (e) {
     // do nothing
-  }
-}
-
-/**
- * Builds all synthetic blocks in a container element.
- * @param {Element} main The container element
- */
-function buildAutoBlocks(main) {
-  try {
-    buildHeroBlock(main);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Auto Blocking failed', error);
   }
 }
 
@@ -97,9 +68,12 @@ function isExternalImage(element, externalImageMarker) {
 
   // if the element is an anchor with the href as text content and the href has
   // an image extension, it's an external image
-  if (((element.textContent.trim() === element.getAttribute('href')) || element.getAttribute('href').includes(summitHost) || element.getAttribute('href').includes("varun/Sofa1")) && !element.getAttribute('href').includes("s7viewers")) {
+  if (((element.textContent.trim() === element.getAttribute('href'))
+  || element.getAttribute('href').includes(summitHost)
+|| element.getAttribute('href').includes('varun/Sofa1'))
+&& !element.getAttribute('href').includes('s7viewers')) {
     const ext = getUrlExtension(element.getAttribute('href'));
-    return (ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase()) || element.getAttribute('href').includes('/is/image/'));
+    return (ext && ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext.toLowerCase())) || element.getAttribute('href').includes('/is/image/');
   }
 
   return false;
@@ -125,13 +99,14 @@ function appendQueryParams(url, params) {
 }
 
 function matchesPolarisDeliveryUrl(srcUrl) {
-  // code to match regex for host matching "delivery-pxxxx-exxxx" and URI starts with either adobe/assets/deliver or adobe/dynamicmedia/deliver
+  // code to match regex for host matching 'delivery-pxxxx-exxxx'
+  // and URI starts with either adobe/assets/deliver or adobe/dynamicmedia/deliver
   const regex = /^(https?:\/\/delivery-p[0-9]+-e[0-9]+\.adobeaemcloud\.com\/(adobe\/assets|adobe\/dynamicmedia)\/(.*))/gm;
   return srcUrl.match(regex) != null;
 }
 
 function matchDMUrl(srcUrl) {
-  return srcUrl ? srcUrl.includes("/is/image") : false;
+  return srcUrl ? srcUrl.includes('/is/image') : false;
 }
 
 /**
@@ -160,7 +135,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
     const placeholderImg = document.createElement('img');
     placeholderImg.setAttribute('src', comingSoonPlaceHolder); // Set placeholder image URL
     placeholderImg.setAttribute('alt', alt);
-    picture.setAttribute('data-original-source',src);
+    picture.setAttribute('data-original-source', src);
     picture.appendChild(placeholderImg);
     return picture;
   }
@@ -171,11 +146,13 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
       picture.setAttribute('data-is-template', 'true');
     }
 
-    const hasWidthInSrc = url.searchParams.get('src') ? url.searchParams.get('src').includes("wid=") : false;
-    const appendWidParam = !hasWidthInSrc && (url.searchParams.get('wid') ? false : true);
+    const hasWidthInSrc = url.searchParams.get('src') ? url.searchParams.get('src').includes('wid=') : false;
+    const appendWidParam = !hasWidthInSrc && url.searchParams.get('wid');
 
     breakpoints.forEach((br, i) => {
-      const searchParams = appendWidParam ? new URLSearchParams({ wid: br.width}) : new URLSearchParams();
+      const searchParams = appendWidParam
+        ? new URLSearchParams({ wid: br.width })
+        : new URLSearchParams();
 
       if (i < breakpoints.length - 1) {
         const source = document.createElement('source');
@@ -191,7 +168,6 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
       }
     });
   } else {
-  
     // webp
     breakpoints.forEach((br) => {
       const source = document.createElement('source');
@@ -246,22 +222,22 @@ function decorateExternalImages(ele, deliveryMarker) {
         if (child.tagName === 'SOURCE') {
           const srcset = child.getAttribute('srcset');
           if (srcset) {
-              const queryParams = appendQueryParams(new URL(srcset, extImageSrc), searchParams);
-              if (srcset.includes("/is/image/")) {
-                child.setAttribute('srcset', queryParams.replaceAll("%24", "$"));
-              } else {
-                child.setAttribute('srcset', queryParams);
-              }   
+            const queryParams = appendQueryParams(new URL(srcset, extImageSrc), searchParams);
+            if (srcset.includes('/is/image/')) {
+              child.setAttribute('srcset', queryParams.replaceAll('%24', '$'));
+            } else {
+              child.setAttribute('srcset', queryParams);
+            }
           }
         } else if (child.tagName === 'IMG') {
           const src = child.getAttribute('src');
           if (src) {
             const queryParams = appendQueryParams(new URL(src, extImageSrc), searchParams);
-            if (src.includes("/is/image/")) {
-              child.setAttribute('src', queryParams.replaceAll("%24", "$"));
+            if (src.includes('/is/image/')) {
+              child.setAttribute('src', queryParams.replaceAll('%24', '$'));
             } else {
               child.setAttribute('src', queryParams);
-            }  
+            }
           }
         }
       });
@@ -284,7 +260,6 @@ export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
-  //buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
 }

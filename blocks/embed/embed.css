@@ -77,3 +77,9 @@ main .embed {
       padding-bottom: 170%;
     }
   }
+
+  @media only screen and (max-width: 860px) {
+    main .embed .embed-default.mobile-view {
+      padding-bottom: 130%;
+    }
+  }

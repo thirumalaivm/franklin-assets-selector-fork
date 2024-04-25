@@ -73,11 +73,7 @@ main .embed {
   }
 
   @media only screen and (max-width: 600px) {
-    main .embed .mobile-view {
-      position: relative;
-      left: 0;
-      width: 100%; 
-      height: 0; 
+    main .embed .embed-default.mobile-view {
       padding-bottom: 170%;
     }
   }

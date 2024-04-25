@@ -114,9 +114,9 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         var username = "User\n";
         if (isLoggedIn()) {
             username = document.querySelector("input[name='uname']").value || "User";
-            userIconEle.childNodes[1].textContent = "Hey " + username + "!\n";
+            userIconEle.childNodes[0].textContent = "Hey " + username + "!\n";
         } else {
-            userIconEle.childNodes[1].textContent = username + "\n";
+            userIconEle.childNodes[0].textContent = "Sign In";
         }
     }
 

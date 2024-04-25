@@ -1,3 +1,4 @@
+
 /* header and nav layout */
 header .nav-wrapper {
   background-color: var(--background-color);
@@ -15,7 +16,6 @@ header nav {
   align-items: center;
   gap: 0 2em;
   margin: auto;
-  /* max-width: 1264px; */
   height: var(--nav-height);
   padding: 0 1rem;
   font-family: var(--body-font-family);
@@ -55,6 +55,12 @@ header nav p {
 
 header nav a:any-link {
   color: currentcolor;
+  text-decoration: none;
+}
+
+header nav a:any-link:hover {
+  color: #dc3545;
+  transition: coloe 0.3s;
 }
 
 /* hamburger */
@@ -136,26 +142,20 @@ header nav[aria-expanded="true"] .nav-hamburger-icon::after {
     display: none;
     visibility: hidden;
   }
-
-  header nav .nav-sections ul > li > ul {
-    margin-top: 0;
-    display:block;
-  }
 }
-
 
 /* brand */
 header .nav-brand {
   grid-area: brand;
-  flex-basis: 170px;
+  flex-basis: 128px;
   font-size: var(--heading-font-size-s);
   font-weight: 700;
   line-height: 1;
-  padding-left: 30px;
 }
 
 header nav .nav-brand img {
-  width: 128px;
+  width: 200px;
+  margin: 15px;
   height: auto;
 }
 
@@ -187,7 +187,6 @@ header nav .nav-sections ul > li {
 
 header nav .nav-sections ul > li > ul {
   margin-top: 0;
-  display:none;
 }
 
 header nav .nav-sections ul > li > ul > li {
@@ -195,6 +194,10 @@ header nav .nav-sections ul > li > ul > li {
 }
 
 @media (width >= 900px) {
+  header .nav-brand {
+    margin: 10px 450px 0 0;
+  }
+
   header nav .nav-sections {
     display: block;
     visibility: visible;
@@ -237,12 +240,13 @@ header nav .nav-sections ul > li > ul > li {
     margin: 0;
     font-size: var(--body-font-size-xs);
     justify-content: flex-end;
+    align-items: center;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li {
     flex: 0 1 auto;
     position: relative;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul {
@@ -257,24 +261,27 @@ header nav .nav-sections ul > li > ul > li {
     width: 200px;
     margin-top: 12px;
     padding: 1em;
-    background-color: var(--light-color);
+    background-color: var(--dark-color);
     white-space: initial;
-  }
-
-  header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    left: 8px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid var(--light-color);
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
     padding: 8px 0;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li:nth-last-child(4) {
+    margin-left: 200px;
+    margin-right: -10px;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li:nth-last-child(3) {
+    margin-top: 10px;
+    margin-right: -10px;
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li:nth-last-child(2) {
+    margin-top: 10px;
+    margin-right: -20px;
   }
 }
 

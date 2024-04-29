@@ -50,7 +50,7 @@ For clients utilizing the `AEM Assets` repository to distribute their assets, th
 
 Simply incorporate the necessary `asset-library` configuration into AEM sidekick plugin, as outlined in [here](https://github.com/hlxsites/franklin-assets-selector/commit/24e99a2455c9372c8a54637f3e24f0fe4c2ac4f5)
 
-Once `asset-library` in integrated then simply perform copy/paste through plugin for any asset into target DOCX. Here is one crafted sample on how it might look like - [Check Here](https://adobe.sharepoint.com/:w:/s/HelixProjects/EcC9uxWYlVRCsKzqbjnV44UByeCoBwcRsjz0iPpZgf6zjw?e=Xet9U6)
+Once `asset-library` in integrated then simply perform copy/paste through plugin for any asset into target DOCX. Here is one crafted sample on how it might look like - [Check Here](https://main--franklinvideo--anuraggupta228.hlx.live/dm-open-api-with-aem-franklin)
 
 And voilà! It’s done! Not only have we minimized redundancy and alleviated the cumbersome task for clients to update every DOCX document with `Dynamic Media Open API` but the LHS still preserves at 100 for mobile as well as desktop - [Witness Here!](https://pagespeed.web.dev/analysis/https-dm-openapi-with-eds--franklin-assets-selector--hlxsites-hlx-live-anuraggupta228-DM-OpenAPI-adding-refs-in-eds/1qsej8ad01?form_factor=mobile)
 

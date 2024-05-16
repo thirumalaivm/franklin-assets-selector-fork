@@ -46,7 +46,7 @@ Authors can optionally specify query paramaters in the hyperlinked external url 
 
 ## Extended Usecase of leveraging DM OpenAPI for Streamlining AEM Franklin Development
 
-For clients utilizing the `AEM Assets` repository to distribute their assets, the burden of maintaining asset integrity due to frequent edits, updates, and deletions performed within AEM is alleviated. Thanks to `Dynamic Media OpenAPI`, synchronization with every DOCX document becomes seamless.
+For clients utilizing the `AEM Assets` repository to distribute their assets, the burden of maintaining asset integrity due to frequent edits, updates, and deletions performed within AEM is alleviated. Thanks to `Dynamic Media with OpenAPI`, synchronization with every DOCX document becomes seamless.
 
 Simply incorporate the necessary `asset-library` configuration into AEM sidekick plugin, as outlined in [here](https://github.com/hlxsites/franklin-assets-selector/commit/24e99a2455c9372c8a54637f3e24f0fe4c2ac4f5)
 

@@ -52,6 +52,6 @@ Simply incorporate the necessary `asset-library` configuration into AEM sidekick
 
 Once `asset-library` in integrated then simply perform copy/paste through plugin for any asset into target DOCX. Here is one crafted sample on how it might look like - [Check Here](https://ext-images-with-dm-openapi--franklinvideo--anuraggupta228.hlx.live/dm-open-api-with-aem-franklin)
 
-And voilà! It’s done! Not only have we minimized redundancy and alleviated the cumbersome task for clients to update every DOCX document with `Dynamic Media Open API` but the LHS still preserves at 100 for mobile as well as desktop - [Witness Here!](https://pagespeed.web.dev/analysis/https-dm-openapi-with-eds--franklin-assets-selector--hlxsites-hlx-live-anuraggupta228-DM-OpenAPI-adding-refs-in-eds/1qsej8ad01?form_factor=mobile)
+And voilà! It’s done! Not only have we minimized redundancy and alleviated the cumbersome task for clients to update every DOCX document with `Dynamic Media with Open API` but the LHS still preserves at 100 for mobile as well as desktop - [Witness Here!](https://pagespeed.web.dev/analysis/https-dm-openapi-with-eds--franklin-assets-selector--hlxsites-hlx-live-anuraggupta228-DM-OpenAPI-adding-refs-in-eds/1qsej8ad01?form_factor=mobile)
 
 Now, let’s take a closer look at the comprehensive PSI report: ![Page Speed Insights Report](/images/psi-report-for-DM-OpenAPI.png)

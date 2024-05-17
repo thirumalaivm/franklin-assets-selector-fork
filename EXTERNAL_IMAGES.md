@@ -44,7 +44,7 @@ During the page rendering process, the frontend code replaces the anchor tags id
 
 Authors can optionally specify query paramaters in the hyperlinked external url and they would be retained in the `picture` tag's `src`/`srcset` attributes. These are useful for specifying image delivery parameters such as image width, height, format, etc. as understood by the external image delivery service.
 
-## Extended Usecase of leveraging DM OpenAPI for Streamlining AEM Franklin Development
+## Extended Usecase of leveraging Dynamic Media with OpenAPI for Streamlining AEM Franklin Development
 
 For clients utilizing the `AEM Assets` repository to distribute their assets, the burden of maintaining asset integrity due to frequent edits, updates, and deletions performed within AEM is alleviated. Thanks to `Dynamic Media with OpenAPI`, synchronization with every DOCX document becomes seamless.
 

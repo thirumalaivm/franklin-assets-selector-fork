@@ -1,10 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
-import { decorateVideo } from '../../scripts/video.js';
-
-function isVideo(element) {
-  const header = element.querySelector('h2');
-  return header && header.textContent.trim().toLowerCase() === 'video';
-}
+import { decorateVideo, isVideo } from '../../scripts/video.js';
 
 export default function decorate(block) {
   /* change to ul, li */
@@ -18,8 +13,7 @@ export default function decorate(block) {
       else if (isVideo(div)) {
         div.className = 'cards-card-video';
         decorateVideo(div);
-      }
-      else div.className = 'cards-card-body';
+      } else div.className = 'cards-card-body';
     });
     ul.append(li);
   });

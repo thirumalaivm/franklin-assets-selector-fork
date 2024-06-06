@@ -1,3 +1,6 @@
+const BUTTON_SIZE = 40;
+const BUTTON_MARGIN = 10;
+
 function loadVideoJs() {
   let resolvePromise;
   const promise = new Promise((resolve) => {
@@ -21,15 +24,21 @@ function loadVideoJs() {
 }
 
 function parseButtonConfig(type, configElement) {
+  const defaultPosition = 'bottom-right';
   const configs = configElement.querySelectorAll(':scope > li');
   const configObj = [...configs].reduce((obj, cf) => {
     const text = cf.textContent;
     if (text.includes('|')) {
+      const allowedPositions = ['top-right', 'top-left', 'bottom-right', 'bottom-left'];
       const parts = text.split('|');
       const key = parts[0].trim().toLowerCase();
-      const value = parts[1].trim().toLowerCase();
+      let value = parts[1].trim().toLowerCase();
 
       if (key === 'position') {
+        if (!allowedPositions.includes(value)) {
+          value = defaultPosition;
+        }
+
         obj.position = value;
       }
 
@@ -40,6 +49,10 @@ function parseButtonConfig(type, configElement) {
 
     return obj;
   }, {});
+
+  if (!configObj.position) {
+    configObj.position = defaultPosition;
+  }
 
   return {
     type,
@@ -84,6 +97,53 @@ function parseConfig(block) {
   return configObj;
 }
 
+function setButtonCoordinates(config) {
+  const { buttons } = config;
+
+  const groupByPosition = buttons.reduce((group, button) => {
+    group[button.position] = group[button.position] || [];
+    group[button.position].push(button);
+    return group;
+  }, {});
+
+  Object.keys(groupByPosition).forEach((position) => {
+    const buttonsInGroup = groupByPosition[position];
+    const totalButtons = buttonsInGroup.length;
+    buttonsInGroup.forEach((button, index) => {
+      const cord = {};
+
+      switch (position) {
+        case 'top-right':
+          cord.top = 10 + index * (BUTTON_SIZE + BUTTON_MARGIN);
+          cord.right = 10;
+          break;
+
+        case 'top-left':
+          cord.top = 10 + index * (BUTTON_SIZE + BUTTON_MARGIN);
+          cord.left = 10;
+          break;
+
+        case 'bottom-left':
+          cord.bottom = 10 + (totalButtons - index - 1) * (BUTTON_SIZE + BUTTON_MARGIN);
+          cord.left = 10;
+          break;
+
+        case 'bottom-right':
+          cord.bottom = 10 + (totalButtons - index - 1) * (BUTTON_SIZE + BUTTON_MARGIN);
+          cord.right = 10;
+          break;
+
+        default:
+          cord.bottom = 10;
+          cord.right = 10;
+          break;
+      }
+
+      button.cord = cord;
+    });
+  });
+}
+
 function addCss(styles) {
   const css = document.createElement('style');
   css.type = 'text/css';
@@ -114,33 +174,15 @@ function setupCustomPlayButton(block, player, config) {
 
   const container = block.querySelector('.video-container');
   container.append(button);
+  const { cord } = config;
 
-  let top;
-  let bottom;
-  let left;
-  let right;
-  if (config.position === 'top-right') {
-    top = '10px';
-    right = '10px';
-  } else if (config.position === 'top-left') {
-    top = '10px';
-    left = '10px';
-  } else if (config.position === 'bottom-left') {
-    bottom = '10px';
-    left = '10px';
-  } else {
-    bottom = '10px';
-    right = '10px';
-  }
-
-  // eslint-disable-next-line prefer-template
   const styles = `
     .custom-play-button {
       position: absolute;
-      ${(top ? 'top: ' + top + ';' : '')}
-      ${(bottom ? 'bottom: ' + bottom + ';' : '')}
-      ${(left ? 'left: ' + left + ';' : '')}
-      ${(right ? 'right: ' + right + ';' : '')}
+      ${(cord.top ? 'top: ' + cord.top + 'px;' : '')}
+      ${(cord.bottom ? 'bottom: ' + cord.bottom + 'px;' : '')}
+      ${(cord.left ? 'left: ' + cord.left + 'px;' : '')}
+      ${(cord.right ? 'right: ' + cord.right + 'px;' : '')}
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -172,32 +214,15 @@ function setupCustomMuteButton(block, player, config) {
 
   const container = block.querySelector('.video-container');
   container.append(button);
-
-  let top;
-  let bottom;
-  let left;
-  let right;
-  if (config.position === 'top-right') {
-    top = '10px';
-    right = '10px';
-  } else if (config.position === 'top-left') {
-    top = '10px';
-    left = '10px';
-  } else if (config.position === 'bottom-left') {
-    bottom = '10px';
-    left = '10px';
-  } else {
-    bottom = '10px';
-    right = '10px';
-  }
+  const { cord } = config;
 
   const styles = `
     .custom-mute-button {
       position: absolute;
-      ${(top ? 'top: ' + top + ';' : '')}
-      ${(bottom ? 'bottom: ' + bottom + ';' : '')}
-      ${(left ? 'left: ' + left + ';' : '')}
-      ${(right ? 'right: ' + right + ';' : '')}
+      ${(cord.top ? 'top: ' + cord.top + 'px;' : '')}
+      ${(cord.bottom ? 'bottom: ' + cord.bottom + 'px;' : '')}
+      ${(cord.left ? 'left: ' + cord.left + 'px;' : '')}
+      ${(cord.right ? 'right: ' + cord.right + 'px;' : '')}
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -205,11 +230,6 @@ function setupCustomMuteButton(block, player, config) {
       color: #000;
       padding: 5px;
       margin: 0;
-    }
-
-    .custom-play-button + .custom-mute-button {
-      ${(top ? 'top: 80px;' : '')}
-      ${(bottom ? 'bottom: 80px;' : '')}
     }
   `;
 
@@ -236,15 +256,13 @@ function setupPlayer(block, config) {
   const videoElement = block.querySelector('video.video-js');
   // eslint-disable-next-line no-undef
   const player = videojs(videoElement, {
+    controls: config.controls || false,
     bigPlayButton: false,
-  });
-  player.src({
-    src: config.url,
-    type: 'application/x-mpegURL',
+    autoplay: config.autoplay || false,
+    muted: config.autoplay || config.muted,
   });
 
-  player.muted(config.autoplay || config.muted);
-  player.autoplay(config.autoplay);
+  player.src(config.url);
 
   if (config.autopause) {
     setupAutopause(videoElement, player);
@@ -261,6 +279,13 @@ function setupPlayer(block, config) {
       }
     });
   }
+
+  addCss(`
+    .video-js {
+      width: 385px;
+      height: 385px;
+    }
+  `);
 }
 
 export function isVideo(element) {
@@ -270,8 +295,9 @@ export function isVideo(element) {
 
 export function decorateVideo(block) {
   const config = parseConfig(block);
+  setButtonCoordinates(config);
+
   const video = document.createElement('video');
-  video.setAttribute('controls', config.controls);
   video.classList.add('video-js', 'vjs-default-skin');
 
   const container = document.createElement('div');

@@ -1,0 +1,69 @@
+{
+    "copyMode": [
+      {
+        "mimeType": "image/*",
+        "value": "reference"
+      }
+    ],
+    "filterSchema": [
+      {
+        "header": "File Type",
+        "groupKey": "TopGroup",
+        "fields": [
+          {
+            "element": "checkbox",
+            "name": "type",
+            "defaultValue": ["directory", "file"],
+            "readOnly": true,
+            "options": [
+              {
+                "label": "Directories",
+                "value": "directory"
+              },
+              {
+                "label": "Files",
+                "value": "file"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "header": "Mime Types",
+        "groupKey": "MimeTypeGroup",
+        "fields": [
+          {
+            "defaultValue": ["image/jpeg", "image/png", "image/tiff"],
+            "element": "checkbox",
+            "name": "type",
+            "options": [
+              {
+                "label": "JPG",
+                "value": "image/jpeg"
+              },
+              {
+                "label": "PNG",
+                "value": "image/png"
+              },
+              {
+                "label": "TIFF",
+                "value": "image/tiff"
+              }
+            ],
+            "columns": 2
+          }
+        ]
+      },
+      {
+        "header": "Assets Tags",
+        "groupKey": "AssetTagsGroup",
+        "fields": [
+          {
+            "element": "taggroup",
+            "name": "property=metadata.application.xcm:keywords.id",
+            "columns": 3
+          }
+        ]
+      }
+    ]
+  }

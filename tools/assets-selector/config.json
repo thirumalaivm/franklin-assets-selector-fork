@@ -7,25 +7,21 @@
     ],
     "filterSchema": [
       {
-        "header": "Mime Types",
-        "groupKey": "MimeTypeGroup",
+        "header": "File Types",
+        "groupKey": "TopGroup",
         "fields": [
           {
-            "defaultValue": ["image/jpeg", "image/png", "image/tiff"],
+            "defaultValue": ["image/*", "video/*"],
             "element": "checkbox",
             "name": "type",
             "options": [
               {
-                "label": "JPG",
-                "value": "image/jpeg"
+                "label": "Images",
+                "value": "image/*"
               },
               {
-                "label": "PNG",
-                "value": "image/png"
-              },
-              {
-                "label": "TIFF",
-                "value": "image/tiff"
+                "label": "Videos",
+                "value": "video/*"
               }
             ],
             "columns": 2
@@ -43,6 +39,5 @@
           }
         ]
       }
-    ],
-    "hideFilters": "true"
+    ]
   }

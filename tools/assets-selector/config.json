@@ -7,28 +7,6 @@
     ],
     "filterSchema": [
       {
-        "header": "File Type",
-        "groupKey": "TopGroup",
-        "fields": [
-          {
-            "element": "checkbox",
-            "name": "type",
-            "defaultValue": ["directory", "file"],
-            "readOnly": true,
-            "options": [
-              {
-                "label": "Directories",
-                "value": "directory"
-              },
-              {
-                "label": "Files",
-                "value": "file"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "header": "Mime Types",
         "groupKey": "MimeTypeGroup",
         "fields": [

@@ -1,44 +1,33 @@
 {
-    "copyMode": [
-      {
-        "mimeType": "image/*",
-        "value": "reference"
-      }
-    ],
-    "filterSchema": [
-      {
-        "header": "File Types",
-        "groupKey": "TopGroup",
-        "fields": [
-          {
-            "defaultValue": ["image/*", "video/*"],
-            "element": "checkbox",
-            "name": "type",
-            "options": [
-              {
-                "label": "Images",
-                "value": "image/*"
-              },
-              {
-                "label": "Videos",
-                "value": "video/*"
-              }
-            ],
-            "columns": 2
-          }
-        ]
-      },
-      {
-        "header": "Assets Tags",
-        "groupKey": "AssetTagsGroup",
-        "fields": [
-          {
-            "element": "taggroup",
-            "name": "property=metadata.application.xcm:keywords.id",
-            "columns": 3
-          }
-        ]
-      }
-    ],
-    "hideFilters": "true"
-  }
+  "copyMode": [
+    {
+      "mimeType": "image/*",
+      "value": "reference"
+    }
+  ],
+  "filterSchema": [
+    {
+      "header": "File Types",
+      "groupKey": "TopGroup",
+      "fields": [
+        {
+          "defaultValue": ["image/*", "video/*"],
+          "element": "checkbox",
+          "name": "type",
+          "options": [
+            {
+              "label": "Images",
+              "value": "image/*"
+            },
+            {
+              "label": "Videos",
+              "value": "video/*"
+            }
+          ],
+          "columns": 2
+        }
+      ]
+    }
+  ],
+  "hideFilters": "true"
+}

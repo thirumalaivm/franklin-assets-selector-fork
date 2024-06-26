@@ -10,6 +10,17 @@
       "includePaths": ["**.docx**"],
       "passConfig": true,
       "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
+    },
+    {
+      "id": "asset-library-qa",
+      "title": "AEM Assets Library (QA)",
+      "environments": ["edit"],
+      "url": "https://experience-qa.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html?ims-client-id=p66302-franklin",
+      "isPalette": true,
+      "includePaths": ["**.docx**"],
+      "passConfig": true,
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
     }
+
   ]
 }

@@ -27,6 +27,31 @@
           "columns": 2
         }
       ]
+    },
+    {
+      "fields": [
+        {
+          "element": "checkbox",
+          "name": "expiredAsset",
+          "options": [
+            {
+              "label": "Expired",
+              "value": "expired"
+            }
+          ],
+          "orientation": "horizontal",
+          "columns": 2
+        },
+        {
+          "element": "DateRange",
+          "name": "property=pur:expirationDate",
+          "position": "top",
+          "label": "Expiration Duration",
+          "orientation": "horizontal"
+        }
+      ],
+      "header": "Expiration Status",
+      "groupKey": "ExpirationGroup"
     }
   ],
   "hideFilters": "true"

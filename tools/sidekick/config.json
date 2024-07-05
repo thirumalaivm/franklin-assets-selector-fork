@@ -20,7 +20,17 @@
       "includePaths": ["**.docx**"],
       "passConfig": true,
       "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
+    },
+    {
+      "id": "asset-library-local",
+      "title": "AEM Assets Library (Local)",
+      "environments": ["edit"],
+      "url": "https://localhost.corp.adobe.com/packages/%40assets/selectors/src/renderer/franklin/asset-selector.html?ims-client-id=p66302-franklin",
+      "isPalette": true,
+      "includePaths": ["**.docx**"],
+      "passConfig": true,
+      "passReferrer": true,
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
     }
-
   ]
 }

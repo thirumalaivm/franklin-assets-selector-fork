@@ -11,7 +11,10 @@
       "groupKey": "TopGroup",
       "fields": [
         {
-          "defaultValue": ["image/*", "video/*"],
+          "defaultValue": [
+            "image/*",
+            "video/*"
+          ],
           "element": "checkbox",
           "name": "type",
           "options": [
@@ -24,6 +27,48 @@
               "value": "video/*"
             }
           ],
+          "columns": 2
+        }
+      ]
+    },
+    {
+      "header": "Assets Tags",
+      "groupKey": "AssetTagsGroup",
+      "fields": [
+        {
+          "element": "taggroup",
+          "name": "property=metadata.application.xcm:keywords.id",
+          "defaultValue": [
+            "pfizer:pfe-brands/cibinqo"
+          ],
+          "options": [
+            {
+              "label": "CIBINQO",
+              "value": "pfizer:pfe-brands/cibinqo"
+            }
+          ],
+          "columns": 3
+        }
+      ]
+    },
+    {
+      "header": "Asset Status",
+      "groupKey": "AssetStatusGroup",
+      "fields": [
+        {
+          "element": "checkbox",
+          "name": "status",
+          "options": [
+            {
+              "label": "Active",
+              "value": "active"
+            },
+            {
+              "label": "Inactive",
+              "value": "inactive"
+            }
+          ],
+          "orientation": "horizontal",
           "columns": 2
         }
       ]

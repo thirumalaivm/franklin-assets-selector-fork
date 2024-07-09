@@ -36,7 +36,7 @@
       "id": "asset-report",
       "title": "AEM Assets Report",
       "environments": ["edit"],
-      "url": "https://288650-edsassettracker-stage.adobeio-static.net/api/v1/web/EDS-Asset-Tracker1/fetchList?hlxUrl=https://demo-custom-as-config--franklin-assets-selector--hlxsites.hlx.live",
+      "url": "/tools/asset-reporting/index.html",
       "includePaths": ["**.docx**"],
       "passConfig": true,
       "passReferrer": true

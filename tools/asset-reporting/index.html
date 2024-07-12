@@ -1,1 +1,57 @@
-Hello World
+<html>
+<head>
+    <script>
+        function getDocumentNameFromReferrer() {
+            // Get the current URL
+            const currentUrl = new URL(window.location.href);
+
+            // Get the referrer parameter
+            const referrer = currentUrl.searchParams.get('referrer');
+            const branch = currentUrl.searchParams.get('ref');
+            const repo = currentUrl.searchParams.get('repo');
+            const owner = currentUrl.searchParams.get('owner');
+            const repoUrl = `https://${branch}--${repo}--${owner}.hlx.live`;
+            if (!referrer) {
+                console.error('No referrer parameter found in the URL.');
+                return null;
+            }
+
+            // Parse the referrer URL
+            const referrerUrl = new URL(referrer);
+
+            // Get the document name from the 'file' parameter
+            const fileParam = referrerUrl.searchParams.get('file');
+            if (!fileParam) {
+                console.error('No file parameter found in the referrer URL.');
+                return null;
+            }
+
+            // Extract the document name
+            let documentName = decodeURIComponent(fileParam);
+            if (documentName.endsWith('.docx')) {
+                documentName = documentName.slice(0, -5);
+            }
+            documentName = documentName.toLowerCase().replace(/\s+/g, '-');
+            //return documentName;
+            return repoUrl;
+        }
+
+        // Example usage
+        document.addEventListener('DOMContentLoaded', () => {
+            const repoUrl = getDocumentNameFromReferrer();
+            const redirectUrl = `https://288650-edsassettracker.adobeio-static.net/assetsUsageReport.html?hlxUrl=${repoUrl}`;
+            // const repoUrl =
+            if (repoUrl) {
+                console.log('Repo Url:', repoUrl);
+                window.location.href = redirectUrl;
+            }
+        });
+
+
+    </script>
+</head>
+<body>
+<div id="documentName"></div>
+
+</body>
+</html>

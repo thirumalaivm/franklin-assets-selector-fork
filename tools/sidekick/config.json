@@ -37,7 +37,6 @@
       "title": "AEM Assets Report",
       "environments": ["edit"],
       "url": "/tools/asset-reporting/index.html",
-      "includePaths": ["**.docx**"],
       "passConfig": true,
       "passReferrer": true
     }

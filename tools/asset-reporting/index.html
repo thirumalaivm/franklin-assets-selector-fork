@@ -1,6 +1,8 @@
 <html>
 <head>
     <script>
+        let repoUrl;
+        let documentName;
         function getDocumentNameFromReferrer() {
             // Get the current URL
             const currentUrl = new URL(window.location.href);
@@ -10,7 +12,7 @@
             const branch = currentUrl.searchParams.get('ref');
             const repo = currentUrl.searchParams.get('repo');
             const owner = currentUrl.searchParams.get('owner');
-            const repoUrl = `https://${branch}--${repo}--${owner}.hlx.live`;
+            repoUrl = `https://${branch}--${repo}--${owner}.hlx.live`;
             if (!referrer) {
                 console.error('No referrer parameter found in the URL.');
                 return null;
@@ -27,22 +29,23 @@
             }
 
             // Extract the document name
-            let documentName = decodeURIComponent(fileParam);
+            documentName = decodeURIComponent(fileParam);
             if (documentName.endsWith('.docx')) {
                 documentName = documentName.slice(0, -5);
             }
             documentName = documentName.toLowerCase().replace(/\s+/g, '-');
             //return documentName;
-            return repoUrl;
+            //return repoUrl;
         }
 
         // Example usage
         document.addEventListener('DOMContentLoaded', () => {
             const repoUrl = getDocumentNameFromReferrer();
-            const redirectUrl = `https://288650-edsassettracker.adobeio-static.net/assetsUsageReport.html?hlxUrl=${repoUrl}`;
+            const redirectUrl = `https://288650-edsassettracker.adobeio-static.net/assetsUsageReport.html?hlxUrl=${repoUrl}&pagePath=/assets-report-poc/${documentName}`;
             // const repoUrl =
             if (repoUrl) {
-                console.log('Repo Url:', repoUrl);
+                console.log('Repo Url:', redirectUrl);
+                //window.open(redirectUrl, "_blank");
                 window.location.href = redirectUrl;
             }
         });

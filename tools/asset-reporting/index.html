@@ -40,10 +40,11 @@
 
         // Example usage
         document.addEventListener('DOMContentLoaded', () => {
-            const repoUrl = getDocumentNameFromReferrer();
+            //const repoUrl = getDocumentNameFromReferrer();
+            getDocumentNameFromReferrer();
             const redirectUrl = `https://288650-edsassettracker.adobeio-static.net/assetsUsageReport.html?hlxUrl=${repoUrl}&pagePath=/assets-report-poc/${documentName}`;
             // const repoUrl =
-            if (repoUrl) {
+            if (redirectUrl) {
                 console.log('Repo Url:', redirectUrl);
                 //window.open(redirectUrl, "_blank");
                 window.location.href = redirectUrl;

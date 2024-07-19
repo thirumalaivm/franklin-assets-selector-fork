@@ -1,5 +1,6 @@
 export default function decorate(block) {
-    var configuratorMarkup = '<main class="container">\n' +
+    var configuratorMarkup = '<div>\n'+
+        '<main class="container">\n' +
               '<iframe src="http://localhost:3000/viewers?assetName=dior-bag.glb" class="viwr"></iframe>\n' +
           '</main>\n' +
           '<div class="product-details">\n' +
@@ -14,7 +15,8 @@ export default function decorate(block) {
                   '<button class="buy-button">Add to Cart</button>\n' +
                   '<br/>\n' +
               '</div>\n' +
-          '</div>;
+          '</div>\n'+
+        '</div>';
     
     let div= document.createElement('div');
     div.innerHTML = configuratorMarkup;

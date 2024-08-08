@@ -213,7 +213,7 @@ function decorateExternalImages(ele, deliveryMarker) {
  * Decorates all images in a container element and replace media urls with delivery urls.
  * @param {Element} main The container element
  */
-function decorateImages(main) {
+function decorateDeliveryImages(main) {
   const pictureElements = main.querySelectorAll('picture');
   [...pictureElements].forEach((pictureElement) => {
     const imgElement = pictureElement.querySelector('img');
@@ -221,6 +221,10 @@ function decorateImages(main) {
     try {
       const deliveryObject = JSON.parse(decodeURIComponent(alt));
       const { deliveryUrl, altText } = deliveryObject;
+      if (!deliveryUrl) {
+        return;
+      }
+
       const newPictureElement = createOptimizedPicture(deliveryUrl, altText);
       pictureElement.parentElement.replaceChild(newPictureElement, pictureElement);
     } catch (error) {
@@ -242,7 +246,7 @@ export function decorateMain(main) {
   decorateExternalImages(main);
 
   // decorate images with delivery url and correct alt text
-  decorateImages(main);
+  decorateDeliveryImages(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);

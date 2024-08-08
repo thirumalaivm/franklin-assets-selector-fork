@@ -216,7 +216,8 @@ main > .section.video-container {
     height: 100%;
 }
 
-.video-component picture {
+.video-component picture,
+.video-component picture img {
     display: block;
     width: 100%;
     height: 100%;

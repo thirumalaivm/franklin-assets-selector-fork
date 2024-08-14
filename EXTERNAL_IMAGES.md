@@ -68,13 +68,15 @@ The above approach works well for external images, but it can be challenging for
    
    ```
       {
-        deliveryUrl: "https://delivery-p66302-e574366.adobeaemcloud.com/adobe/dynamicmedia/deliver/urn:aaid:aem:ced69e3f-dda1-487c-921f-f1547476a4b4/seoname.webp?quality=60",
-        altText: "Mapple trees"
+        "deliveryUrl": "https://delivery-p66302-e574366.adobeaemcloud.com/adobe/dynamicmedia/deliver/urn:aaid:aem:ced69e3f-dda1-487c-921f-f1547476a4b4/seoname.webp?quality=60",
+        "altText": "Mapple trees"
       }
    ```
    
 
 **Asset selector support :**
 
-Asset selector has out of the box support to copy image with alt text attribute containing delivery url and alt text.
+The Asset Selector supports copying images with the alt text attribute containing both the delivery URL and the alt text by default. To enable this feature, set the `copyMode` configuration to `use-alt-text` as outlined in [here](https://github.com/hlxsites/franklin-assets-selector/commit/5f5318203746ec192b1b8293003c787851035082)
+
+
 

@@ -43,3 +43,38 @@ export function decorateMain(main) {
 During the page rendering process, the frontend code replaces the anchor tags identified as exteernal images on the page with the `picture` tags with `src`/`srcset` attributes set as the external image's url as specified in the external image link placed on the Word / Google Document during the page authoring process.
 
 Authors can optionally specify query paramaters in the hyperlinked external url and they would be retained in the `picture` tag's `src`/`srcset` attributes. These are useful for specifying image delivery parameters such as image width, height, format, etc. as understood by the external image delivery service.
+
+## Extended Usecase of leveraging DM OpenAPI for Streamlining AEM Franklin Development
+
+For clients utilizing the `AEM Assets` repository to distribute their assets, the burden of maintaining asset integrity due to frequent edits, updates, and deletions performed within AEM is alleviated. Thanks to `Dynamic Media OpenAPI`, synchronization with every DOCX document becomes seamless.
+
+Simply incorporate the necessary `asset-library` configuration into AEM sidekick plugin, as outlined in [here](https://github.com/hlxsites/franklin-assets-selector/commit/24e99a2455c9372c8a54637f3e24f0fe4c2ac4f5)
+
+Once `asset-library` in integrated then simply perform copy/paste through plugin for any asset into target DOCX. Here is one crafted sample on how it might look like - [Check Here](https://ext-images-with-dm-openapi--franklinvideo--anuraggupta228.hlx.live/dm-open-api-with-aem-franklin)
+
+And voilà! It’s done! Not only have we minimized redundancy and alleviated the cumbersome task for clients to update every DOCX document with `Dynamic Media Open API` but the LHS still preserves at 100 for mobile as well as desktop - [Witness Here!](https://pagespeed.web.dev/analysis/https-dm-openapi-with-eds--franklin-assets-selector--hlxsites-hlx-live-anuraggupta228-DM-OpenAPI-adding-refs-in-eds/1qsej8ad01?form_factor=mobile)
+
+Now, let’s take a closer look at the comprehensive PSI report: ![Page Speed Insights Report](/images/psi-report-for-DM-OpenAPI.png)
+
+## Preview for an external image along with alt text support
+
+The above approach works well for external images, but it can be challenging for authors to determine which images are being used on the page. This issue can be addressed by using a preview image instead of the URL or external image markup. The external delivery URL can be stored in the image’s alt text attribute. A client script then parses this alt text attribute to replace the URL with the actual delivery URL while also preserving the accessible alt text.
+
+**Steps to follow :**
+
+1. Copy binary image to target author document
+2. Right click on image and select `Format picture` menu 
+3. Add info in alt text in json format e.g.
+   
+   ```
+      {
+        deliveryUrl: "https://delivery-p66302-e574366.adobeaemcloud.com/adobe/dynamicmedia/deliver/urn:aaid:aem:ced69e3f-dda1-487c-921f-f1547476a4b4/seoname.webp?quality=60",
+        altText: "Mapple trees"
+      }
+   ```
+   
+
+**Asset selector support :**
+
+Asset selector has out of the box support to copy image with alt text attribute containing delivery url and alt text.
+

@@ -5,7 +5,7 @@
       "id": "asset-library",
       "title": "AEM Assets Library",
       "environments": ["edit"],
-      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.htm?extConfigUrl=https://helix-asset-selector-configs.netlify.app/config-gems.json",
+      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html?extConfigUrl=https%3A%2F%2Fhelix-asset-selector-configs.netlify.app%2Fconfig-gems.json",
       "isPalette": true,
       "includePaths": ["**.docx**"],
       "passConfig": true,

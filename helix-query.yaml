@@ -1,0 +1,23 @@
+indices:
+  assets-index:
+    target: /assets-index.json
+    properties:
+      polaris-assets:
+        select: a
+        values: |
+          match(attribute(el, 'href'), 'https:\/\/[^\/]+\/adobe\/assets\/urn:aaid:aem:.*')
+      dm-next-assets:
+        select: a
+        values: |
+          match(attribute(el, 'href'), 'https:\/\/[^\/]+\/adobe\/dynamicmedia\/deliver\/urn:aaid:aem:.*')
+      scene7-assets:
+        select: a
+        values: |
+          match(attribute(el, 'href'), 'https:\/\/.*scene7.com\/is\/image\/.*')
+  site:
+    target: /query-index.json
+    properties:
+      tags:
+        select: head > meta[property="article:tag"]
+        values: |
+          attribute(el, 'content')

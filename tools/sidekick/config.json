@@ -13,6 +13,17 @@
       "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
     },
     {
+      "id": "asset-library-stage",
+      "title": "AEM Assets Library Stage",
+      "environments": ["edit"],
+      "url": "https://experience-stage.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html?ims-client-id=p66302-franklin&extConfigUrl=https://274796-hlxassetaddonconfig-stage.adobeio-static.net/api/v1/web/hlx-asset-addon-config/hlx-assets-addon-config",
+      "isPalette": true,
+      "includePaths": ["**.docx**"],
+      "passConfig": true,
+      "passReferrer": true,
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
+    },
+    {
       "id": "asset-library-qa",
       "title": "AEM Assets Library QA",
       "environments": ["edit"],

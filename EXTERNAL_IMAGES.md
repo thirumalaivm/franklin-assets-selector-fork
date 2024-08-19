@@ -59,6 +59,7 @@ Now, let’s take a closer look at the comprehensive PSI report: ![Page Speed In
 ## Preview for an external image along with alt text support
 
 The above approach works well for external images, but it can be challenging for authors to determine which images are being used on the page. This issue can be addressed by using a preview image instead of the URL or external image markup. The external delivery URL can be stored in the image’s alt text attribute. A client script then parses this alt text attribute to replace the URL with the actual delivery URL while also preserving the accessible alt text.
+Check sample page [here](https://main--franklin-assets-selector--hlxsites.hlx.live/delivery-images-example)
 
 **Steps to follow :**
 

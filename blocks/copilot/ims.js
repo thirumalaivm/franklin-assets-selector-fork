@@ -1,6 +1,6 @@
 export default async function getAccessToken(cfg = {}) {
   if (!cfg.token) {
-    const url = `https://sparkling-moon-cf29.satyadeep.workers.dev/?code=${cfg.authcode}&shared-secret=franklincopilot`;
+    const url = `https://sparkling-moon-cf29.satyadeep.workers.dev/?code=${cfg.authcode}&shared-secret=blahblah`;
     // call IMS API via CF worker
     const response = await fetch(url);
     if (response.ok) {

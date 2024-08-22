@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { wait } from './utils.js';
 
-const API_KEY = '64087d1089dc4308b9a3fd079ac0fab2';
+const API_KEY = 'blahblahblah'; // Replace with your Azure OpenAI API Key
 const MAX_RETRIES = 3;
 
 async function callAzureChatCompletionAPI(conversation) {

@@ -170,6 +170,7 @@ header nav .nav-sections {
 
 header nav[aria-expanded="true"] .nav-sections {
   display: block;
+  color: white;
   visibility: visible;
   align-self: start;
 }

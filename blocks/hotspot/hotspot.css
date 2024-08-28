@@ -1,0 +1,86 @@
+/* CSS: styles.css */
+.block.hotspot {
+    position: relative;
+    background: lightgray;
+}
+
+.block.hotspot img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+}
+
+.block.hotspot > div.hotspot {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    border: 3px solid var(--white);
+    background: var(--secondary);
+    position: absolute;
+    cursor: pointer;
+}
+
+.block.hotspot > div.hotspot::after {
+    content: attr(data-city) " : " attr(data);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    position: absolute;
+    padding: 15px;
+    width: 20vw;
+    left: -150%;
+    bottom: 150%;
+    background: black;
+    box-shadow: 0 8px 8px -4px lightgrey;
+    font-size: var(--body-font-size-s);
+    z-index: +1;
+    pointer-events: none;
+}
+
+.block.hotspot > div.hotspot:hover::after,
+.block.hotspot > div.hotspot.onclick::after {
+    opacity: 1;
+}
+
+[data-city] {
+    color: var(--primary);
+}
+
+.section.hotspot-container > .section-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto 1rem;
+}
+
+.block.hotspot > div.hotspot {
+    background: red !important; /* Temporary for visibility */
+    z-index: 10; /* Ensure it is above the image */
+}
+
+
+.section.hotspot-container > .section-container > div:first-of-type {
+    flex-basis: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.block.hotspot svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+@media (min-width: 62rem) {
+    .section.hotspot-container > .section-container {
+        display: flex;
+        flex-direction: row;
+        margin: auto;
+    }
+
+    .section.hotspot-container > .section-container h1 {
+        font-size: var(--h1-font-size-desktop);
+        font-weight: var(--font-weight-small);
+        margin: 4.375rem 0 2.5rem;
+    }
+}

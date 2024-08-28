@@ -14,10 +14,10 @@
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
-  --background-color: black;
+  --background-color: #99cc99;
   --light-color: #eee;
   --dark-color: rgb(10,10,10);
-  --text-color: white;
+  --text-color: black;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback;
@@ -198,7 +198,7 @@ main .section {
 
 @media (width >= 900px) {
   .section > div {
-    /* max-width: 1200px; */
+    max-width: 2000px;
     margin: auto;
   }
 }

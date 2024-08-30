@@ -67,6 +67,9 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   background-image:url(https://techsupport.scene7.com/is/image/ajhcom/bg2?wid=1800);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
   display: none;
 }
 

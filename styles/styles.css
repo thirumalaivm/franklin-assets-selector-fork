@@ -17,7 +17,7 @@
   --background-color: #0d0d0d;
   --light-color: #eee;
   --dark-color: rgb(10,10,10);
-  --text-color: black;
+  --text-color: white;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback;

@@ -32,7 +32,7 @@ export default function decorate(block) {
 
             const currentPosition = { x: left, y: top };
 
-            if (previousPosition) {
+            /*if (previousPosition) {
                 // Draw a line between previous and current hotspot
                 const line = document.createElementNS(svgNS, "line");
                 line.setAttribute("x1", `${previousPosition.x}%`);
@@ -44,7 +44,7 @@ export default function decorate(block) {
                 svg.appendChild(line);
             }
 
-            previousPosition = currentPosition;
+            previousPosition = currentPosition;*/
         }
     });
 }

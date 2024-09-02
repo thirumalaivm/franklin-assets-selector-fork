@@ -132,6 +132,7 @@
 }
 
 .carousel .carousel-navigation-buttons {
+  display: none;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -145,6 +146,7 @@
 
 /* stylelint-disable-next-line no-descending-specificity */
 .carousel .carousel-navigation-buttons button {
+  display: none;
   border-radius: 8px;
   margin: 0;
   padding: 0;

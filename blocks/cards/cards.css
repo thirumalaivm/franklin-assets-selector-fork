@@ -12,8 +12,8 @@
     border: 1px solid #dadada;
     /* background-color: var(--background-color); */
     /* background-color: #c1dcb6; */
-    background-color: #ED9935;
-    background-image: linear-gradient(red, yellow);
+    background-color: #907a5e;
+    /* background-image: linear-gradient( rgb(225, 124, 29), #fbf244); */
     color: black;
     filter: drop-shadow(black 5px 5px 10px);
 }

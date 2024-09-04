@@ -12,7 +12,7 @@
 
 :root {
   /* colors */
-  --background-color: transparent;
+  --background-color: #38302d;
   --light-color: #f8f8f8;
   --dark-color: #505050;
   /* --text-color: #131313; */
@@ -45,13 +45,13 @@
 @font-face {
   font-family: roboto-condensed-fallback;
   size-adjust: 88.82%;
-  src: local('Arial');
+  src: local("Arial");
 }
 
 @font-face {
   font-family: roboto-fallback;
   size-adjust: 99.529%;
-  src: local('Arial');
+  src: local("Arial");
 }
 
 @media (width >= 900px) {
@@ -74,8 +74,9 @@
 body {
   display: none;
   margin: 0;
-  /* background-color: var(--background-color); */
-  background-image:url(https://delivery-p124211-e1224519.adobeaemcloud.com/adobe/assets/urn:aaid:aem:944c891f-46d0-4099-bb3c-b7094afab4bb/as/AdobeStock_126977824.jpeg?preferwebp=true&width=1800);
+  background-color: var(--background-color);
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://adobe.scene7.com/is/image/ADBE/lavabg?wid=2400");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -113,6 +114,7 @@ h1 {
   scroll-margin: 40px;
   margin: 0;
   padding: 20px;
+  color: #f3560d;
 }
 
 h2,
@@ -131,12 +133,24 @@ h6 {
   color: greenyellow;
 }
 
-h1 { font-size: var(--heading-font-size-xxl); }
-h2 { font-size: var(--heading-font-size-xl); }
-h3 { font-size: var(--heading-font-size-l); }
-h4 { font-size: var(--heading-font-size-m); }
-h5 { font-size: var(--heading-font-size-s); }
-h6 { font-size: var(--heading-font-size-xs); }
+h1 {
+  font-size: var(--heading-font-size-xxl);
+}
+h2 {
+  font-size: var(--heading-font-size-xl);
+}
+h3 {
+  font-size: var(--heading-font-size-l);
+}
+h4 {
+  font-size: var(--heading-font-size-m);
+}
+h5 {
+  font-size: var(--heading-font-size-s);
+}
+h6 {
+  font-size: var(--heading-font-size-xs);
+}
 
 p,
 dl,
@@ -146,6 +160,18 @@ pre,
 blockquote {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
+}
+
+p,
+dl,
+ol,
+ul,
+pre,
+blockquote {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
+  font-size: 28px;
+  color: white;
 }
 
 code,
@@ -203,7 +229,7 @@ button {
   /* background-color: var(--link-color); */
   background-color: black;
   /* color: var(--background-color); */
-  color: #E3CE68;
+  color: #e3ce68;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -265,7 +291,7 @@ main > .section:first-of-type {
 
 @media (width >= 900px) {
   /* main > .section > div { */
-    /* padding: 0 32px; */
+  /* padding: 0 32px; */
   /* } */
 }
 
@@ -278,7 +304,7 @@ main .section.highlight {
 }
 
 .default-content-wrapper {
-  color: black; 
+  color: black;
   background-color: transparent;
   opacity: 0.9;
   padding: 4%;

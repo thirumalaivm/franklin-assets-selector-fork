@@ -1,7 +1,7 @@
 /* CSS: styles.css */
 .block.hotspot {
     position: relative;
-    background: lightgray;
+    background: none;
 }
 
 .block.hotspot img {
@@ -22,7 +22,7 @@
 
 .block.hotspot > div.hotspot::after {
     content: attr(data-city) " : " attr(data);
-    color: white;
+    color: rgb(0, 255, 0);
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     position: absolute;
@@ -52,6 +52,7 @@
     margin: auto 1rem;
 }
 
+/* Change hotspot color here */
 .block.hotspot > div.hotspot {
     background: red !important; /* Temporary for visibility */
     z-index: 10; /* Ensure it is above the image */

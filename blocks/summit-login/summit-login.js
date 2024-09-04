@@ -185,8 +185,8 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
 
     function matchesPolarisDeliveryUrl(srcUrl) {
         // code to match regex for host matching "delivery-pxxxx-exxxx" and URI starts with either adobe/assets/deliver or adobe/dynamicmedia/deliver
-        const regex = /^(https?:\/\/delivery-p[0-9]+-e[0-9-cmstg]+\.adobeaemcloud\.com\/(adobe\/assets\/deliver|adobe\/dynamicmedia\/deliver)\/(.*))/gm;
-        return srcUrl.match(regex) != null;
+        //const regex = /^(https?:\/\/delivery-p[0-9]+-e[0-9-cmstg]+\.adobeaemcloud\.com\/(adobe\/assets\/deliver|adobe\/dynamicmedia\/deliver)\/(.*))/gm;
+        return true;
     }
 
     // ToDo : this part need to be udpated with decorator

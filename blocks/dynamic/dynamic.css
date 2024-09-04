@@ -70,3 +70,10 @@
     object-fit: cover;
     object-position: center;
 } */
+
+div.dynamic.banner.block {
+    width: 50%;
+    height: 50px;
+    object-fit: cover;
+    object-position: center;
+}

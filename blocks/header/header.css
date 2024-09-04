@@ -239,7 +239,7 @@ header nav .nav-sections ul > li > ul > li {
     display: flex;
     gap: 2em;
     margin: 0;
-    font-size: var(--body-font-size-l);
+    /* font-size: var(--body-font-size-l); */
     color: #f3560d;
     justify-content: flex-end;
     align-items: center;
@@ -291,4 +291,9 @@ header nav .nav-sections ul > li > ul > li {
 /* tools */
 header nav .nav-tools {
   grid-area: tools;
+}
+
+nav {
+  position: relative;
+  top: -90px;
 }

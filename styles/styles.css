@@ -30,7 +30,7 @@
   --body-font-size-xs: 17px;
 
   /* heading sizes */
-  --heading-font-size-xxl: 55px;
+  --heading-font-size-xxl: 75px;
   --heading-font-size-xl: 44px;
   --heading-font-size-l: 34px;
   --heading-font-size-m: 27px;
@@ -134,13 +134,18 @@ h6 {
 }
 
 h1 {
-  font-size: var(--heading-font-size-xxl);
+  /* font-size: var(--heading-font-size-xxl); */
+  font-size: 48pt;
+  font-weight:900;
 }
 h2 {
-  font-size: var(--heading-font-size-xl);
+  /* font-size: var(--heading-font-size-xl); */
+  font-size: 48pt;
 }
 h3 {
-  font-size: var(--heading-font-size-l);
+  font-size: var(--heading-font-size-xl);
+  color: black;
+  font-weight: 700;
 }
 h4 {
   font-size: var(--heading-font-size-m);

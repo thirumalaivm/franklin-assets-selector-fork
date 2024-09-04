@@ -1,7 +1,7 @@
 import { createOptimizedPicture } from "../../scripts/aem.js";
 
 function isValidUrl(string) {
-  const urlRegex = /^https?:\/\/[^\s$.?#].[^\s]*$/;
+  const urlRegex = /^https?:\/\/[^\s]+[{}()\w\-._~:/?#[\]@!$&'()*+,;= ]*$/;
   return urlRegex.test(string);
 }
 

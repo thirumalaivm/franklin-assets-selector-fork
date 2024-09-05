@@ -107,18 +107,7 @@ header .header[data-block-status="loaded"],
 footer .footer[data-block-status="loaded"] {
   visibility: visible;
 }
-/* 
-h1 {
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
-  font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
-  scroll-margin: 40px;
-  margin: 0;
-  padding: 20px;
-  color: #f3560d;
-} */
+
 h1,
 h2,
 h3,
@@ -169,7 +158,7 @@ ol,
 ul,
 pre,
 blockquote {
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-m);
   margin-top: 0.8em;
   margin-bottom: 0.25em;
   color: white;
@@ -225,6 +214,7 @@ button {
   font-style: normal;
   font-weight: 500;
   line-height: 1.25;
+  font-size: var(--body-font-size-s);
   text-align: center;
   text-decoration: none;
   background-color: var(--link-color);

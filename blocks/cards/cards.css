@@ -13,8 +13,8 @@
     /* background-color: var(--background-color); */
     /* background-color: #c1dcb6; */
     background-color: #666666;
-    /* background-image: linear-gradient( rgb(225, 124, 29), #fbf244); */
-    color: black;
+    background-image: linear-gradient( black 0%, #666666 100%);
+    color: white;
     filter: drop-shadow(black 5px 5px 10px);
 }
 
@@ -35,12 +35,21 @@
 
 .cards.members.block > ul > li {
     background-color: #C6DAB0;
-    color: black;
+    color: white;
     filter: drop-shadow(black 5px 5px 10px);
 }
 
 .cards.rentals.block > ul > li {
   background-color: #633923;
-  color: black;
+  color: white;
   filter: drop-shadow(black 5px 5px 10px);
+}
+
+div.cards-card-body p {
+    color: #888888;
+}
+
+div.cards-card-body h3 {
+    color: #ff6634;
+    font-size: 1em;
 }

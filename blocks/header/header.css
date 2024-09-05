@@ -176,10 +176,18 @@ header nav[aria-expanded="true"] .nav-sections {
   align-self: start;
 }
 
-header nav .nav-sections ul  {
+/* header nav .nav-sections ul  {
   list-style: none;
   padding-left: 0;
   font-size: var(--body-font-size-s);
+  font-weight: 500;
+} */
+
+header nav .nav-sections ul {
+  list-style: none;
+  padding-left: 0;
+  /* font-size: var(--body-font-size-s); */
+  font-size: 10pt;
   font-weight: 500;
 }
 

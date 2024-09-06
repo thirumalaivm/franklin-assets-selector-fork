@@ -17,7 +17,7 @@
   --dark-color: #505050;
   --text-color: white;
   --link-color: #333333;;
-  --link-hover-color: #ff6633;;
+  --link-hover-color: #ff6633;
   ;
 
   /* fonts */
@@ -28,8 +28,8 @@
     sans-serif;
 
     /* body sizes  - global variables */
-    --body-font-size-m: 3rem;
-    --body-font-size-s: 2rem; 
+    --body-font-size-m: 1.4rem;
+    --body-font-size-s: 1.0rem; 
     --body-font-size-xs: 0.75rem;
 
     /* heading sizes */
@@ -117,7 +117,7 @@ h6 {
   /* margin-top: 0.8em;
   margin-bottom: 0.25em; */
   font-family: var(--heading-font-family);
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1.25;
   scroll-margin: 40px;
   margin: 0;
@@ -157,11 +157,14 @@ dl,
 ol,
 ul,
 pre,
-blockquote {
+blockquote p, dl, ol, ul, pre, blockquote {
   font-size: var(--body-font-size-s);
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
+  /* margin-top: 0.8em; */
+  /* margin-bottom: 0.25em; */
   color: white;
+  margin-left: 15%;
+  margin-right: 15%;
+  /* text-align: justify; */
 }
 
 code,
@@ -214,7 +217,7 @@ button {
   font-style: normal;
   font-weight: 500;
   line-height: 1.25;
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-m);
   text-align: center;
   text-decoration: none;
   background-color: var(--link-color);
@@ -230,7 +233,7 @@ a.button:focus,
 button:hover,
 button:focus {
   /* background-color: var(--link-hover-color); */
-  background-color: black;
+  background-color: white;
   cursor: pointer;
 }
 

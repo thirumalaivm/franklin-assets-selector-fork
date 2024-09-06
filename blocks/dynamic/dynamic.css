@@ -70,3 +70,6 @@
     object-fit: cover;
     object-position: center;
 } */
+.dynamic.logo.block {
+    margin-top: 4%;
+}

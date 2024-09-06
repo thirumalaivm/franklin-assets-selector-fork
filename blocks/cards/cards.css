@@ -46,10 +46,13 @@
 }
 
 div.cards-card-body p {
-    color: #888888;
+    color: #cac8c8;
+    font-size: 1.2rem;
+    line-height: 1.2;
 }
 
 div.cards-card-body h3 {
-    color: #ff6634;
-    font-size: 1em;
+    color: #fff;
+    font-size: 1.5em;
+    text-transform:uppercase;
 }

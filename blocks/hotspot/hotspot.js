@@ -1,50 +1,55 @@
 export default function decorate(block) {
-    const svgNS = "http://www.w3.org/2000/svg";
-
-    // Create SVG element
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.style.position = "absolute";
-    svg.style.top = "0";
-    svg.style.left = "0";
-    svg.style.width = "100%";
-    svg.style.height = "100%";
-    block.appendChild(svg);
-
-    let previousPosition = null;
-
     [...block.children].forEach((row, r) => {
         if (r > 0) {
-            const nexticondiv = document.createElement('div');
-            const left = parseFloat([...row.children][1].textContent);
-            const top = parseFloat([...row.children][2].textContent);
+            const content = [...row.children][0].textContent.trim();
+            const isImage = content.endsWith('.jpg') || content.endsWith('.png') || content.endsWith('.gif') || content.endsWith('.jpeg');
+            const isVideo = content.endsWith('.mp4') || content.endsWith('.webm') || content.endsWith('play') || content.endsWith('content/'); // Adjust condition as needed
+            const isText = !isImage && !isVideo; // Assuming if it's neither image nor video, it's text
 
-            nexticondiv.style.left = `${left}%`;
-            nexticondiv.style.top = `${top}%`;
-            nexticondiv.classList.add('hotspot');
-            nexticondiv.setAttribute('data', [...row.children][0].textContent.split(':')[1]);
-            nexticondiv.setAttribute('data-city', [...row.children][0].textContent.split('\n')[2].split(':')[0]);
+            const nexticondiv = document.createElement('div');
+            nexticondiv.classList.add('hotspot'); // Added class for CSS targeting
+            nexticondiv.style.left = [...row.children][1].textContent;
+            nexticondiv.style.top = [...row.children][2].textContent;
+            nexticondiv.setAttribute('data', content);
+            //nexticondiv.setAttribute('data-city', [...row.children][0].textContent.split('\n')[2].split(':')[0]);
+
+            // Create content display element
+            const contentContainer = document.createElement('div');
+            contentContainer.classList.add('hotspot-content');
+
+            if (isImage) {
+                const img = document.createElement('img');
+                img.src = content;
+                contentContainer.appendChild(img);
+            } else if (isVideo) {
+                const video =document.createElement('div');
+                    video.innerHTML =`<div class="embed-default">
+                        <iframe src=${content} from allow="encrypted-media; autoplay; loop" loading="lazy">
+                            </iframe>
+                           </div>`;
+                //video.src = content;
+                //video.controls = true; // Allows user control over the video
+                contentContainer.appendChild(video);
+            } else if (isText) {
+                contentContainer.textContent = content; // Display text
+            }
+
+            // Append content container to hotspot div
+            nexticondiv.appendChild(contentContainer);
+
             nexticondiv.addEventListener('click', () => {
+                // Hide content of all other hotspots
+                document.querySelectorAll('.hotspot').forEach(hotspot => {
+                    if (hotspot !== nexticondiv) {
+                        hotspot.classList.remove('onclick');
+                    }
+                });
+                // Toggle the current hotspot content
                 nexticondiv.classList.toggle('onclick');
             });
 
             row.after(nexticondiv);
             row.remove();
-
-            const currentPosition = { x: left, y: top };
-
-            /*if (previousPosition) {
-                // Draw a line between previous and current hotspot
-                const line = document.createElementNS(svgNS, "line");
-                line.setAttribute("x1", `${previousPosition.x}%`);
-                line.setAttribute("y1", `${previousPosition.y}%`);
-                line.setAttribute("x2", `${currentPosition.x}%`);
-                line.setAttribute("y2", `${currentPosition.y}%`);
-                line.setAttribute("stroke", "white");
-                line.setAttribute("stroke-width", "2");
-                svg.appendChild(line);
-            }
-
-            previousPosition = currentPosition;*/
         }
     });
 }

@@ -13,7 +13,7 @@
 
 .columns > div > .columns-img-col {
   order: 0;
-  padding-bottom: 2rem;
+  /* padding-bottom: 2rem; */
 }
 
 .columns > div > .columns-img-col img {
@@ -32,6 +32,10 @@
     order: unset;
   }
 
+  .columns.member-collections.block.columns-3-cols {
+    margin-left: 50px;
+    margin-right: 50px;
+}
   /* .popular-collections img {
     height: 16rem;
     width: 24rem;

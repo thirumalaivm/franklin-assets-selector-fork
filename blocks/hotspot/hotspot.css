@@ -1,7 +1,7 @@
 /* CSS: styles.css */
 .block.hotspot {
     position: relative;
-    background: lightgray;
+    background: none;
 }
 
 .block.hotspot img {
@@ -60,7 +60,7 @@
 /*
 .block.hotspot > div.hotspot::after {
     content: attr(data);
-    color: white;
+    color: rgb(0, 255, 0);
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     position: absolute;
@@ -88,6 +88,7 @@
     margin: auto 1rem;
 }
 
+
 main .embed .embed-default {
     position: relative;
     left: 0;
@@ -95,6 +96,7 @@ main .embed .embed-default {
     height: 0;
     padding-bottom: 56.25%;
 }
+
 
 .block.hotspot > div.hotspot {
     background: red !important; /* Temporary for visibility */

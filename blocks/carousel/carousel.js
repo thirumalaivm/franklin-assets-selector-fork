@@ -1,5 +1,7 @@
 import { fetchPlaceholders } from '../../scripts/aem.js';
 
+const INTERVAL_TIME = 10000; // 5 seconds
+
 function updateActiveSlide(slide) {
   const block = slide.closest('.carousel');
   const slideIndex = parseInt(slide.dataset.slideIndex, 10);
@@ -86,7 +88,7 @@ function bindEvents(block) {
 
 // Function to start auto sliding
 function startAutoSlide(block) {
-  const intervalTime = 5000; // 5 seconds
+  const intervalTime = INTERVAL_TIME; 
   block.autoSlideInterval = setInterval(() => {
     showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
   }, intervalTime);

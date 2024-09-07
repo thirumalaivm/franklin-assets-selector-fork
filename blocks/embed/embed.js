@@ -31,9 +31,16 @@ const loadScript = (url, callback, type) => {
   return script;
 };
 
+// const getDefaultEmbed = (url, hasMobileView) => `
+//   <div class="embed-default ${hasMobileView ? 'mobile-view' : ''}">
+//     <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" 
+//       allowfullscreen="" scrolling="no" allow="encrypted-media; autoplay; loop" 
+//       title="Content from ${url.hostname}" loading="lazy">
+//     </iframe>
+//   </div>`;
 const getDefaultEmbed = (url, hasMobileView) => `
   <div class="embed-default ${hasMobileView ? 'mobile-view' : ''}">
-    <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" 
+    <iframe src="${url.href}" style="border: 0; width: 70%; height: 70%; top:0, left:0; position: absolute;" 
       allowfullscreen="" scrolling="no" allow="encrypted-media; autoplay; loop" 
       title="Content from ${url.hostname}" loading="lazy">
     </iframe>

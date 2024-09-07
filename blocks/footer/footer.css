@@ -14,3 +14,9 @@ footer .footer p {
   margin: 0;
   color: white;
 }
+
+/* footer style */
+#footer{
+  color: darkgray;
+  text-decoration: none;
+}

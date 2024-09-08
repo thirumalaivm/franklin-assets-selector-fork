@@ -18,7 +18,7 @@
     background: var(--secondary);
     position: absolute;
     cursor: pointer;
-    background: #EB6032 !important; /* Temporary for visibility */
+    background: #02C3DF !important; /* Temporary for visibility */
     z-index: 10; /* Ensure it is above the image */
     filter: drop-shadow(5px 5px 7px black)
 }

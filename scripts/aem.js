@@ -261,21 +261,63 @@ async function loadCSS(href) {
  */
 async function loadScript(src, attrs) {
   return new Promise((resolve, reject) => {
-    if (!document.querySelector(`head > script[src="${src}"]`)) {
-      const script = document.createElement('script');
+    let script = document.querySelector(`head > script[src="${src}"]`);
+    const isLoaded = script && script.dataset.loaded;
+    const isFailed = script && script.dataset.failed;
+    if (isLoaded) {
+      resolve();
+      return
+    }
+    
+    if (isFailed) {
+      reject();
+      return;
+    }
+
+    if (!script) {
+      script = document.createElement('script');
       script.src = src;
+      
+      script.onload = () => {
+        script.dataset.loaded = true;
+        resolve();
+        document.dispatchEvent(new CustomEvent('script-loaded', {
+          detail: {
+            src,
+          }
+        }))
+      }
+      script.onerror = (error) => {
+        script.dataset.failed = true;
+        reject();
+        document.dispatchEvent(new CustomEvent('script-failed', {
+          detail: {
+            src,
+            error,
+          }
+        }))
+      }
+    
       if (attrs) {
         // eslint-disable-next-line no-restricted-syntax, guard-for-in
         for (const attr in attrs) {
           script.setAttribute(attr, attrs[attr]);
         }
       }
-      script.onload = resolve;
-      script.onerror = reject;
+
       document.head.append(script);
-    } else {
-      resolve();
+      return;
     }
+      
+    const successHandler = (evt) => {
+      if (evt.detail.src !== src) {
+        return;
+      }
+
+      resolve();
+      document.removeEventListener('script-loaded', successHandler);
+    };
+    document.addEventListener('script-loaded', successHandler);
   });
 }
 

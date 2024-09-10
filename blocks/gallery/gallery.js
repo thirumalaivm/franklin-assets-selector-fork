@@ -17,6 +17,8 @@ const SMARTCROP_SQUARE = ":11square";
 const SMARTCROP_16_9 = ":169banner";
 const SMARTCROP_5_4 = ":54vert";
 const SMARTCROP_NONE = "";
+const LOGO =
+  "&layer=1&src=WKND-TRVL-travel-license-plate-euro-style&sizen=0.2,0.2&originn=0.5,-0.5&posn=0.48,-0.48";
 
 const RESET = {
   type: "square",
@@ -26,14 +28,15 @@ const RESET = {
     sepia: `fmt=jpeg&qlt=80&op_sharpen=1&resMode=sharp2&op_colorize=704214`,
   },
   preset: "default",
-  background: ' background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://adobe.scene7.com/is/image/ADBE/lavabg?wid=2400");',
+  background:
+    ' background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://adobe.scene7.com/is/image/ADBE/lavabg?wid=2400");',
   width: WID_S,
   smartcrop: SMARTCROP_NONE,
+  showlogo: false,
 };
 
 // clone the RESET object
 const config = JSON.parse(JSON.stringify(RESET));
-
 
 // function to store a config object in local storage
 function storeConfig(config) {
@@ -62,6 +65,9 @@ function applyPreset(url, preset) {
   let queryString = `${config.presets[config.preset]}`;
   if (config.smartcrop === SMARTCROP_NONE) {
     queryString = queryString.concat(`&wid=${config.width}`);
+  }
+  if (config.showlogo) {
+    queryString = queryString.concat(LOGO);
   }
   //  queryString = `${config.presets[config.preset]}&wid=${config.width}`;
   const urlObj = new URL(url);
@@ -93,7 +99,8 @@ export default function decorate(block) {
   function addButton(text, clickHandler) {
     const button = document.createElement("button");
     // add an id to the button
-    button.id = "gallery-button";
+    button.id = `gallery-button-${text}`;
+    button.classList.add("gallery-button");
     button.textContent = text;
     button.addEventListener("click", clickHandler);
     controls.appendChild(button);
@@ -127,6 +134,10 @@ export default function decorate(block) {
   // // append the button to the controls
   // controls.appendChild(button);
 
+  addButton("logo", () => {
+    config.showlogo = !config.showlogo;
+    storeConfig(config);
+  });
   addButton("S", () => {
     config.width = WID_S;
     storeConfig(config);
@@ -208,8 +219,8 @@ export default function decorate(block) {
           imgElement.src = applyPreset(urlStr, config.preset);
 
           // Optionally, set other attributes like width, height, alt text, etc.
-          imgElement.alt = "A description of the image";
-          imgElement.title = "A description of the image";
+          imgElement.alt = "Dynamic Image";
+          imgElement.title = imgElement.src;
           // imgElement.width = 600; // Set the width of the image
           // imgElement.height = 400; // Set the height of the image
           col.appendChild(imgElement);

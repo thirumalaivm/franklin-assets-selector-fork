@@ -134,10 +134,7 @@ export default function decorate(block) {
   // // append the button to the controls
   // controls.appendChild(button);
 
-  addButton("logo", () => {
-    config.showlogo = !config.showlogo;
-    storeConfig(config);
-  });
+ 
   addButton("S", () => {
     config.width = WID_S;
     storeConfig(config);
@@ -193,6 +190,10 @@ export default function decorate(block) {
   });
   addButton("RESET", () => {
     storeConfig(RESET);
+  });
+  addButton("logo", () => {
+    config.showlogo = !config.showlogo;
+    storeConfig(config);
   });
 
   const gridContainer = document.createElement("div");

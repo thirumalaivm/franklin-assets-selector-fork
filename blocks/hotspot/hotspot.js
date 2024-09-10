@@ -24,7 +24,7 @@ export default function decorate(block) {
             } else if (isVideo) {
                 const video =document.createElement('div');
                     video.innerHTML =`<div class="embed-default">
-                        <iframe src=${content} from allow="encrypted-media; autoplay; loop" loading="lazy" style=style="border: 0; width: 1000px; height: 1000px; top:0, left:0; position: absolute;" >
+                        <iframe src=${content} from allow="encrypted-media; autoplay; loop" loading="lazy" style=style="border: 0; width: 1000px; height: 1000px; top:0, left:0; position: relative;" >
                             </iframe>
                            </div>`;
                 //video.src = content;

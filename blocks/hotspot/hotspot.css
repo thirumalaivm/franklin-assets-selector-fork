@@ -24,10 +24,15 @@
 }
 
 
-.block.hotspot img,
-.block.hotspot video {
+.block.hotspot img {
     max-width: 100%;
     width: auto;
+    height: auto;
+}
+
+.block.hotspot video {
+    max-width: 100%;
+    width: 1000px;
     height: auto;
 }
 
@@ -41,7 +46,6 @@
     padding: 10px;
     border-radius: 5px;
     z-index: 15;
-    width: 200px; /* Adjust size as needed */
 }
 
 .block.hotspot > div.hotspot.onclick .hotspot-content,
@@ -54,12 +58,12 @@
 .block.hotspot > div.hotspot .hotspot-content video {
     width: 100%;
     height: 100%;
-    /* max-width: unset !important */
+    max-width: unset !important;
 }
 
-.block.hotspot > div.hotspot .hotspot-content video {
-    max-height: 150px; /* Adjust as needed */
-}
+/* .block.hotspot > div.hotspot .hotspot-content video { */
+    /* max-height: 150px;  */
+/* } */
 
 /*
 .block.hotspot > div.hotspot::after {

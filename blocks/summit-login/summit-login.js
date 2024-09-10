@@ -202,8 +202,8 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
             }
         });
         console.log("Total secured images found : " + securedImages.length);
-        var securedHost = new URL(document.querySelector("picture[data-original-source]:not([data-original-source=''])").getAttribute("data-original-source")).host;
-        secretKey = securedHost.replace("delivery", "cm").replace("-cmstg.adobeaemcloud.com", "").replace(".adobeaemcloud.com", "");
+        // var securedHost = new URL(document.querySelector("picture[data-original-source]:not([data-original-source=''])").getAttribute("data-original-source")).host;
+        // secretKey = securedHost.replace("delivery", "cm").replace("-cmstg.adobeaemcloud.com", "").replace(".adobeaemcloud.com", "");
     }
 
 function generateJwtAndUpdateDOM() {

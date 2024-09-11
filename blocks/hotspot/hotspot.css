@@ -105,6 +105,11 @@ main .embed .embed-default {
     padding-bottom: 56.25%;
 }
 
+.hotspot-content iframe {
+    width: 37.5rem;
+    height: 18.75rem;
+}
+
 
 
 

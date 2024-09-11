@@ -1,3 +1,38 @@
+function attachEvents(block) {
+    // Hide all hotspots lying under the iframe when the iframe is hovered
+    block.querySelectorAll('iframe').forEach(frame => {
+        frame.addEventListener('mouseover', (e) => {
+            const frameRect = frame.getBoundingClientRect();
+            const hotspots = document.querySelectorAll('.hotspot');
+            
+            document.querySelectorAll('.hotspot').forEach(hotspot => {
+                if (hotspot === e.target.closest('.hotspot')) {
+                    return;
+                }
+
+                const hotspotRect = hotspot.getBoundingClientRect();
+                
+                // Check if the hotspot is within the iframe's viewport
+                const isInViewport = (
+                    hotspotRect.top >= frameRect.top &&
+                    hotspotRect.left >= frameRect.left &&
+                    hotspotRect.bottom <= frameRect.bottom &&
+                    hotspotRect.right <= frameRect.right
+                );
+                
+                if (isInViewport) {
+                    hotspot.style.display = 'none';
+                }
+            });
+        });
+        frame.addEventListener('mouseout', () => {
+            document.querySelectorAll('.hotspot').forEach(hotspot => {
+                hotspot.style.display = 'block';
+            });
+        });
+    });
+}
+
 export default function decorate(block) {
     [...block.children].forEach((row, r) => {
         if (r > 0) {
@@ -52,4 +87,6 @@ export default function decorate(block) {
             row.remove();
         }
     });
+
+    attachEvents(block);
 }

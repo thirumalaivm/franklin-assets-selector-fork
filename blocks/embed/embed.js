@@ -12,6 +12,8 @@ const videoConfig = {
   controls: false,
 };
 
+const scPlayerHeight = '44rem';
+
 // Event listener to handle video configuration messages
 window.addEventListener("message", (event) => {
   if (event.data.name === "video-config") {
@@ -31,6 +33,10 @@ const loadScript = (url, callback, type) => {
   return script;
 };
 
+function isSmartCropVideo(url) {
+  return url.includes('SmartCropVideoViewer.html');
+}
+
 // const getDefaultEmbed = (url, hasMobileView) => `
 //   <div class="embed-default ${hasMobileView ? 'mobile-view' : ''}">
 //     <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" 
@@ -38,13 +44,17 @@ const loadScript = (url, callback, type) => {
 //       title="Content from ${url.hostname}" loading="lazy">
 //     </iframe>
 //   </div>`;
-const getDefaultEmbed = (url, hasMobileView) => `
-  <div class="embed-default ${hasMobileView ? 'mobile-view' : ''}">
-    <iframe src="${url.href}" style="border: 0; width: 70%; height: 70%; top:0, left:0; position: absolute;" 
-      allowfullscreen="" scrolling="no" allow="encrypted-media; autoplay; loop" 
-      title="Content from ${url.hostname}" loading="lazy">
-    </iframe>
-  </div>`;
+const getDefaultEmbed = (url, hasMobileView) => {
+  const height = isSmartCropVideo(url.href) ? scPlayerHeight : '70%';
+  return `
+      <div class="embed-default ${hasMobileView ? 'mobile-view' : ''}">
+        <iframe src="${url.href}" style="border: 0; width: 70%; height: ${height}; top:0, left:0; position: absolute;" 
+          allowfullscreen="" scrolling="no" allow="encrypted-media; autoplay; loop" 
+          title="Content from ${url.hostname}" loading="lazy">
+        </iframe>
+      </div>
+  `;
+};
 
 const embedYoutube = (url, autoplay) => {
   const usp = new URLSearchParams(url.search);

@@ -11,7 +11,6 @@ export default function decorate(block) {
             nexticondiv.style.left = [...row.children][1].textContent;
             nexticondiv.style.top = [...row.children][2].textContent;
             nexticondiv.setAttribute('data', content);
-            //nexticondiv.setAttribute('data-city', [...row.children][0].textContent.split('\n')[2].split(':')[0]);
 
             // Create content display element
             const contentContainer = document.createElement('div');
@@ -27,8 +26,7 @@ export default function decorate(block) {
                         <iframe src=${content} from allow="encrypted-media" loading="lazy">
                             </iframe>
                            </div>`;
-                //video.src = content;
-                //video.controls = true; // Allows user control over the video
+                 // above code can be updated for video controls such as autoplay, loop, etc.
                 contentContainer.appendChild(video);
             } else if (isText) {
                 contentContainer.textContent = content; // Display text

@@ -11,7 +11,7 @@
 }
 
 .block.hotspot > div.hotspot {
-    background: red !important; /* Temporary for visibility */
+    background: red; /* Temporary for visibility */
     z-index: 10; /* Ensure it is above the image */
     width: 20px;
     height: 20px;
@@ -50,12 +50,11 @@
     display: block; /* Show on click or hover */
 }
 
-
 .block.hotspot > div.hotspot .hotspot-content img,
 .block.hotspot > div.hotspot .hotspot-content video {
     width: 400px;
     height: auto;
-    max-width: unset !important
+    max-width: unset;
 }
 
 .block.hotspot > div.hotspot .hotspot-content video {
@@ -67,16 +66,7 @@
     opacity: 1;
 }
 
-
-
-.section.hotspot-container > .section-container {
-    display: flex;
-    flex-direction: column;
-    margin: auto 1rem;
-}
-
-
-main .embed .embed-default {
+main .embed-default {
     position: relative;
     left: 0;
     width: 100%;
@@ -84,31 +74,9 @@ main .embed .embed-default {
     padding-bottom: 56.25%;
 }
 
-
-.section.hotspot-container > .section-container > div:first-of-type {
-    flex-basis: 70%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-}
-
 .block.hotspot svg {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 0;
-}
-
-@media (width >= 62rem) {
-    .section.hotspot-container > .section-container {
-        display: flex;
-        flex-direction: row;
-        margin: auto;
-    }
-
-    .section.hotspot-container > .section-container h1 {
-        font-size: var(--heading-font-size-xxl);
-        font-weight: 300;
-        margin: 4.375rem 0 2.5rem;
-    }
 }

@@ -2,9 +2,10 @@ export default function decorate(block) {
   [...block.children].forEach((row, r) => {
     if (r > 0) {
       const content = [...row.children][0].textContent.trim();
-      const isImage = content.endsWith('.jpg') || content.endsWith('.png') || content.endsWith('.gif') || content.endsWith('.jpeg');
-      const isVideo = content.endsWith('.mp4') || content.endsWith('.webm') || content.endsWith('play') || content.endsWith('content/'); // Adjust condition as needed
-      const isText = !isImage && !isVideo; // Assuming if it's neither image nor video, it's text
+      const variant = block.classList.value;
+      const isImageVariant = variant.includes('image') && !(variant.includes('video'));
+      const isVideoVariant = variant.includes('video') && !(variant.includes('image'));
+      const isTextVariant = !isImageVariant && !isVideoVariant;
 
       const nexticondiv = document.createElement('div');
       nexticondiv.classList.add('hotspot'); // Added class for CSS targeting
@@ -16,11 +17,11 @@ export default function decorate(block) {
       const contentContainer = document.createElement('div');
       contentContainer.classList.add('hotspot-content');
 
-      if (isImage) {
+      if (isImageVariant) {
         const img = document.createElement('img');
         img.src = content;
         contentContainer.appendChild(img);
-      } else if (isVideo) {
+      } else if (isVideoVariant) {
         const video = document.createElement('div');
         video.innerHTML = `<div class="embed-default">
             <iframe src=${content} from allow="encrypted-media" loading="lazy">
@@ -28,7 +29,7 @@ export default function decorate(block) {
             </div>`;
         // above code can be updated for video controls such as autoplay, loop, etc.
         contentContainer.appendChild(video);
-      } else if (isText) {
+      } else if (isTextVariant) {
         contentContainer.textContent = content; // Display text
         contentContainer.classList.add('bgborder');
       }

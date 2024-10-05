@@ -12,6 +12,7 @@ import {
   loadSections,
   loadCSS,
   sampleRUM,
+  loadScript,
 } from './aem.js';
 
 /**
@@ -129,4 +130,5 @@ async function loadPage() {
   loadDelayed();
 }
 
+await loadScript('/scripts/assets-blocks-config.js');
 loadPage();

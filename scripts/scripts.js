@@ -12,8 +12,9 @@ import {
   loadSections,
   loadCSS,
   sampleRUM,
-  loadScript,
 } from './aem.js';
+
+import assetsInit from './assets-blocks-config.js';
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -130,5 +131,5 @@ async function loadPage() {
   loadDelayed();
 }
 
-await loadScript('/scripts/assets-blocks-config.js');
+await assetsInit();
 loadPage();

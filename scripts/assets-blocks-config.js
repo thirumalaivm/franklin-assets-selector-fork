@@ -1,10 +1,13 @@
-import { loadScript } from './aem.js';
-
 const codeBasePath = '/aem-assets-blocks';
 const blocks = ['video'];
-window.hlx = window.hlx || {};
-window.hlx.aemassets = {
-  codeBasePath,
-  blocks,
-};
-await loadScript(`${codeBasePath}/scripts/aem-assets.js`);
+
+export default async function assetsInit() {
+  const { loadBlock, createOptimizedPicture } = await import(`${codeBasePath}/scripts/aem-assets.js`);
+  window.hlx = window.hlx || {};
+  window.hlx.aemassets = {
+    codeBasePath,
+    blocks,
+    loadBlock,
+    createOptimizedPicture,
+  };
+}

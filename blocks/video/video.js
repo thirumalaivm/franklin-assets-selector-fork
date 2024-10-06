@@ -1,4 +1,4 @@
-const  { decorateIcons, loadScript, loadCSS } = await import(`${window.hlx.codeBasePath}/scripts/aem.js`);
+const { decorateIcons, loadScript, loadCSS } = await import(`${window.hlx.codeBasePath}/scripts/aem.js`);
 
 const VIDEO_JS_SCRIPT = '/blocks/video/videojs/video.min.js';
 const VIDEO_JS_CSS = '/blocks/video/videojs/video-js.min.css';
@@ -150,7 +150,7 @@ function createPlayButton(container, player) {
     updateIcons(true);
   });
 
-  decorateIcons(button, 'blocks/video');
+  decorateIcons(button, `${window.hlx.aemassets.codeBasePath ?? ''}/blocks/video`);
   updateIcons(player.paused());
 
   container.append(button);
@@ -422,7 +422,7 @@ function createModal() {
   });
 
   header.append(closeBtn);
-  decorateIcons(header, 'blocks/video');
+  decorateIcons(header, `${window.hlx.aemassets.codeBasePath ?? ''}/blocks/video`);
 
   container.append(header);
 
@@ -451,7 +451,7 @@ async function decorateVideoModal(block, config) {
   playIcon.classList.add('icon');
   playIcon.classList.add('icon-play');
   playButton.append(playIcon);
-  decorateIcons(playButton, 'blocks/video');
+  decorateIcons(playButton, `${window.hlx.aemassets.codeBasePath ?? ''}/blocks/video`);
 
   playButton.addEventListener('click', async () => {
     await openModal(config);

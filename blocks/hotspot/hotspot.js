@@ -26,8 +26,9 @@ export default function decorate(block) {
         const allowedVideoDomains = ['youtube.com', 'vimeo.com', 'sidekick-library--aem-block-collection--adobe'];
         try {
           const url = new URL(content);
-          //the below code can be updated to include more video hosting sites
-          const isTrustedDomain = allowedVideoDomains.some((domain) => url.hostname.includes(domain));
+          // the below code can be updated to include more video hosting sites
+          const domainCheck = (domain) => url.hostname.includes(domain);
+          const isTrustedDomain = allowedVideoDomains.some(domainCheck);
           if (isTrustedDomain) {
             video.innerHTML = `
         <div class="embed-default">

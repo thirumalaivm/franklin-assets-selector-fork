@@ -23,10 +23,26 @@ export default function decorate(block) {
         contentContainer.appendChild(img);
       } else if (isVideoVariant) {
         const video = document.createElement('div');
-        video.innerHTML = `<div class="embed-default">
-            <iframe src=${content} from allow="encrypted-media" loading="lazy">
-            </iframe>
-            </div>`;
+        const allowedVideoDomains = ['youtube.com', 'vimeo.com', 'sidekick-library--aem-block-collection--adobe'];
+        try {
+          const url = new URL(content);
+          //the below code can be updated to include more video hosting sites
+          const isTrustedDomain = allowedVideoDomains.some((domain) => url.hostname.includes(domain));
+          if (isTrustedDomain) {
+            video.innerHTML = `
+        <div class="embed-default">
+          <iframe src="${url.href}" allow="encrypted-media" loading="lazy">
+          </iframe>
+        </div>`;
+          } else {
+            console.warn('Untrusted video URL:', url.href);
+            video.textContent = 'This video source is not allowed.';
+            contentContainer.classList.add('bgborder');
+          }
+        } catch (e) {
+          console.error('Invalid video URL:', content);
+          video.textContent = 'Invalid video URL.';
+        }
         // above code can be updated for video controls such as autoplay, loop, etc.
         contentContainer.appendChild(video);
       } else if (isTextVariant) {

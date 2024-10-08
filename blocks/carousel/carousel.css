@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  height: 250px;
+  height: 750px;
 }
 
 .carousel .carousel-slide {
@@ -201,7 +201,7 @@
   .carousel .carousel-slide .carousel-slide-content {
     --slide-content-width: 50%;
     margin: 2.5rem 5rem;
-    height: 100px;
+    height: 650px;
   }
 
   .carousel .carousel-slide .carousel-slide-content[data-align="justify"] {

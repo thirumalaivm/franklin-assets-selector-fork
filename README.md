@@ -7,9 +7,6 @@ The AEM Assets Plugin helps you quickly integrate with AEM Assets for your AEM p
 - A collection of blocks to use AEM Assets in Edge Delivery Services based websites
 - Utility functions to generate markup for delivering assets from AEM Assets
 
-It's key differentiator is:
-- 🚀 extremely fast: the library is optimized to reduce load delay, TBT and CLS, and has minimal impact on your Core Web Vitals
-
 ## Prerequisites
 - You need to have an AEM Assets as a Cloud Service subscription
 - You need to have access to [Dynamic Media Open API](https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/assets/dynamicmedia/dynamic-media-open-apis/dynamic-media-open-apis-overview)
@@ -169,7 +166,7 @@ async function loadBlock(block) {
 }
 ```
 
-In `scripts/scripts.js` you;d need to add the following lines of code:
+In `scripts/scripts.js` you'd need to add the following lines of code:
 
 Import `aem-assets-plugin-support.js`
 ```
@@ -186,5 +183,4 @@ loadPage();
 
 Q. Why should I use this plugin?
 
-A. The plugin provides a quick way to start using AEM Assets in your website. It abstracts and implements the groundwork to be able to consume AEM Assets delivery URLs in your wbsite, thus helps avoiding your additional work to write everything from scratch.
-This plugin also have a collection of standerd blocks to consume AEM Assets which can be reused as it, or copied over in your website for adaptations.
+A. The plugin provides a quick way to start using AEM Assets in your website. It abstracts and implements the groundwork to be able to consume AEM Assets delivery URLs in your wbsite, thus helps avoiding additional work to implement everything from scratch. This plugin also has a collection of standard blocks to consume AEM Assets which can be reused as they are, or copied over in your website for adaptations.

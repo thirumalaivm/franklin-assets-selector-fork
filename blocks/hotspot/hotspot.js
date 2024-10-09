@@ -36,12 +36,10 @@ export default function decorate(block) {
           </iframe>
         </div>`;
           } else {
-            console.warn('Untrusted video URL:', url.href);
             video.textContent = 'This video source is not allowed.';
             contentContainer.classList.add('bgborder');
           }
         } catch (e) {
-          console.error('Invalid video URL:', content);
           video.textContent = 'Invalid video URL.';
         }
         // above code can be updated for video controls such as autoplay, loop, etc.

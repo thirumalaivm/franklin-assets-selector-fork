@@ -1,3 +1,4 @@
+import { createOptimizedPicture } from '../../scripts/aem.js';
 function attachEvents(block) {
     // Hide all hotspots lying under the iframe when the iframe is hovered
     block.querySelectorAll('iframe').forEach(frame => {
@@ -35,6 +36,11 @@ function attachEvents(block) {
 
 export default function decorate(block) {
     [...block.children].forEach((row, r) => {
+        if (r == 0) {
+            const div = document.createElement('div');
+            div.append(createOptimizedPicture([...row.children][0].href));
+            block.appendChild(div);
+        }
         if (r > 0) {
             const content = [...row.children][0].textContent.trim();
             const isImage = content.endsWith('.jpg') || content.endsWith('.png') || content.endsWith('.gif') || content.endsWith('.jpeg');

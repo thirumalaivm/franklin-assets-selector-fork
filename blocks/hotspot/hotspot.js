@@ -30,17 +30,23 @@ export default function decorate(block) {
           const domainCheck = (domain) => url.hostname.includes(domain);
           const isTrustedDomain = allowedVideoDomains.some(domainCheck);
           if (isTrustedDomain) {
-            video.innerHTML = `
-        <div class="embed-default">
-          <iframe src="${url.href}" allow="encrypted-media" loading="lazy">
-          </iframe>
-        </div>`;
+            const div = document.createElement('div');
+            div.className = 'embed-default';
+
+            const iframe = document.createElement('iframe');
+            iframe.src = url.href;
+            iframe.setAttribute('allow', 'encrypted-media');
+            iframe.setAttribute('loading', 'lazy');
+
+            div.appendChild(iframe);
+            video.appendChild(div);
           } else {
             video.textContent = 'This video source is not allowed.';
             contentContainer.classList.add('bgborder');
           }
         } catch (e) {
           video.textContent = 'Invalid video URL.';
+          contentContainer.classList.add('bgborder');
         }
         // above code can be updated for video controls such as autoplay, loop, etc.
         contentContainer.appendChild(video);

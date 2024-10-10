@@ -38,6 +38,9 @@ you can just delete the folder and re-add the plugin via the `git subtree add` c
 
 To properly connect and configure the plugin for your project, you'll need to edit both the `aem.js` and `scripts.js` in your AEM project and add a new file `aem-assets-plugin-support.js` in the `scripts` folder.
 
+> **Note:** All the changes described below can also be seen consolidated in this [git commit](https://github.com/hlxsites/franklin-assets-selector/commit/f512e9b10d752971136fef476402826b61d07f45).
+
+
 Here's typically how `scripts/aem-assets-plugin-support.js` would look:
 
 ```

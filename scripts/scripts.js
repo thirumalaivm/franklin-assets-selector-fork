@@ -386,7 +386,7 @@ async function loadLazy(doc) {
   } else {
     loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   }
-  addFavIcon(`${window.wknd.demoConfig.demoBase || window.hlx.codeBasePath}/favicon.png`);
+ // addFavIcon(`${window.wknd.demoConfig.demoBase || window.hlx.codeBasePath}/favicon.png`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));

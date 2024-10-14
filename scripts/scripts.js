@@ -226,10 +226,11 @@ function decorateExternalImages(ele, deliveryMarker) {
             const queryParams = appendQueryParams(new URL(srcset, extImageSrc), searchParams);
             if (srcset.includes('/is/image/')) {
               child.setAttribute('srcset', queryParams.replaceAll('%24', '$'));
-              child.setAttribute('loading', 'eager');
+            
             } else {
               child.setAttribute('srcset', queryParams);
             }
+            child.setAttribute('loading', 'eager');
           }
         } else if (child.tagName === 'IMG') {
           const src = child.getAttribute('src');
@@ -237,11 +238,13 @@ function decorateExternalImages(ele, deliveryMarker) {
             const queryParams = appendQueryParams(new URL(src, extImageSrc), searchParams);
             if (src.includes('/is/image/')) {
               child.setAttribute('src', queryParams.replaceAll('%24', '$'));
-              child.setAttribute('loading', 'eager');
+            
             } else {
               child.setAttribute('src', queryParams);
             }
+            child.setAttribute('loading', 'eager');
           }
+          
         }
       });
       extImage.parentNode.replaceChild(extPicture, extImage);

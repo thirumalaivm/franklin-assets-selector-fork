@@ -1,6 +1,10 @@
 import {
-  buildBlock,
   createOptimizedPicture as libCreateOptimizedPicture,
+} from './aem.js';
+
+import {
+  sampleRUM,
+  buildBlock,
   loadHeader,
   loadFooter,
   decorateButtons,
@@ -8,12 +12,37 @@ import {
   decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
-  waitForFirstImage,
-  loadSection,
-  loadSections,
+  waitForLCP,
+  loadBlocks,
   loadCSS,
-  sampleRUM,
-} from './aem.js';
+} from './lib-franklin.js';
+
+const LCP_BLOCKS = []; // add your LCP blocks to the list
+
+/**
+ * Determine if we are serving content for the block-library, if so don't load the header or footer
+ * @returns {boolean} True if we are loading block library content
+ */
+export function isBlockLibrary() {
+  return window.location.pathname.includes('block-library');
+}
+
+/**
+ * Adds the favicon.
+ * @param {string} href The favicon URL
+ */
+export function addFavIcon(href) {
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/png';
+  link.href = href;
+  const existingLink = document.querySelector('head link[rel="icon"]');
+  if (existingLink) {
+    existingLink.parentElement.replaceChild(link, existingLink);
+  } else {
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }
+}
 
 import assetsInit from './aem-assets-plugin-support.js';
 /**
@@ -21,8 +50,8 @@ import assetsInit from './aem-assets-plugin-support.js';
  * @param {Element} main The container element
  */
 function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
+  const h1 = main.querySelector('main > div > h1');
+  const picture = main.querySelector('main > div > p > picture');
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
@@ -49,10 +78,7 @@ async function loadFonts() {
  */
 function buildAutoBlocks(main) {
   try {
-    // Build hero block only if it doesn't exist
-    if (!main.querySelector('div.hero')) {
-      buildHeroBlock(main);
-    }
+    buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -236,6 +262,59 @@ function decorateDeliveryImages(main) {
   });
 }
 
+function patchDemoBlocks(config) {
+  if (window.wknd.demoConfig.blocks && window.wknd.demoConfig.blocks[config.blockName]) {
+    const url = window.wknd.demoConfig.blocks[config.blockName];
+    const splits = new URL(url).pathname.split('/');
+    const [, owner, repo, , branch] = splits;
+    const path = splits.slice(5).join('/');
+
+    const franklinPath = `https://little-forest-58aa.david8603.workers.dev/?url=https://${branch}--${repo}--${owner}.hlx.live/${path}`;
+    return {
+      ...config,
+      jsPath: `${franklinPath}/${config.blockName}.js`,
+      cssPath: `${franklinPath}/${config.blockName}.css`,
+    };
+  }
+  return (config);
+}
+
+async function loadDemoConfig() {
+  const demoConfig = {};
+  const pathSegments = window.location.pathname.split('/');
+  if (window.location.pathname.startsWith('/drafts/') && pathSegments.length > 4) {
+    const demoBase = pathSegments.slice(0, 4).join('/');
+    const resp = await fetch(`${demoBase}/theme.json?sheet=default&sheet=blocks&`);
+    if (resp.status === 200) {
+      const json = await resp.json();
+      const tokens = json.data || json.default.data;
+      const root = document.querySelector(':root');
+      tokens.forEach((e) => {
+        root.style.setProperty(`--${e.token}`, `${e.value}`);
+        demoConfig[e.token] = e.value;
+      });
+      demoConfig.tokens = tokens;
+      demoConfig.demoBase = demoBase;
+      const blocks = json.blocks ? json.blocks.data : [];
+      demoConfig.blocks = {};
+      blocks.forEach((block) => {
+        demoConfig.blocks[block.name] = block.url;
+      });
+
+      window.hlx.patchBlockConfig.push(patchDemoBlocks);
+    }
+
+    if (!demoConfig.demoBase) {
+      const navCheck = await fetch(`${demoBase}/nav.plain.html`);
+      if (navCheck.status === 200) {
+        demoConfig.demoBase = demoBase;
+      }
+    }
+  }
+  window.wknd = window.wknd || {};
+  window.wknd.demoConfig = demoConfig;
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -265,22 +344,17 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
+  await window.hlx.plugins.run('loadEager');
+
+  // load demo config
+  await loadDemoConfig();
+
   const main = doc.querySelector('main');
   if (main) {
+/*    await initAnalyticsTrackingQueue();*/
     decorateMain(main);
-    document.body.classList.add('appear');
-    await loadSection(main.querySelector('.section'), waitForFirstImage);
-  }
-
-  sampleRUM.enhance();
-
-  try {
-    /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
-    if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
-      loadFonts();
-    }
-  } catch (e) {
-    // do nothing
+    await waitForLCP(LCP_BLOCKS);
   }
 }
 
@@ -290,17 +364,37 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadSections(main);
+  await loadBlocks(main);
 
   const { hash } = window.location;
-  const element = hash ? doc.getElementById(hash.substring(1)) : false;
+  const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  if (!isBlockLibrary()) {
+    loadHeader(doc.querySelector('header'));
+    loadFooter(doc.querySelector('footer'));
+  }
 
-  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  loadFonts();
+  if (window.wknd.demoConfig.fonts) {
+    const fonts = window.wknd.demoConfig.fonts.split('\n');
+    fonts.forEach(async (font) => {
+      const [family, url] = font.split(': ');
+      const ff = new FontFace(family, `url('${url}')`);
+      await ff.load();
+      document.fonts.add(ff);
+    });
+  } else {
+    loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  }
+  addFavIcon(`${window.wknd.demoConfig.demoBase || window.hlx.codeBasePath}/favicon.png`);
+  sampleRUM('lazy');
+  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+  sampleRUM.observe(main.querySelectorAll('picture > img'));
+
+  // Mark customer as having viewed the page once
+  localStorage.setItem('franklin-visitor-returning', true);
+
+  window.hlx.plugins.run('loadLazy');
 }
 
 /**
@@ -309,7 +403,11 @@ async function loadLazy(doc) {
  */
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
+  window.setTimeout(() => {
+    window.hlx.plugins.load('delayed');
+    window.hlx.plugins.run('loadDelayed');
+    return import('./delayed.js');
+  }, 3000);
   // load anything that can be postponed to the latest here
 }
 

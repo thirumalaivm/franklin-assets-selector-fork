@@ -1,5 +1,3 @@
-<link rel="preconnect" href="https://techsupport.scene7.com" />
-<link rel="preconnect" href="https://delivery-p124211-e1224519.adobeaemcloud.com" /> 
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 

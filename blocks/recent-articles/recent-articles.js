@@ -32,9 +32,10 @@ export default async function decorate(block) {
   }
 
   // Fetch metadata if delivery URL is valid
+  //append current timestamp as a cache killer in the URL e.g. ${deliveryUrl}/metadata?${Date.now()}
   if (deliveryUrl) {
     try {
-      const response = await fetch(`${deliveryUrl}/metadata`, {
+      const response = await fetch(`${deliveryUrl}/metadata?${Date.now()}`, {
         headers: {
           'If-None-Match': 'no-cache' // Set 'no-cache' to ensure the latest metadata is fetched
         }

@@ -1,1 +1,30 @@
 /* stylelint-disable */
+
+.recent-articles {
+    position: relative;
+    display: inline-block;
+}
+
+.recent-articles picture img {
+    width: 100%;
+    display: block;
+}
+
+.recent-articles .title {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    font-size: 2rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6); /* Transparent background */
+    font-family: 'Montserrat', sans-serif; /* Fancy font */
+    border-radius: 10px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Text shadow for depth */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Box shadow for added depth */
+    white-space: nowrap; /* Ensures text doesn't wrap */
+    text-align: center;
+    z-index: 10; /* Ensures text is above the image */
+}
+

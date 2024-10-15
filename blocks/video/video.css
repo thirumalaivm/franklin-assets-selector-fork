@@ -249,6 +249,10 @@ main > .section.video-container {
     height: 100%;
 }
 
+.video-component .video-play-button .icon img {
+    width: 4rem;
+}
+
 .video-modal-dialog[open] {
     border: none;
     width: 100%;

@@ -254,7 +254,11 @@ function decorateDeliveryImages(main) {
         return;
       }
 
-      const newPictureElement = createOptimizedPicture(deliveryUrl, altText);
+      // add cache killer as a timestamp to delivery url
+      const deliveryUrlWithCacheKiller = new URL(deliveryUrl);
+      deliveryUrlWithCacheKiller.searchParams.set('cacheKiller', Date.now());
+
+      const newPictureElement = createOptimizedPicture(deliveryUrlWithCacheKiller.toString(), altText);
       pictureElement.parentElement.replaceChild(newPictureElement, pictureElement);
     } catch (error) {
       // Do nothing

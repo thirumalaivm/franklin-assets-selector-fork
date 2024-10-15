@@ -24,7 +24,7 @@ export default async function decorate(block) {
     if (url.toString().includes('delivery-')) {
       // Remove query parameters from the URL
       url.search = '';
-      deliveryUrl = url.toString();
+      deliveryUrl = url.toString().substring(0, url.toString().lastIndexOf('/as/'));
     }
   } catch (error) {
     console.error('Error parsing the image URL:', error);

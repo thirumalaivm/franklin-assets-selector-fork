@@ -15,7 +15,7 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
-const comingSoonPlaceHolder = `${window.location.origin}/resources/summit/coming-soon.jpeg`;
+const comingSoonPlaceHolder = `${window.location.origin}/resources/summit/coming-soon.webp`;
 
 const summitHost = 'delivery-p129624-e1269699';
 

@@ -123,7 +123,7 @@
       }
 
       .uuid-c2a426fe-f083-484e-9764-d026d53f74a1 {
-        fill: url(#uuid-e162fbeb-c631-46ed-9c70-6e6bb8c0cb75);
+        fill: url("#uuid-e162fbeb-c631-46ed-9c70-6e6bb8c0cb75");
       }
 
       .uuid-04b272ab-4979-4707-9b79-5c6f5b5c6c56 {
@@ -139,7 +139,7 @@
       }
 
       .uuid-3eca0065-3bde-4eaf-82b5-8ea366de6050 {
-        fill: url(#uuid-387e9e2e-c6a4-4f0d-9374-12de3ba1b938);
+        fill: url("#uuid-387e9e2e-c6a4-4f0d-9374-12de3ba1b938");
       }
 
       .uuid-cd4ec4a9-0949-4608-8653-1b508a5bec6f {
@@ -227,7 +227,7 @@
       }
 
       .uuid-bd057222-eb18-44e0-8bc5-5f312cc80df0 {
-        fill: url(#uuid-dc365105-1b8f-4233-bd86-b5d97e910cdd);
+        fill: url("#uuid-dc365105-1b8f-4233-bd86-b5d97e910cdd");
       }
 
       .uuid-bb9e5815-a4e6-4bad-9666-a0fb6b79ac53 {
@@ -451,7 +451,7 @@
       }
 
       .uuid-6a6a7626-ff7b-4c0a-b536-caeda31400f9 {
-        fill: url(#uuid-67d4b08e-8782-495d-9f47-5d65855d25ac);
+        fill: url("#uuid-67d4b08e-8782-495d-9f47-5d65855d25ac");
       }
 
       .uuid-5df34fce-3099-40c7-8581-d323e829e72e {

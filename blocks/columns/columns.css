@@ -13,7 +13,6 @@
 
 .columns > div > .columns-img-col {
   order: 0;
-  /* padding-bottom: 2rem; */
 }
 
 .columns > div > .columns-img-col img {
@@ -36,6 +35,7 @@
     margin-left: 50px;
     margin-right: 50px;
 }
+
   /* .popular-collections img {
     height: 16rem;
     width: 24rem;
@@ -43,6 +43,7 @@
 }
 
 /* code to adjust video size on the summit page */
+
 /* .embed > div {
    width: 75rem !important;
   margin-left: -12.4rem;

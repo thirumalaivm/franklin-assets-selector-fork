@@ -1,5 +1,6 @@
 function isValidURL(string) {
   try {
+    // eslint-disable-next-line
     new URL(string);
     return true;
   } catch (_) {
@@ -35,10 +36,10 @@ const RESET = {
 const config = JSON.parse(JSON.stringify(RESET));
 
 // function to store a config object in local storage
-function storeConfig(config) {
+function storeConfig() {
   localStorage.setItem('config', JSON.stringify(config));
   // Reload the page
-  location.reload();
+  window.location.reload();
 }
 
 // function to retrieve a config object from local storage
@@ -56,7 +57,7 @@ function hasConfig() {
   return !!localStorage.getItem('config');
 }
 
-function applyPreset(url, preset) {
+function applyPreset(url) {
   // get the preset from the config object
   let queryString = `${config.presets[config.preset]}`;
   if (config.smartcrop === SMARTCROP_NONE) {
@@ -91,7 +92,7 @@ export default function decorate(block) {
     // if a config object does not exist, store the default config object in local storage
     storeConfig(config);
   }
-
+  const controls = document.createElement('div');
   function addButton(text, clickHandler) {
     const button = document.createElement('button');
     // add an id to the button

@@ -369,7 +369,7 @@ function createDmOptimizedPicture(
 ) {
   const url = new URL(src);
   const picture = document.createElement('picture');
- // const { pathname } = url;
+  // const { pathname } = url;
   // const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
 
   // webp

@@ -15,19 +15,11 @@
     height: 30px;
     border-radius: 100%;
     border: 3px solid var(--white);
-    background: var(--secondary);
     position: absolute;
     cursor: pointer;
     background: #02C3DF !important; /* Temporary for visibility */
-    z-index: 10; /* Ensure it is above the image */
+    z-index: 1; /* Ensure it is above the image */
     filter: drop-shadow(5px 5px 7px black)
-}
-
-
-.block.hotspot img {
-    max-width: 100%;
-    width: auto;
-    height: auto;
 }
 
 .block.hotspot video {
@@ -37,12 +29,11 @@
 }
 
 .block.hotspot > div.hotspot .hotspot-content {
-    display: none; /* Hidden by default */
+    display: none;
     position: absolute;
-    top: -10px; /* Adjust positioning as needed */
+    top: -10px;
     left: 50%;
     transform: translateX(-50%);
-    /*background: rgba(0, 0, 0, 0.8);*/
     padding: 10px;
     border-radius: 5px;
     z-index: 15;
@@ -50,7 +41,7 @@
 
 .block.hotspot > div.hotspot.onclick .hotspot-content,
 .block.hotspot > div.hotspot:hover .hotspot-content {
-    display: block; /* Show on click or hover */
+    display: block;
 }
 
 
@@ -60,10 +51,6 @@
     height: 100%;
     max-width: unset !important;
 }
-
-/* .block.hotspot > div.hotspot .hotspot-content video { */
-    /* max-height: 150px;  */
-/* } */
 
 /*
 .block.hotspot > div.hotspot::after {
@@ -128,7 +115,7 @@ main .embed .embed-default {
     z-index: 0;
 }
 
-@media (min-width: 62rem) {
+@media (width >= 62rem) {
     .section.hotspot-container > .section-container {
         display: flex;
         flex-direction: row;

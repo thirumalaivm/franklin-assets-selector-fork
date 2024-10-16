@@ -5,14 +5,14 @@ function isValidUrl(string) {
   return urlRegex.test(string);
 }
 
-function appendImageToDynamicImageDivs(divs) {
+/* function appendImageToDynamicImageDivs(divs) {
   divs.forEach((div) => {
     const img = document.createElement('img');
     img.src = div.textContent.trim; // Replace with your image URL
     img.alt = 'Description of image'; // Replace with your image description
     div.appendChild(img); // Append the img element to the div
   });
-}
+} */
 
 export default function decorate(block) {
   /* change to ul, li */

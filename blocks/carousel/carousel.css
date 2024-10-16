@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  height: 750px;
+  height: 250px;
 }
 
 .carousel .carousel-slide {
@@ -31,6 +31,7 @@
 .carousel .carousel-slide[aria-hidden="false"] {
   opacity: 1;
   visibility: visible; /* Show the active slide */
+  animation: fade 1s ease-in-out;
 }
 
 /* Optional: Add a fade-in animation to the slides */
@@ -38,13 +39,10 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
-}
-
-.carousel .carousel-slide[aria-hidden="false"] {
-  animation: fade 1s ease-in-out;
 }
 
 .carousel .carousel-slide:has(.carousel-slide-content[data-align="center"]) {
@@ -72,7 +70,6 @@
   padding: 1rem;
   margin: 1.5rem 3rem;
   color: white;
-  /* background-color: rgba(0 0 0 / 50%); */
   position: relative;
   width: var(--slide-content-width, auto);
 }
@@ -90,7 +87,7 @@
   height: 0.5rem; /* Height for a rounded rectangle */
   padding: 0;
   border-radius: 1rem; /* Rounded rectangle shape */
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgb(255 255 255 / 25%);
   overflow: hidden;
   position: relative;
   transition: background-color 0.3s ease-in-out; /* Smooth transition for background color */
@@ -104,7 +101,7 @@
   top: 0;
   height: 100%;
   width: 0%;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255 255 255 / 80%);
 
 }
 
@@ -116,7 +113,7 @@
 .carousel .carousel-slide-indicator button:disabled,
 .carousel .carousel-slide-indicator button:hover,
 .carousel .carousel-slide-indicator button:focus-visible {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255 255 255 / 80%);
 }
 
 .carousel .carousel-slide-indicator span,
@@ -140,7 +137,6 @@
   transform: translateY(-50%);
   left: 0.5rem;
   right: 0.5rem;
-  display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 1;
@@ -183,6 +179,9 @@
 }
 
 @media (width >= 600px) {
+  .carousel .carousel-slides {
+    height: 750px;
+  }
   .carousel .carousel-navigation-buttons {
     left: 1rem;
     right: 1rem;

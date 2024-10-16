@@ -2,12 +2,6 @@ import { fetchPlaceholders } from '../../scripts/aem.js';
 
 const INTERVAL_TIME = 10000; // 5 seconds
 // Function to start auto sliding
-function startAutoSlide(block) {
-  const intervalTime = INTERVAL_TIME;
-  block.autoSlideInterval = setInterval(() => {
-    showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
-  }, intervalTime);
-}
 
 // Function to stop auto sliding
 function stopAutoSlide(block) {
@@ -36,8 +30,8 @@ function updateActiveSlide(slide) {
   indicators.forEach((indicatorButton, idx) => {
     // Ensure all indicators stop their filling animation
     indicatorButton.classList.remove('filling');
+    // eslint-disable-next-line
     indicatorButton.offsetWidth; // Trigger reflow to restart the CSS animation
-
     // Apply filling class to the correct indicator
     if (idx === slideIndex) {
       indicatorButton.classList.add('filling');
@@ -60,6 +54,13 @@ function showSlide(block, slideIndex = 0) {
 
   // Update active slide and indicators
   updateActiveSlide(activeSlide);
+}
+
+function startAutoSlide(block) {
+  const intervalTime = INTERVAL_TIME;
+  block.autoSlideInterval = setInterval(() => {
+    showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
+  }, intervalTime);
 }
 
 function bindEvents(block) {

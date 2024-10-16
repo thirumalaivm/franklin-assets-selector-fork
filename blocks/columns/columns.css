@@ -34,20 +34,6 @@
   .columns.member-collections.block.columns-3-cols {
     margin-left: 50px;
     margin-right: 50px;
+  }
 }
-
-  /* .popular-collections img {
-    height: 16rem;
-    width: 24rem;
-  } */
-}
-
-/* code to adjust video size on the summit page */
-
-/* .embed > div {
-   width: 75rem !important;
-  margin-left: -12.4rem;
-  resize: both; 
-  overflow: auto; 
-} */
 

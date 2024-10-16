@@ -37,14 +37,6 @@ function isSmartCropVideo(url) {
   return url.includes('SmartCropVideoViewer.html');
 }
 
-// const getDefaultEmbed = (url, hasMobileView) => `
-//   <div class="embed-default ${hasMobileView ? 'mobile-view' : ''}">
-//     <iframe src="${url.href}" style=
-//     "border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;"
-//       allowfullscreen="" scrolling="no" allow="encrypted-media; autoplay; loop"
-//       title="Content from ${url.hostname}" loading="lazy">
-//     </iframe>
-//   </div>`;
 const getDefaultEmbed = (url, hasMobileView) => {
   const height = isSmartCropVideo(url.href) ? scPlayerHeight : '70%';
   return `

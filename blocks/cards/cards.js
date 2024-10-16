@@ -5,15 +5,6 @@ function isValidUrl(string) {
   return urlRegex.test(string);
 }
 
-/* function appendImageToDynamicImageDivs(divs) {
-  divs.forEach((div) => {
-    const img = document.createElement('img');
-    img.src = div.textContent.trim; // Replace with your image URL
-    img.alt = 'Description of image'; // Replace with your image description
-    div.appendChild(img); // Append the img element to the div
-  });
-} */
-
 export default function decorate(block) {
   /* change to ul, li */
   const ul = document.createElement('ul');
@@ -24,8 +15,6 @@ export default function decorate(block) {
     }
     [...li.children].forEach((div) => {
       if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
-      // test if  div.textContent string matches a URL with http or https
-      // else if (div.children.length === 1 && isValidUrl(div.textContent.trim()))
       else if (isValidUrl(div.textContent.trim())) div.className = 'cards-card-dynamic-image';
       else div.className = 'cards-card-body';
     });

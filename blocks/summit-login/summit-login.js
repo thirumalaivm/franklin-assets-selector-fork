@@ -1,18 +1,7 @@
-// import * as jose from "https://cdnjs.cloudflare.com/ajax/libs/jose/5.2.3/index.js";
-import {SignJWT} from 'https://cdnjs.cloudflare.com/ajax/libs/jose/5.2.3/jwt/sign.js';
-
 waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
     var signoutButton = document.querySelector('li > a[title="Sign out"]');
     var loginButton = document.querySelector('li > a[title="Login"]');
-    var cookieName = "polaris-delivery-token";
-    var comingSoonPlaceHolder = window.location.origin + "/resources/summit/coming-soon.webp";
-    var errorLoadingPlaceHolder = window.location.origin + "/resources/summit/loading.jpeg";
-
-    // JWT related variables
-    var securedImages = [];
-    var secretKey = "cm-p129624-e1269699";
-    var JWTexpiry = "2024-05-26T20:28:33.213+05:30";
-    var roles = "admin";
+    var cookieName = "login-token";
 
     function logOutUser() {
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -28,7 +17,10 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         var password = document.querySelector("input[name='psw']").value;
         if (username && password) {
             document.querySelector(".login-error").setAttribute("hidden", "");
-            generateJwtAndUpdateDOM();
+            document.cookie = cookieName + "=randomVal; expires=Thu, 01 Jan 2970 00:00:00 UTC; path=/;";
+            toggleLoginButtons();
+            updateUserName();
+            updateImageLinks();
         } else {
             document.querySelector('.user-input').closest(".nav-drop").click();
             document.querySelector(".login-error").removeAttribute("hidden");
@@ -49,15 +41,6 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
             loginButton.closest("li").removeAttribute("hidden", "");
             signoutButton.parentElement.setAttribute("hidden", "");
         }
-    }
-
-    function styleUpTheLimitedEdition() {
-        var limitedEdition = Array.from(document.querySelectorAll("li")).filter((el) => el.innerHTML.indexOf("Limited") != -1)[0];
-        limitedEdition.style.color= "red";
-        limitedEdition.style.fontWeight = "bold";
-        // limitedEdition.addEventListener("click", (event) => {
-        //     window.location.href = "/furniture-street#limited-editions";
-        // });
     }
 
     function appendLoginForm() {
@@ -98,15 +81,6 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
         document.querySelector(".user-input").addEventListener("click", (event) => {
             document.querySelector('.user-input').closest(".nav-drop").click();
         });
-        if (window.location.pathname.indexOf("furniture-street") != -1) {
-            document.querySelector(".popular-collections img").addEventListener("click", (event) => {
-                if(window.location.pathname.indexOf("v2/") == -1) {
-                    window.location.href = "/product/sofa-set";
-                } else {
-                    window.location.href = "/v2/product/sofa-set";
-                }
-            });
-        }
     }
 
     function updateUserName() {
@@ -122,44 +96,6 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
 
     // ToDo : this part need to be udpated with decorator
     function updateImageLinks() {
-        try {
-         var deliveryToken = document.cookie.split(';').filter((item) => item.indexOf(cookieName) != -1)[0].split('=')[1];
-        } catch (e) {
-            // do nothind as user is logged out hence no cookie is found
-        }
-        securedImages.forEach((img) => {
-            if(isLoggedIn()) {
-                var srcUrl = img.parentElement.getAttribute("data-original-source");
-                fetch(srcUrl, {
-                    headers: {
-                        'x-asset-delivery-token' : deliveryToken
-                    }
-                }).then(resp => resp.blob())
-                .then(blob => {
-                        const reader = new FileReader();
-                        reader.onload = () => {
-                            const base64Data = reader.result;
-                            img.setAttribute("src" , base64Data);
-                            img.parentElement.querySelectorAll("source").forEach((el) => {
-                                el.setAttribute("srcset", base64Data);
-                            });
-                        };
-                        reader.readAsDataURL(blob);
-                });
-                if (img.width == 0 || img.src == comingSoonPlaceHolder) {
-                    img.setAttribute("src" , errorLoadingPlaceHolder);
-                    img.parentElement.querySelectorAll("source").forEach((el) => {
-                        el.setAttribute("srcset", errorLoadingPlaceHolder);
-                    });
-                }
-            } else {
-                img.setAttribute("src" , comingSoonPlaceHolder);
-                img.parentElement.querySelectorAll("source").forEach((el) => {
-                    el.setAttribute("srcset", comingSoonPlaceHolder);
-                });
-            }
-        });
-
         const templates = document.querySelectorAll("[data-is-template=true]");
         const params = {
           name: isLoggedIn() ? document.querySelector("input[name='uname']").value : "Guest",
@@ -181,58 +117,6 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
                 }));
             });
         });
-    }
-
-    function matchesPolarisDeliveryUrl(srcUrl) {
-        // code to match regex for host matching "delivery-pxxxx-exxxx" and URI starts with either adobe/assets/deliver or adobe/dynamicmedia/deliver
-        const regex = /^(https?:\/\/delivery-p[0-9]+-e[0-9-cmstg]+\.adobeaemcloud\.com\/(adobe\/assets\/deliver|adobe\/dynamicmedia\/deliver)\/(.*))/gm;
-        return srcUrl.match(regex) != null;
-    }
-
-    // ToDo : this part need to be udpated with decorator
-    function identifySecuredImages() {
-        document.querySelectorAll("picture img").forEach((img) => {
-            //if(!img.getAttribute("width") && matchesPolarisDeliveryUrl(img.getAttribute("src"))) {
-            if(img.getAttribute('src').includes(comingSoonPlaceHolder) || matchesPolarisDeliveryUrl(img.getAttribute("src"))) {    
-                securedImages.push(img);
-                var srcUrl = img.getAttribute("src");
-                if(img.parentElement.getAttribute('data-original-source') == null) {
-                    img.parentElement.setAttribute("data-original-source", srcUrl);
-                }
-            }
-        });
-        console.log("Total secured images found : " + securedImages.length);
-        // var securedHost = new URL(document.querySelector("picture[data-original-source]:not([data-original-source=''])").getAttribute("data-original-source")).host;
-        // secretKey = securedHost.replace("delivery", "cm").replace("-cmstg.adobeaemcloud.com", "").replace(".adobeaemcloud.com", "");
-    }
-
-function generateJwtAndUpdateDOM() {
-        // Define the secret key
-        const secret = new TextEncoder().encode(secretKey);
-    
-        // Define the JWT header
-        const header = {
-            "alg": "HS256",
-            "typ": "JWT"
-        };
-    
-        // Define the JWT claims
-        const jwtClaims = {
-            "roles": roles,
-            "expiry": JWTexpiry
-        };
- 
-        // new jose.SignJWT(jwtClaims)
-        new SignJWT(jwtClaims)
-            .setProtectedHeader(header)
-            .sign(secret)
-            .then((token) => {
-                document.cookie = cookieName + "=" + token + "; expires=Thu, 01 Jan 2970 00:00:00 UTC; path=/;";
-                toggleLoginButtons();
-                updateUserName();
-                updateImageLinks();
-                console.log('JWT generated successfully : ' + token);
-            });
     }
 
     function updatePDPdetails() {
@@ -285,24 +169,18 @@ function generateJwtAndUpdateDOM() {
         });
     }
 
-    function adjustDiscountTemplateCSS() {
-        var discountImg = Array.from(document.querySelectorAll("img")).filter((img) => img.getAttribute("src").includes("/is/image/varun/Sofa1") == true)[0];
-        discountImg.closest("picture").style.display = "grid";
-    }
-
     function init() {
-        //styleUpTheLimitedEdition();
         appendLoginForm();
         toggleLoginButtons();
         addEventListeners();
         updateUserName();
-        identifySecuredImages();
         changeCursorOnHover();
-        // adjustDiscountTemplateCSS();
         
-        // Call the function to generate the JWT
         if(isLoggedIn()) {
-            generateJwtAndUpdateDOM();
+            document.cookie = cookieName + "=randomVal; expires=Thu, 01 Jan 2970 00:00:00 UTC; path=/;";
+            toggleLoginButtons();
+            updateUserName();
+            updateImageLinks();
         }
         updateImageLinks();
         
@@ -311,8 +189,6 @@ function generateJwtAndUpdateDOM() {
     }
 
     init();
-    // if(window.location.pathname.indexOf("furniture-street") != -1) init();
-    // if(window.location.pathname.indexOf("sofa-set") != -1) updatePDPdetails();
 
 });
 

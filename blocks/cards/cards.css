@@ -26,8 +26,6 @@
 .cards > ul > li img {
     width: 100%;
     aspect-ratio: 3 / 2;
-
-    /* object-fit: cover; */
 }
 
 .cards.members.block > ul > li {

@@ -47,11 +47,6 @@ function getConfig() {
   return JSON.parse(localStorage.getItem('config'));
 }
 
-// function to remove a config object from local storage
-// function removeConfig() {
-//  localStorage.removeItem('config');
-// }
-
 // function to check if a config object exists in local storage
 function hasConfig() {
   return !!localStorage.getItem('config');
@@ -103,32 +98,9 @@ export default function decorate(block) {
     controls.appendChild(button);
   }
 
-  /* function setPreset(preset) {
-    // change the preset
-    config.preset = preset;
-    // store the updated config object in local storage
-    storeConfig(config);
-  } */
-
-  // const cols = [...block.firstElementChild.children];
-  // block.classList.add(`columns-${cols.length}-cols`);
-
   // controls
   controls.classList.add('controls');
   block.appendChild(controls);
-  // // add a button to the controls
-  // const button = document.createElement("button");
-  // button.textContent = "bw";
-  // button.addEventListener("click", () => {
-  //   // change the preset
-  //   config.preset = "bw";
-  //   // store the updated config object in local storage
-  //   storeConfig(config);
-  //   // // apply the preset to the images
-  //   // applyPreset(block, config.preset);
-  // });
-  // // append the button to the controls
-  // controls.appendChild(button);
 
   addButton('S', () => {
     config.width = WID_S;
@@ -217,8 +189,6 @@ export default function decorate(block) {
           // Optionally, set other attributes like width, height, alt text, etc.
           imgElement.alt = 'Dynamic Image';
           imgElement.title = imgElement.src;
-          // imgElement.width = 600; // Set the width of the image
-          // imgElement.height = 400; // Set the height of the image
           col.appendChild(imgElement);
 
           picWrapper.appendChild(imgElement);

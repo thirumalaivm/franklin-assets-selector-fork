@@ -1,6 +1,18 @@
 import { fetchPlaceholders } from '../../scripts/aem.js';
 
 const INTERVAL_TIME = 10000; // 5 seconds
+// Function to start auto sliding
+function startAutoSlide(block) {
+  const intervalTime = INTERVAL_TIME;
+  block.autoSlideInterval = setInterval(() => {
+    showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
+  }, intervalTime);
+}
+
+// Function to stop auto sliding
+function stopAutoSlide(block) {
+  clearInterval(block.autoSlideInterval);
+}
 
 function updateActiveSlide(slide) {
   const block = slide.closest('.carousel');
@@ -24,7 +36,7 @@ function updateActiveSlide(slide) {
   indicators.forEach((indicatorButton, idx) => {
     // Ensure all indicators stop their filling animation
     indicatorButton.classList.remove('filling');
-    void indicatorButton.offsetWidth; // Trigger reflow to restart the CSS animation
+    indicatorButton.offsetWidth; // Trigger reflow to restart the CSS animation
 
     // Apply filling class to the correct indicator
     if (idx === slideIndex) {
@@ -32,7 +44,6 @@ function updateActiveSlide(slide) {
     }
   });
 }
-
 
 function showSlide(block, slideIndex = 0) {
   const slides = block.querySelectorAll('.carousel-slide');
@@ -84,19 +95,6 @@ function bindEvents(block) {
   block.querySelectorAll('.carousel-slide').forEach((slide) => {
     slideObserver.observe(slide);
   });
-}
-
-// Function to start auto sliding
-function startAutoSlide(block) {
-  const intervalTime = INTERVAL_TIME; 
-  block.autoSlideInterval = setInterval(() => {
-    showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
-  }, intervalTime);
-}
-
-// Function to stop auto sliding
-function stopAutoSlide(block) {
-  clearInterval(block.autoSlideInterval);
 }
 
 function createSlide(row, slideIndex, carouselId) {

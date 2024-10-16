@@ -1,5 +1,4 @@
-import { createDmOptimizedPicture } from "../../scripts/aem.js";
-import { getMetadata } from "../../scripts/aem.js";
+import { createDmOptimizedPicture, getMetadata } from '../../scripts/aem.js';
 
 export default function decorate(block) {
   // // // Create a picture element with optimized images
@@ -12,7 +11,7 @@ export default function decorate(block) {
   // });
 
   // get the url of the page
-  const url = new URL(window.location.href);
+  let url = new URL(window.location.href);
   // see if the url contains a parameter called style and if it does, get the value of the parameter
   // Get the current URL
 
@@ -20,58 +19,57 @@ export default function decorate(block) {
   const params = new URLSearchParams(url.search);
 
   // Get the value of the 'style' parameter
-  const styleParam = params.get("style");
-
-  let page = getMetadata("page");
-  if (page === "gallery") {
+  const styleParam = params.get('style');
+  const page = getMetadata('page');
+  if (page === 'gallery') {
     let src = block.textContent.trim();
 
-    if (styleParam && styleParam === "bw") {
-      const url = new URL(src);
-      url.searchParams.append("fmt", "jpeg,gray");
+    if (styleParam && styleParam === 'bw') {
+      url = new URL(src);
+      url.searchParams.append('fmt', 'jpeg,gray');
       src = decodeURIComponent(url.toString());
-    }else if (styleParam && styleParam === "sepia") {
+    } else if (styleParam && styleParam === 'sepia') {
       // append the sepia version with fmt=jpeg,sepia
       // convert src to a URL object
-      const url = new URL(src);
-      url.searchParams.append("op_colorize", "704214");
+      url = new URL(src);
+      url.searchParams.append('op_colorize', '704214');
       src = decodeURIComponent(url.toString());
     }
 
     const picture = createDmOptimizedPicture(
       src,
-      "dynamic media image",
+      'dynamic media image',
       false,
-      [{ media: "(orientation: landscape)", width: "2000" }, { width: "1000" }]
+      [{ media: '(orientation: landscape)', width: '2000' }, { width: '1000' }],
     );
-    block.textContent = "";
+    block.textContent = '';
     block.appendChild(picture);
   } else {
-    const image = document.createElement("img");
+    const image = document.createElement('img');
     image.src = block.textContent.trim();
 
-    if (styleParam && styleParam === "bw") {
+    if (styleParam && styleParam === 'bw') {
       // append the black and white version with fmt=jpeg,gray
       // convert src to a URL object
-      const url = new URL(image.src);
+      url = new URL(image.src);
       // add the fmt query parameter to the url
-      url.searchParams.append("fmt", "jpeg,gray");
+      url.searchParams.append('fmt', 'jpeg,gray');
       // set the src of the image to the url
       image.src = decodeURIComponent(url.toString);
-    } else if (styleParam && styleParam === "sepia") {
+    } else if (styleParam && styleParam === 'sepia') {
       // append the sepia version with fmt=jpeg,sepia
       // convert src to a URL object
-      const url = new URL(image.src);
+      url = new URL(image.src);
       // add the fmt query parameter to the url
-      url.searchParams.append("op_colorize", "ff0000");
+      url.searchParams.append('op_colorize', 'ff0000');
       // set the src of the image to the url
       image.src = decodeURIComponent(url.toString);
     }
 
-    image.alt = "Description of image";
-    image.className = "dynamic-image";
+    image.alt = 'Description of image';
+    image.className = 'dynamic-image';
 
-    block.textContent = "";
+    block.textContent = '';
 
     // Append image element to the block
     block.appendChild(image);

@@ -226,7 +226,6 @@ function decorateExternalImages(ele, deliveryMarker) {
             const queryParams = appendQueryParams(new URL(srcset, extImageSrc), searchParams);
             if (srcset.includes('/is/image/')) {
               child.setAttribute('srcset', queryParams.replaceAll('%24', '$'));
-            
             } else {
               child.setAttribute('srcset', queryParams);
             }
@@ -238,13 +237,11 @@ function decorateExternalImages(ele, deliveryMarker) {
             const queryParams = appendQueryParams(new URL(src, extImageSrc), searchParams);
             if (src.includes('/is/image/')) {
               child.setAttribute('src', queryParams.replaceAll('%24', '$'));
-            
             } else {
               child.setAttribute('src', queryParams);
             }
             child.setAttribute('loading', 'eager');
           }
-          
         }
       });
       extImage.parentNode.replaceChild(extPicture, extImage);

@@ -94,12 +94,11 @@ export default async function decorate(block) {
   // load nav as fragment
   const navMeta = getMetadata('nav');
   let navPath = '/nav';
-  const design = getMetadata("design");
+  const design = getMetadata('design');
   if (design === 'dmdemo') {
-     navPath = navMeta ? new URL(navMeta).pathname : '/royalenfieldcopy/dmdemonav';
-  }
-  else {
-     navPath = navMeta ? new URL(navMeta).pathname : '/nav';
+    navPath = navMeta ? new URL(navMeta).pathname : '/royalenfieldcopy/dmdemonav';
+  } else {
+    navPath = navMeta ? new URL(navMeta).pathname : '/nav';
   }
   const fragment = await loadFragment(navPath);
 

@@ -6,7 +6,7 @@
 
 // Video configuration script
 const videoConfig = {
-  autoplay: "any", // refer https://videojs.com/guides/options/#autoplay
+  autoplay: 'any', // refer https://videojs.com/guides/options/#autoplay
   muted: true,
   loop: true,
   controls: false,
@@ -15,8 +15,8 @@ const videoConfig = {
 const scPlayerHeight = '44rem';
 
 // Event listener to handle video configuration messages
-window.addEventListener("message", (event) => {
-  if (event.data.name === "video-config") {
+window.addEventListener('message', (event) => {
+  if (event.data.name === 'video-config') {
     event.source.window.postMessage(JSON.stringify(videoConfig), '*');
   }
 });
@@ -39,8 +39,9 @@ function isSmartCropVideo(url) {
 
 // const getDefaultEmbed = (url, hasMobileView) => `
 //   <div class="embed-default ${hasMobileView ? 'mobile-view' : ''}">
-//     <iframe src="${url.href}" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" 
-//       allowfullscreen="" scrolling="no" allow="encrypted-media; autoplay; loop" 
+//     <iframe src="${url.href}" style=
+//     "border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;"
+//       allowfullscreen="" scrolling="no" allow="encrypted-media; autoplay; loop"
 //       title="Content from ${url.hostname}" loading="lazy">
 //     </iframe>
 //   </div>`;

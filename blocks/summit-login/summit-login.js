@@ -5,7 +5,7 @@ waitForElement('.nav-sections[data-section-status="loaded"]').then((elm) => {
     var signoutButton = document.querySelector('li > a[title="Sign out"]');
     var loginButton = document.querySelector('li > a[title="Login"]');
     var cookieName = "polaris-delivery-token";
-    var comingSoonPlaceHolder = window.location.origin + "/resources/summit/coming-soon.jpeg";
+    var comingSoonPlaceHolder = window.location.origin + "/resources/summit/coming-soon.webp";
     var errorLoadingPlaceHolder = window.location.origin + "/resources/summit/loading.jpeg";
 
     // JWT related variables

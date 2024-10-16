@@ -250,7 +250,7 @@ header nav .nav-sections ul > li > ul > li {
     color: #f3560d;
     justify-content: flex-end;
     align-items: center;
-    font-family: Arial Black, Helvetica, sans-serif;
+    font-family: 'Arial Black', Helvetica, sans-serif;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li {

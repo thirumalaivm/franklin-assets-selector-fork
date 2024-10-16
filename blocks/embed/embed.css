@@ -25,10 +25,7 @@ main .embed {
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
   }
 
   main .embed .embed-placeholder picture img {
@@ -71,13 +68,13 @@ main .embed {
     padding-bottom: 56.25%;
   }
 
-  @media only screen and (max-width: 1024px) and (orientation: portrait) {
+  @media only screen and (width < 1024px) and (orientation: portrait) {
     main .embed .embed-default.mobile-view {
       padding-bottom: 130%;
     }
   }
 
-  @media only screen and (max-width: 600px) {
+  @media only screen and (width < 600px) {
     main .embed .embed-default.mobile-view {
       padding-bottom: 170%;
     }

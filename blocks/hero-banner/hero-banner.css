@@ -95,11 +95,9 @@
 .hero-banner .hero-banner-button-container {
     flex-basis: 100%;
     width: 100%;
-    justify-content: left;
-    align-items: center;
-    align-content: center;
     display: inline-flex;
     flex-wrap: wrap;
+    place-content: center left;
 }
 
 .hero-banner .hero-banner-text-wrapper {
@@ -110,7 +108,7 @@
 
 
 
-@media (min-width: 62rem){
+@media (width >= 62rem){
     .section.full-width.hero-banner-container {
         position: relative;
         height: 32rem;
@@ -185,7 +183,7 @@
     }
 }
 
-@media (min-width: 48rem) {
+@media (width >= 48rem) {
     .hero-banner .hero-banner-text-container::before {
         content: "";
         background: var(--primary);
@@ -197,7 +195,7 @@
     }
 }
 
-@media (min-width: 77rem) {
+@media (width >= 77rem) {
     .hero-banner .hero-banner-heading-section{
         padding-left: 0;
         padding-right: 0;

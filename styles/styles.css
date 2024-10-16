@@ -163,7 +163,7 @@ dl,
 ol,
 ul,
 pre,
-blockquote p, dl, ol, ul, pre, blockquote {
+blockquote {
   font-size: var(--body-font-size-m);
 
   /* margin-top: 0.8em; */

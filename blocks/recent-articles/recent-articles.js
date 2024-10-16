@@ -73,8 +73,8 @@ export default async function decorate(block) {
       titleElement.classList.add('title');
       titleElement.innerText = deliveryImageTitle;
 
-      // Insert the title after the picture element
-      pictureElement.insertAdjacentElement('afterend', titleElement);
+      // Insert the title element before the picture element
+      pictureElement.before(titleElement);
     } else {
       console.error('Picture element not found within the block.');
     }

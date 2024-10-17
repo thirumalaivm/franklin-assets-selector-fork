@@ -594,6 +594,9 @@ export function decorateButtons(element) {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
         }
+        if (a.href.endsWith('.pdf')) {
+          a.target = '_blank';
+        }
       }
     }
   });

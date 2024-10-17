@@ -1,0 +1,21 @@
+/* stylelint-disable */
+
+.recent-articles {
+    position: relative;
+    display: inline-block;
+}
+
+.recent-articles picture img {
+    width: 100%;
+    display: block;
+}
+
+.recent-articles .title {
+    font-size: 2rem;
+    border-radius: 10px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Text shadow for depth */
+    white-space: nowrap; /* Ensures text doesn't wrap */
+    text-align: center;
+    z-index: 10; /* Ensures text is above the image */
+}
+

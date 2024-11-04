@@ -39,7 +39,7 @@ export default function decorate(block) {
   [...block.children].forEach((row, r) => {
     if (r === 0) {
       const div = document.createElement('div');
-      div.append(createOptimizedPicture([...row.children][0].href));
+      div.append(createOptimizedPicture([...row.children][0].querySelector('div picture img').src));
       block.appendChild(div);
     }
     if (r > 0) {

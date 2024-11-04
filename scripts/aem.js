@@ -316,6 +316,9 @@ function createOptimizedPicture(
     { width: '750' },
   ],
 ) {
+  if (window.hlx?.aemassets?.createOptimizedPicture) {
+    return window.hlx.aemassets.createOptimizedPicture(src, alt, eager, breakpoints);
+  }
   const url = new URL(src, window.location.href);
   const picture = document.createElement('picture');
   const { pathname } = url;
@@ -631,6 +634,9 @@ function buildBlock(blockName, content) {
  * @param {Element} block The block element
  */
 async function loadBlock(block) {
+  if (window.hlx?.aemassets?.loadBlock) {
+    return window.hlx.aemassets.loadBlock(block);
+  }
   const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
     block.dataset.blockStatus = 'loading';

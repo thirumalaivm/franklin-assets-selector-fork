@@ -552,7 +552,7 @@ async function fetchPlaceholders(prefix = 'default') {
           if (resp.ok) {
             return resp.json();
           }
-          return {};
+          throw new Error('Placeholders file not found');
         })
         .then((json) => {
           const placeholders = {};

@@ -29,7 +29,7 @@
 
     /* body sizes  - global variables */
     --body-font-size-m: 1.4rem;
-    --body-font-size-s: 1.0rem; 
+    --body-font-size-s: 1.0rem;
     --body-font-size-xs: 0.75rem;
 
     /* heading sizes */
@@ -56,7 +56,7 @@
   size-adjust: 99.529%;
   src: local("Arial");
 }
-/* 
+/*
 @media (width >= 900px) {
   :root {
     /* body sizes */
@@ -72,7 +72,7 @@
     --heading-font-size-s: 1rem;
     --heading-font-size-xs: 0.75rem; */
   /* } */
-/* } */ 
+/* } */
 
 body {
   display: none;
@@ -274,6 +274,11 @@ main > .section > div {
   /* max-width: 1200px; */
   margin: auto;
   /* padding: 0 24px; */
+}
+
+main > .section.basic > div {
+   max-width: 1200px;
+   padding: 0 24px;
 }
 
 main > .section:first-of-type {

@@ -16,7 +16,8 @@
   --light-color: #f8f8f8;
   --dark-color: #505050;
   --text-color: white;
-  --link-color: #4e4e4e;;
+  --link-color: #4e4e4e;
+  --new-link-color: #b09bee;
   --link-hover-color: #f63;
   ;
 
@@ -84,7 +85,7 @@
 body {
   display: none;
   margin: 0;
-  background-color: var(--background-color);
+  background-color: var(--light-color);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -136,7 +137,7 @@ h1 {
 
 h2 {
   font-size: var(--heading-font-size-xl);
-  color: white;
+  color: black;
 }
 
 h3 {
@@ -146,7 +147,7 @@ h3 {
 
 h4 {
   font-size: var(--heading-font-size-xxl);
-  color: white;
+  color: black;
 }
 
 h5 {
@@ -169,7 +170,7 @@ blockquote {
   /* margin-top: 0.8em; */
 
   /* margin-bottom: 0.25em; */
-  color: white;
+  color: black;
   margin-left: 15%;
   margin-right: 15%;
 
@@ -202,7 +203,7 @@ button {
 
 /* links */
 a:any-link {
-  color: var(--link-color);
+  color: var(--new-link-color);
   text-decoration: none;
   word-break: break-word;
 }

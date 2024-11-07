@@ -23,12 +23,24 @@ npm i
 npm run lint
 ```
 
+## Prerequisite
+
+### Apart from using Block references directly from the repository, is there anything additional that needs to be addressed?
+
+Yes, it's crucial to ensure that all external images used on the page are converted into corresponding `<picture>` tags before the block code is executed.. [Reference here](https://github.com/hlxsites/franklin-assets-selector/blob/ext-images/EXTERNAL_IMAGES.md)
+
+### Any reference pages for the quick view of site?
+
+PFB the relevant links -
+
+- Page URL : [Check here](https://aem-dynamicmedia-demo--dm--hlxsites.aem.live/travel-hospitality/wknd-trvl-home)
+- Content URL : [Check Here](https://docs.google.com/document/d/1nWiXrvWAnoGGthR0oa2I0WcJF5TekHXPzv7ZWa5LxVE/edit?tab=t.0)
+- Block Documentation : [Check Here](https://aem-dynamicmedia-demo--dm--hlxsites.aem.page/tools/sidekick/library.html?plugin=blocks)
+
 ## Local development
 
 1. Create a new repository based on the `aem-boilerplate` template and add a mountpoint in the `fstab.yaml`
-1. Add the [AEM Code Sync GitHub App](https://github.com/apps/aem-code-sync) to the repository
-1. Install the [AEM CLI](https://github.com/adobe/aem-cli): `npm install -g @adobe/aem-cli`
-1. Start AEM Proxy: `aem up` (opens your browser at `http://localhost:3000`)
-1. Open the `{repo}
-
-` directory in your favorite IDE and start coding :)directoryinyourfavoriteIDEandstartcoding
+2. Add the [AEM Code Sync GitHub App](https://github.com/apps/aem-code-sync) to the repository
+3. Install the [AEM CLI](https://github.com/adobe/aem-cli): `npm install -g @adobe/aem-cli`
+4. Start AEM Proxy: `aem up` (opens your browser at `http://localhost:3000`)
+5. Open the repo directory in your favorite IDE and start coding :)

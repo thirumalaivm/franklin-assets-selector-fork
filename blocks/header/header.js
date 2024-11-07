@@ -99,7 +99,7 @@ export default async function decorate(block) {
      navPath = navMeta ? new URL(navMeta).pathname : '/royalenfieldcopy/dmdemonav';
   }
   else {
-     navPath = navMeta ? new URL(navMeta).pathname : '/nav';
+     navPath = navMeta ? new URL(navMeta).pathname : '/nav1';
   }
   const fragment = await loadFragment(navPath);
 

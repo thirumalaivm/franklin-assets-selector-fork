@@ -96,7 +96,7 @@ export default async function decorate(block) {
   let navPath = '/nav';
   const design = getMetadata("design");
   if (design === 'dmdemo') {
-     navPath = navMeta ? new URL(navMeta).pathname : '/royalenfieldcopy/devlivedemonav';
+     navPath = navMeta ? new URL(navMeta).pathname : '/royalenfieldcopy/dmdemonav';
   }
   else {
      navPath = navMeta ? new URL(navMeta).pathname : '/nav';

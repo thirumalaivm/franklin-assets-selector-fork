@@ -10,6 +10,7 @@
     "components": [
       "text",
       "image",
+      "dm-image",
       "button",
       "title",
       "hero",

@@ -16,6 +16,29 @@
     ]
   },
   {
+    "id": "dm-image",
+    "fields": [
+      {
+        "component": "custom-asset-namespace:custom-asset",
+        "name": "image",
+        "label": "Image",
+        "configUrl": "https://274796-hlxassetaddonconfig-stage.adobeio-static.net/api/v1/web/hlx-asset-addon-config/ue-extn-config",
+        "valueType": "string"
+      },
+      {
+        "component": "custom-asset-namespace:custom-asset-mimetype",
+        "valueType": "string",
+        "name": "imageMimeType"
+      },
+      {
+        "component": "text",
+        "name": "imageAlt",
+        "label": "Alt Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "title",
     "fields": [
       {

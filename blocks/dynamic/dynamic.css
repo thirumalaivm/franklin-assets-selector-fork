@@ -51,6 +51,9 @@
     object-fit: cover;
     object-position: center;
 }
+.dynamic.logo.block img {
+    max-width: 100%;
+}
 
 .dynamic.logo.block {
     margin-top: 4%;

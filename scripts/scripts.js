@@ -12,6 +12,8 @@ import {
   loadCSS,
 } from './aem.js';
 
+import assetsInit from './aem-assets-plugin-support.js';
+
 /**
  * Moves all the attributes from a given elmenet to another given element.
  * @param {Element} from the element to copy attributes from
@@ -145,4 +147,5 @@ async function loadPage() {
   loadDelayed();
 }
 
+await assetsInit(); // This to be done before loadPage() function invocation
 loadPage();

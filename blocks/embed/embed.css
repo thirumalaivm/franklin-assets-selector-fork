@@ -79,3 +79,7 @@ main .embed {
       padding-bottom: 170%;
     }
   }
+
+  .embed-wrapper:has(.smartcrop) {
+    height: 46rem;
+  }

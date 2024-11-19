@@ -40,7 +40,7 @@ function isSmartCropVideo(url) {
 const getDefaultEmbed = (url, hasMobileView) => {
   const height = isSmartCropVideo(url.href) ? scPlayerHeight : '70%';
   return `
-      <div class="embed-default ${hasMobileView ? 'mobile-view' : ''}">
+      <div class="${isSmartCropVideo(url.href) ? 'smartcrop' : ''} embed-default ${hasMobileView ? 'mobile-view' : ''}">
         <iframe src="${url.href}" style="border: 0; width: 70%; height: ${height}; top:0, left:0; position: absolute;" 
           allowfullscreen="" scrolling="no" allow="encrypted-media; autoplay; loop" 
           title="Content from ${url.hostname}" loading="lazy">

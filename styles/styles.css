@@ -78,8 +78,6 @@ body {
   display: none;
   margin: 0;
   background-color: var(--background-color);
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://adobe.scene7.com/is/image/ADBE/lavabg?wid=2400");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -162,9 +160,9 @@ blockquote p, dl, ol, ul, pre, blockquote {
   /* margin-top: 0.8em; */
   /* margin-bottom: 0.25em; */
   color: white;
-  margin-left: 15%;
+  /*margin-left: 15%;
   margin-right: 15%;
-  /* text-align: justify; */
+  text-align: justify; */
 }
 
 code,

@@ -1,5 +1,4 @@
 import {
-  sampleRUM,
   buildBlock,
   createOptimizedPicture as libCreateOptimizedPicture,
   loadHeader,
@@ -9,13 +8,14 @@ import {
   decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
-  waitForLCP,
-  loadBlocks,
+  waitForFirstImage,
+  loadSection,
+  loadSections,
   loadCSS,
+  sampleRUM,
 } from './aem.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
-
+import assetsInit from './aem-assets-plugin-support.js';
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -49,7 +49,10 @@ async function loadFonts() {
  */
 function buildAutoBlocks(main) {
   try {
-    buildHeroBlock(main);
+    // Build hero block only if it doesn't exist
+    if (!main.querySelector('div.hero')) {
+      buildHeroBlock(main);
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -210,6 +213,30 @@ function decorateExternalImages(ele, deliveryMarker) {
 }
 
 /**
+ * Decorates all images in a container element and replace media urls with delivery urls.
+ * @param {Element} main The container element
+ */
+function decorateDeliveryImages(main) {
+  const pictureElements = main.querySelectorAll('picture');
+  [...pictureElements].forEach((pictureElement) => {
+    const imgElement = pictureElement.querySelector('img');
+    const alt = imgElement.getAttribute('alt');
+    try {
+      const deliveryObject = JSON.parse(decodeURIComponent(alt));
+      const { deliveryUrl, altText } = deliveryObject;
+      if (!deliveryUrl) {
+        return;
+      }
+
+      const newPictureElement = createOptimizedPicture(deliveryUrl, altText);
+      pictureElement.parentElement.replaceChild(newPictureElement, pictureElement);
+    } catch (error) {
+      // Do nothing
+    }
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -220,6 +247,9 @@ export function decorateMain(main) {
 
   // decorate external images with implicit external image marker
   decorateExternalImages(main);
+
+  // decorate images with delivery url and correct alt text
+  decorateDeliveryImages(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
@@ -239,8 +269,10 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await waitForLCP(LCP_BLOCKS);
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
+
+  sampleRUM.enhance();
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
@@ -258,7 +290,7 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
+  await loadSections(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -269,10 +301,6 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
-
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
 /**
@@ -291,4 +319,5 @@ async function loadPage() {
   loadDelayed();
 }
 
+await assetsInit(); // This to be done before loadPage() function invocation
 loadPage();

@@ -25,6 +25,14 @@
             {
               "label": "Videos",
               "value": "video/*"
+            },
+            {
+              "label": "Documents",
+              "value": "application/pdf"
+            },
+            {
+              "label": "Archives",
+              "value": "application/zip"
             }
           ],
           "columns": 2

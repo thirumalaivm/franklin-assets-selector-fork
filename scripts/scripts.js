@@ -11,7 +11,6 @@ governing permissions and limitations under the License.
 */
 
 import {
-  sampleRUM,
   buildBlock,
   createOptimizedPicture as libCreateOptimizedPicture,
   decorateButtons,
@@ -19,13 +18,14 @@ import {
   decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
-  waitForLCP,
-  loadBlocks,
+  waitForFirstImage,
+  loadSection,
+  loadSections,
   loadCSS,
+  sampleRUM,
 } from './aem.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
-
+import assetsInit from './aem-assets-plugin-support.js';
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -59,7 +59,10 @@ async function loadFonts() {
  */
 function buildAutoBlocks(main) {
   try {
-    buildHeroBlock(main);
+    // Build hero block only if it doesn't exist
+    if (!main.querySelector('div.hero')) {
+      buildHeroBlock(main);
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -276,8 +279,10 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await waitForLCP(LCP_BLOCKS);
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
+
+  sampleRUM.enhance();
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
@@ -295,7 +300,7 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
+  await loadSections(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -303,10 +308,6 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
-
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
 /**
@@ -325,4 +326,5 @@ async function loadPage() {
   loadDelayed();
 }
 
+await assetsInit(); // This to be done before loadPage() function invocation
 loadPage();

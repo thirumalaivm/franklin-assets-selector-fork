@@ -3,5 +3,5 @@ Please always provide the [GitHub issue(s)](../issues) your PR is for, as well a
 Fix #<gh-issue-id>
 
 Test URLs:
-- Before: https://main--franklin-assets-selector--hlxsites.hlx.page/aem-asset-selector
-- After: https://<branch>--franklin-assets-selector--hlxsites.hlx.page/aem-asset-selector
+- Before: https://main--{repo}--{owner}.aem.live/
+- After: https://<branch>--{repo}--{owner}.aem.live/

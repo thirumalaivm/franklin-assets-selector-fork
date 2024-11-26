@@ -86,7 +86,7 @@ function getUrlExtension(url) {
 }
 
 /**
- * Checks if an element is an external image.
+ * Checks if an element is an external image or not.
  * @param {Element} element The element
  * @param {string} externalImageMarker The marker for external images
  * @returns {boolean} Whether the element is an external image

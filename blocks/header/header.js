@@ -94,10 +94,11 @@ export default async function decorate(block) {
   // load nav as fragment
   const navMeta = getMetadata('nav');
   let navPath = '/nav';
-  const design = getMetadata('design');
-  if (design === 'dmdemo') {
-    navPath = navMeta ? new URL(navMeta).pathname : '/royalenfieldcopy/dmdemonav';
-  } else {
+  const design = getMetadata("design");
+  if (design === 'dmggrowth') {
+    navPath = navMeta ? new URL(navMeta).pathname : '/dmggrowth/nav';
+  }
+  else {
     navPath = navMeta ? new URL(navMeta).pathname : '/nav';
   }
   const fragment = await loadFragment(navPath);
@@ -140,11 +141,11 @@ export default async function decorate(block) {
   hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
       <span class="nav-hamburger-icon"></span>
     </button>`;
+
   nav.prepend(hamburger);
   nav.setAttribute('aria-expanded', 'false');
   /*
   hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
-
   // prevent mobile nav behavior on window resize
   toggleMenu(nav, navSections, isDesktop.matches);
   isDesktop.addEventListener('change', () => toggleMenu(nav, navSections, isDesktop.matches));

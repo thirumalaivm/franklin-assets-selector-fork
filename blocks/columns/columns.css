@@ -1,0 +1,65 @@
+.columns > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.columns-video-col {
+    width: 100%;
+    height: 315px; /* Default height */
+}
+
+.columns img {
+    width: auto;
+    height: auto;
+}
+
+.columns.videos > div {
+    margin: 30px 50px;
+}
+
+.columns > div > div {
+    order: 1;
+}
+
+.columns > div > .columns-img-col {
+    order: 0;
+    /* padding-bottom: 2rem; */
+}
+
+.columns > div > .columns-img-col img {
+    display: block;
+}
+
+@media (width >= 900px) {
+    .columns > div {
+        align-items: center;
+        flex-direction: unset;
+        gap: 32px;
+    }
+
+    .columns-video-col {
+        height: 500px; /* Increased height for desktop */
+    }
+
+    .columns > div > div {
+        flex: 1;
+        order: unset;
+    }
+
+    .columns.member-collections.block.columns-3-cols {
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+    /* .popular-collections img {
+      height: 16rem;
+      width: 24rem;
+    } */
+}
+
+/* code to adjust video size on the summit page */
+/* .embed > div {
+   width: 75rem !important;
+  margin-left: -12.4rem;
+  resize: both;
+  overflow: auto;
+} */

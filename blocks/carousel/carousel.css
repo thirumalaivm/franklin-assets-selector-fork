@@ -31,18 +31,6 @@
 .carousel .carousel-slide[aria-hidden="false"] {
   opacity: 1;
   visibility: visible; /* Show the active slide */
-  animation: fade 1s ;
-}
-
-/* Optional: Add a fade-in animation to the slides */
-@keyframes fade {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }
 
 .carousel .carousel-slide:has(.carousel-slide-content[data-align="center"]) {

@@ -13,7 +13,7 @@ import {
   loadCSS,
 } from './aem.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+const LCP_BLOCKS = ['carousel','dynamic']; // add your LCP blocks to the list
 
 const comingSoonPlaceHolder = `${window.location.origin}/resources/summit/coming-soon.webp`;
 

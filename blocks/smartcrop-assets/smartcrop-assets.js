@@ -46,7 +46,7 @@ function adaptPictureTagToSmartCrop(pictureTag, smartCrops) {
   }
 
   // Add new <source> tags based on smartCrops configuration
-  for (const [key, value] of Object.entries(smartCrops)) {
+  Object.entries(smartCrops).forEach(([key, value]) => {
     const { minWidth, maxWidth } = value;
     const mediaQuery = `(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`;
 
@@ -58,16 +58,15 @@ function adaptPictureTagToSmartCrop(pictureTag, smartCrops) {
     newSource.setAttribute('media', mediaQuery);
     newSource.setAttribute('srcset', newSrcSet);
     pictureTag.insertBefore(newSource, pictureTag.firstChild);
-  }
-
-  return pictureTag;
+  });
 }
 
 /**
  * function to decorate the images with smartcrop
  */
 function decorateSmartCropImages() {
-  // loop through all the potential smart crop images and update their src & srcset based on viewport width
+  // loop through all the potential smart crop images and
+  // update their src & srcset based on viewport width
   smartcropImages.forEach(async (img) => {
     adaptPictureTagToSmartCrop(img.closest('picture'), config.smartCrops);
   });

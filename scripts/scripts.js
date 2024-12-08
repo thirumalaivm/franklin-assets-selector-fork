@@ -243,13 +243,14 @@ function decorateDeliveryImages(main) {
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // decorate external images with explicit external image marker
-  decorateExternalImages(main, '//External Image//');
+  window.hlx?.aemassets?.decorateExternalImages(main, '//External Image//');
 
   // decorate external images with implicit external image marker
-  decorateExternalImages(main);
+  window.hlx?.aemassets?.decorateExternalImages(main);
 
   // decorate images with delivery url and correct alt text
-  decorateDeliveryImages(main);
+  window.hlx?.aemassets?.decorateImagesFromAlt(main);
+
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);

@@ -12,7 +12,6 @@ import {
   loadBlocks,
   loadCSS,
 } from './aem.js';
-import assetsInit from './aem-assets-plugin-support.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
@@ -330,5 +329,4 @@ async function loadPage() {
   await loadLazy(document);
   loadDelayed();
 }
-await assetsInit();
 loadPage();

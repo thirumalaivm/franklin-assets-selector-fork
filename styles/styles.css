@@ -12,11 +12,11 @@
 
 :root {
   /* colors */
-  --background-color: #38302d;
+  --background-color: white;
   --light-color: #f8f8f8;
   --dark-color: #505050;
-  --text-color: white;
-  --link-color: #4e4e4e;;
+  --text-color: black;
+  --link-color: #0000FF;;
   --link-hover-color: #ff6633;
   ;
 
@@ -129,7 +129,7 @@ h1 {
 
 h2 {
   font-size: var(--heading-font-size-xl);
-  color: white;
+  color: black;
 }
 
 h3 {
@@ -159,7 +159,7 @@ blockquote p, dl, ol, ul, pre, blockquote {
   font-size: var(--body-font-size-m);
   /* margin-top: 0.8em; */
   /* margin-bottom: 0.25em; */
-  color: white;
+  color: black;
   /*margin-left: 15%;
   margin-right: 15%;
   text-align: justify; */

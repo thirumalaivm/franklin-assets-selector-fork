@@ -43,7 +43,8 @@ function adaptPictureTagToDpr(pictureTag, config) {
 // Example usage:
 const pictureTag = document.querySelector('picture');
 const config = {
-    large: { minWidth: 1024, maxWidth: 9999, dpr: 3, width: 1800 },
+    xlarge: {minWidth: 2048, maxWidth: 9999, dpr: 4, width: 2400},
+    large: { minWidth: 1024, maxWidth: 2047, dpr: 3, width: 1800 },
     medium: { minWidth: 768, maxWidth: 1023, dpr: 2, width: 1200 },
     small: { minWidth: 0, maxWidth: 767, dpr: 1, width: 750 }
 };

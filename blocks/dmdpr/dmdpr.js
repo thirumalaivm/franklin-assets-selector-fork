@@ -12,7 +12,7 @@ function updateDprInUrl(url, dpr) {
 }
 
 function updateDprImages() {
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = 1;
     dprImages.forEach((img) => {
         const src = img.getAttribute('src');
         img.setAttribute('src', updateDprInUrl(src, dpr));

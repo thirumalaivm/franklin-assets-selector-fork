@@ -90,14 +90,13 @@ function isExternalImage(element, externalImageMarker) {
   * appendQueryParams('https://example.com', { foo: 'bar' });
   * // returns 'https://example.com?foo=bar'
 */
-function appendQueryParams(url, params, dpr) {
+function appendQueryParams(url, params) {
+  const dpr = window.devicePixelRatio || 1;
   const { searchParams } = url;
   params.forEach((value, key) => {
     searchParams.set(key, value);
   });
-  if (dpr) {
-    searchParams.set('dpr', dpr);
-  }
+  searchParams.set('dpr', dpr);
   url.search = searchParams.toString();
   return url.toString();
 }
@@ -105,7 +104,7 @@ function appendQueryParams(url, params, dpr) {
 function matchDMUrl(srcUrl) {
   return srcUrl ? srcUrl.includes('/is/image') : false;
 }
-const dpr = window.devicePixelRatio || 1;
+
 /**
  * Creates an optimized picture element for an image.
  * If the image is not an absolute URL, it will be passed to libCreateOptimizedPicture.
@@ -161,14 +160,14 @@ export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoi
       if (i < breakpoints.length - 1) {
         const source = document.createElement('source');
         if (br.media) source.setAttribute('media', br.media);
-        source.setAttribute('srcset', appendQueryParams(url, searchParams, dpr));
+        source.setAttribute('srcset', appendQueryParams(url, searchParams));
         picture.appendChild(source);
       } else {
         const img = document.createElement('img');
         img.setAttribute('loading', eager ? 'eager' : 'lazy');
         img.setAttribute('alt', alt);
         picture.appendChild(img);
-        img.setAttribute('src', appendQueryParams(url, searchParams, dpr));
+        img.setAttribute('src', appendQueryParams(url, searchParams));
       }
     });
   } else {
@@ -178,7 +177,7 @@ export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoi
       if (br.media) source.setAttribute('media', br.media);
       source.setAttribute('type', 'image/webp');
       const searchParams = new URLSearchParams({ width: br.width, format: 'webply' });
-      source.setAttribute('srcset', appendQueryParams(url, searchParams, dpr));
+      source.setAttribute('srcset', appendQueryParams(url, searchParams));
       picture.appendChild(source);
     });
 
@@ -189,14 +188,14 @@ export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoi
       if (i < breakpoints.length - 1) {
         const source = document.createElement('source');
         if (br.media) source.setAttribute('media', br.media);
-        source.setAttribute('srcset', appendQueryParams(url, searchParams, dpr));
+        source.setAttribute('srcset', appendQueryParams(url, searchParams));
         picture.appendChild(source);
       } else {
         const img = document.createElement('img');
         img.setAttribute('loading', eager ? 'eager' : 'lazy');
         img.setAttribute('alt', alt);
         picture.appendChild(img);
-        img.setAttribute('src', appendQueryParams(url, searchParams, dpr));
+        img.setAttribute('src', appendQueryParams(url, searchParams));
       }
     });
   }
@@ -226,7 +225,7 @@ function decorateExternalImages(ele, deliveryMarker) {
         if (child.tagName === 'SOURCE') {
           const srcset = child.getAttribute('srcset');
           if (srcset) {
-            const queryParams = appendQueryParams(new URL(srcset, extImageSrc), searchParams, dpr);
+            const queryParams = appendQueryParams(new URL(srcset, extImageSrc), searchParams);
             if (srcset.includes('/is/image/')) {
               child.setAttribute('srcset', queryParams.replaceAll('%24', '$'));
             } else {
@@ -237,7 +236,7 @@ function decorateExternalImages(ele, deliveryMarker) {
         } else if (child.tagName === 'IMG') {
           const src = child.getAttribute('src');
           if (src) {
-            const queryParams = appendQueryParams(new URL(src, extImageSrc), searchParams, dpr);
+            const queryParams = appendQueryParams(new URL(src, extImageSrc), searchParams);
             if (src.includes('/is/image/')) {
               child.setAttribute('src', queryParams.replaceAll('%24', '$'));
             } else {

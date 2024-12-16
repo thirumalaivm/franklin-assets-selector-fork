@@ -105,7 +105,7 @@ function appendQueryParams(url, params, dpr) {
 function matchDMUrl(srcUrl) {
   return srcUrl ? srcUrl.includes('/is/image') : false;
 }
-
+const dpr = window.devicePixelRatio || 1;
 /**
  * Creates an optimized picture element for an image.
  * If the image is not an absolute URL, it will be passed to libCreateOptimizedPicture.
@@ -119,7 +119,6 @@ function matchDMUrl(srcUrl) {
 export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '1800' }, { width: '750' }]) {
   const src = extImg.getAttribute('href');
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
-  const dpr = window.devicePixelRatio || 1;
 
   // Fallback to createOptimizedPicture if src is not an absolute URL
   if (!isAbsoluteUrl) return libCreateOptimizedPicture(src, alt, eager, breakpoints);

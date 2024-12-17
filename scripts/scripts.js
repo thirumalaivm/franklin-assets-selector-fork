@@ -91,12 +91,10 @@ function isExternalImage(element, externalImageMarker) {
   * // returns 'https://example.com?foo=bar'
 */
 function appendQueryParams(url, params) {
-  const dpr = window.devicePixelRatio || 1;
   const { searchParams } = url;
   params.forEach((value, key) => {
     searchParams.set(key, value);
   });
-  searchParams.set('dpr', dpr);
   url.search = searchParams.toString();
   return url.toString();
 }
@@ -115,7 +113,15 @@ function matchDMUrl(srcUrl) {
  * @returns {Element} The picture element
  *
  */
-export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '1800' }, { width: '750' }]) {
+/*export function createOptimizedPicture(
+    extImg,
+    alt = '',
+    eager = false,
+    breakpoints = [
+      { media: '(min-width: 600px)', width: '1800' },
+      { width: '750' },
+    ]
+) {
   const src = extImg.getAttribute('href');
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
 
@@ -143,6 +149,8 @@ export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoi
     return picture;
   }
 
+  const dprValues = [1, 2, 3]; // Device pixel ratios to consider
+
   if (matchDMUrl(src)) {
     const isTemplateUrl = url.search.match(/\$[a-zA-Z0-9]+=[a-zA-Z0-9]+/g);
     if (isTemplateUrl) {
@@ -152,56 +160,247 @@ export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoi
     const hasWidthInSrc = url.searchParams.get('src') ? url.searchParams.get('src').includes('wid=') : false;
     const appendWidParam = !hasWidthInSrc && !url.searchParams.get('wid');
 
-    breakpoints.forEach((br, i) => {
-      const searchParams = appendWidParam
-        ? new URLSearchParams({ wid: br.width })
-        : new URLSearchParams();
+    breakpoints.forEach((br, index) => {
+      // Create source for each dpr value (only once per breakpoint)
+      dprValues.forEach((dpr) => {
+        const searchParams = appendWidParam
+            ? new URLSearchParams({ wid: br.width * dpr, dpr })
+            : new URLSearchParams({ dpr });
 
-      if (i < breakpoints.length - 1) {
         const source = document.createElement('source');
         if (br.media) source.setAttribute('media', br.media);
-        source.setAttribute('srcset', appendQueryParams(url, searchParams));
+        const srcsetValue = `${appendQueryParams(url, searchParams)} ${dpr}x`;
+        source.setAttribute('srcset', srcsetValue);
+        //source.setAttribute('srcset', appendQueryParams(url, searchParams));
+        source.setAttribute('type', 'image/webp'); // Apply webp format
         picture.appendChild(source);
-      } else {
+      });
+
+      // Add fallback <img> for the last breakpoint
+      if (index === breakpoints.length - 1) {
         const img = document.createElement('img');
         img.setAttribute('loading', eager ? 'eager' : 'lazy');
         img.setAttribute('alt', alt);
+
+        const fallbackSearchParams = new URLSearchParams({
+          wid: br.width * dprValues[0], // Lowest DPR (1x)
+          dpr: dprValues[0],
+        });
+        img.setAttribute('src', appendQueryParams(url, fallbackSearchParams));
         picture.appendChild(img);
-        img.setAttribute('src', appendQueryParams(url, searchParams));
       }
     });
   } else {
-    // webp
+    // Non-DM URLs with webp and fallback formats
     breakpoints.forEach((br) => {
+      const sources = [];
+      // webp sources for each dpr (only once per breakpoint)
+      dprValues.forEach((dpr) => {
+        const webpParams = new URLSearchParams({
+          width: br.width * dpr,
+          format: 'webply',
+          dpr,
+        });
+        const urlWithParams = appendQueryParams(url, webpParams);
+        sources.push(`${urlWithParams} ${dpr}x`);
+      });
+        // Append '1x' or '2x' descriptors
       const source = document.createElement('source');
       if (br.media) source.setAttribute('media', br.media);
       source.setAttribute('type', 'image/webp');
-      const searchParams = new URLSearchParams({ width: br.width, format: 'webply' });
-      source.setAttribute('srcset', appendQueryParams(url, searchParams));
+      source.setAttribute('srcset', sources.join(', ')); // Join srcset entries with commas
       picture.appendChild(source);
     });
 
-    // fallback
-    breakpoints.forEach((br, i) => {
-      const searchParams = new URLSearchParams({ width: br.width, format: ext });
+    // Add fallback <img> for non-DM URLs
+    const img = document.createElement('img');
+    img.setAttribute('loading', eager ? 'eager' : 'lazy');
+    img.setAttribute('alt', alt);
 
-      if (i < breakpoints.length - 1) {
+    const fallbackSearchParams = new URLSearchParams({
+      width: breakpoints[breakpoints.length - 1].width * dprValues[0], // Lowest DPR
+      format: ext,
+      dpr: dprValues[0],
+    });
+    img.setAttribute('src', appendQueryParams(url, fallbackSearchParams));
+    picture.appendChild(img);
+  }
+
+  return picture;
+}*/
+export function createOptimizedPicture(
+    extImg,
+    alt = '',
+    eager = false,
+    breakpoints = [
+      { media: '(min-width: 600px)', width: '1800' },
+      { width: '750' },
+    ]
+) {
+  const src = extImg.getAttribute('href');
+  const isAbsoluteUrl = /^https?:\/\//i.test(src);
+
+  // Fallback to createOptimizedPicture if src is not an absolute URL
+  if (!isAbsoluteUrl) return libCreateOptimizedPicture(src, alt, eager, breakpoints);
+
+  const url = new URL(src);
+  const picture = document.createElement('picture');
+  const { pathname } = url;
+  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+
+  let isMemberCollectionImage = false;
+  const memberCollection = document.getElementsByClassName('member-collections');
+  if (memberCollection && memberCollection.length > 0) {
+    isMemberCollectionImage = memberCollection[0].contains(extImg);
+  }
+
+  if (isMemberCollectionImage) {
+    // Load placeholder image
+    const placeholderImg = document.createElement('img');
+    placeholderImg.setAttribute('src', comingSoonPlaceHolder); // Set placeholder image URL
+    placeholderImg.setAttribute('alt', alt);
+    picture.setAttribute('data-original-source', src);
+    picture.appendChild(placeholderImg);
+    return picture;
+  }
+
+  const dprValues = [1, 2, 3]; // Device pixel ratios to consider
+
+  if (matchDMUrl(src)) {
+    const isTemplateUrl = url.search.match(/\$[a-zA-Z0-9]+=[a-zA-Z0-9]+/g);
+    if (isTemplateUrl) {
+      picture.setAttribute('data-is-template', 'true');
+    }
+
+    const hasWidthInSrc = url.searchParams.get('src') ? url.searchParams.get('src').includes('wid=') : false;
+    const appendWidParam = !hasWidthInSrc && !url.searchParams.get('wid');
+
+    breakpoints.forEach((br, index) => {
+      // Create source for each dpr value (only once per breakpoint)
+      dprValues.forEach((dpr) => {
+        const searchParams = appendWidParam
+            ? new URLSearchParams({ wid: br.width * dpr, dpr })
+            : new URLSearchParams({ dpr });
+
         const source = document.createElement('source');
         if (br.media) source.setAttribute('media', br.media);
-        source.setAttribute('srcset', appendQueryParams(url, searchParams));
+        const srcsetValue = `${appendQueryParams(url, searchParams)} ${dpr}x`;
+        source.setAttribute('srcset', srcsetValue);
+        //source.setAttribute('srcset', appendQueryParams(url, searchParams));
+        source.setAttribute('type', 'image/webp'); // Apply webp format
         picture.appendChild(source);
-      } else {
+      });
+
+      // Add fallback <img> for the last breakpoint
+      if (index === breakpoints.length - 1) {
         const img = document.createElement('img');
         img.setAttribute('loading', eager ? 'eager' : 'lazy');
         img.setAttribute('alt', alt);
+
+        const fallbackSearchParams = new URLSearchParams({
+          wid: br.width * dprValues[0], // Lowest DPR (1x)
+          dpr: dprValues[0],
+        });
+        img.setAttribute('src', appendQueryParams(url, fallbackSearchParams));
         picture.appendChild(img);
-        img.setAttribute('src', appendQueryParams(url, searchParams));
       }
     });
+  } else {
+    // Non-DM URLs with webp and fallback formats
+    breakpoints.forEach((br) => {
+      // webp sources for each dpr (only once per breakpoint)
+      dprValues.forEach((dpr) => {
+        const source = document.createElement('source');
+        if (br.media) source.setAttribute('media', br.media);
+        source.setAttribute('type', 'image/webp');
+        const webpParams = new URLSearchParams({
+          width: br.width * dpr,
+          format: 'webply',
+          dpr,
+        });
+        const urlWithParams = appendQueryParams(url, webpParams);
+
+        // Append '1x' or '2x' descriptors
+        const srcsetValue = `${urlWithParams} ${dpr}x`;
+        source.setAttribute('srcset', srcsetValue);
+        //source.setAttribute('srcset', appendQueryParams(url, webpParams));
+        picture.appendChild(source);
+      });
+
+      // Fallback format sources for each dpr (only once per breakpoint)
+      dprValues.forEach((dpr) => {
+        const source = document.createElement('source');
+        if (br.media) source.setAttribute('media', br.media);
+        const fallbackParams = new URLSearchParams({
+          width: br.width * dpr,
+          format: ext,
+          dpr,
+        });
+        source.setAttribute('srcset', appendQueryParams(url, fallbackParams));
+        picture.appendChild(source);
+      });
+    });
+
+    // Add fallback <img> for non-DM URLs
+    const img = document.createElement('img');
+    img.setAttribute('loading', eager ? 'eager' : 'lazy');
+    img.setAttribute('alt', alt);
+
+    const fallbackSearchParams = new URLSearchParams({
+      width: breakpoints[breakpoints.length - 1].width * dprValues[0], // Lowest DPR
+      format: ext,
+      dpr: dprValues[0],
+    });
+    img.setAttribute('src', appendQueryParams(url, fallbackSearchParams));
+    picture.appendChild(img);
   }
 
   return picture;
 }
+
+////
+/*
+export function createOptimizedPicture(extImg, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)' }, {}]) {
+  const src = extImg.getAttribute('href');
+  const isAbsoluteUrl = /^https?:\/\//i.test(src);
+
+  // Fallback to createOptimizedPicture if src is not an absolute URL
+  if (!isAbsoluteUrl) return libCreateOptimizedPicture(src, alt, eager, breakpoints);
+
+  const url = new URL(src);
+  const { pathname } = url;
+  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+
+
+  const picture = document.createElement('picture');
+  breakpoints.forEach((br) => {
+    // Generate srcset entries for dpr=1, 2, and 3
+    for (let dpr = 1; dpr <= 3; dpr++) {
+      const searchParams = new URLSearchParams({ format: ext, dpr: dpr });
+
+      const source = document.createElement('source');
+      if (br.media) source.setAttribute('media', br.media);  // apply media query for screen width
+      source.setAttribute('srcset', appendQueryParams(url, searchParams)); // set srcset with dpr
+      source.setAttribute('type', ext === 'webp' ? 'image/webp' : 'image/jpeg');  // specify image type
+      picture.appendChild(source);
+    }
+  });
+
+  // Adding default img tag as fallback
+  const img = document.createElement('img');
+  img.setAttribute('loading', eager ? 'eager' : 'lazy');
+  img.setAttribute('alt', alt);
+
+  // Set default dpr=1 as fallback for img
+  img.setAttribute('src', appendQueryParams(url, new URLSearchParams({ format: ext, dpr: 1 })));
+  picture.appendChild(img);
+
+  return picture;
+}*/
+
+
+
+
 
 /*
   * Decorates external images with a picture element
@@ -226,10 +425,13 @@ function decorateExternalImages(ele, deliveryMarker) {
           const srcset = child.getAttribute('srcset');
           if (srcset) {
             const queryParams = appendQueryParams(new URL(srcset, extImageSrc), searchParams);
+            const [srcsetUrl, descriptor] = srcset.split(' '); // Separate the URL and descriptor
+            const updatedUrl = appendQueryParams(new URL(srcsetUrl, extImageSrc), searchParams);
+            const finalSrcset = `${updatedUrl.toString()} ${descriptor || ''}`.trim();
             if (srcset.includes('/is/image/')) {
-              child.setAttribute('srcset', queryParams.replaceAll('%24', '$'));
+              child.setAttribute('srcset', finalSrcset.replaceAll('%24', '$'));
             } else {
-              child.setAttribute('srcset', queryParams);
+              child.setAttribute('srcset', finalSrcset);
             }
             child.setAttribute('loading', 'eager');
           }

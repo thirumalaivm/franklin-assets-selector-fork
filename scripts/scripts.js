@@ -315,7 +315,7 @@ export function createOptimizedPicture(
         source.setAttribute('type', 'image/webp');
         const webpParams = new URLSearchParams({
           width: br.width * dpr,
-          format: 'webply',
+          format: 'webp',
           dpr,
         });
         const urlWithParams = appendQueryParams(url, webpParams);
@@ -417,41 +417,86 @@ function decorateExternalImages(ele, deliveryMarker) {
       const extImageSrc = extImage.getAttribute('href');
       const extPicture = createOptimizedPicture(extImage);
 
-      /* copy query params from link to img */
+      /* Copy query params from link to img */
       const extImageUrl = new URL(extImageSrc);
       const { searchParams } = extImageUrl;
+
+      // Store srcsets for each media condition and track the media+type combinations
+      const srcsetMap = {};
+
       extPicture.querySelectorAll('source, img').forEach((child) => {
         if (child.tagName === 'SOURCE') {
           const srcset = child.getAttribute('srcset');
           if (srcset) {
-            const queryParams = appendQueryParams(new URL(srcset, extImageSrc), searchParams);
-            const [srcsetUrl, descriptor] = srcset.split(' '); // Separate the URL and descriptor
-            const updatedUrl = appendQueryParams(new URL(srcsetUrl, extImageSrc), searchParams);
-            const finalSrcset = `${updatedUrl.toString()} ${descriptor || ''}`.trim();
-            if (srcset.includes('/is/image/')) {
-              child.setAttribute('srcset', finalSrcset.replaceAll('%24', '$'));
-            } else {
-              child.setAttribute('srcset', finalSrcset);
+            // Process each srcset entry and accumulate for the same media condition
+            const updatedSrcsets = srcset.split(/\s*,\s*/).map((srcsetItem) => {
+              const [src, descriptor] = srcsetItem.split(' '); // Separate URL and descriptor
+              const updatedUrl = appendQueryParams(new URL(src, extImageSrc), searchParams);
+              return `${updatedUrl.toString()} ${descriptor || ''}`.trim();
+            });
+
+            const media = child.getAttribute('media');
+            const type = child.getAttribute('type');
+            const key = `${media || ''}_${type || ''}`; // Create a unique key for media+type combination
+
+            if (!srcsetMap[key]) {
+              srcsetMap[key] = new Set(); // Use a Set to avoid duplicate srcsets
             }
+
+            updatedSrcsets.forEach((item) => {
+              srcsetMap[key].add(item); // Add to the Set (auto-deduplicates)
+            });
+
             child.setAttribute('loading', 'eager');
           }
         } else if (child.tagName === 'IMG') {
           const src = child.getAttribute('src');
           if (src) {
             const queryParams = appendQueryParams(new URL(src, extImageSrc), searchParams);
-            if (src.includes('/is/image/')) {
-              child.setAttribute('src', queryParams.replaceAll('%24', '$'));
-            } else {
-              child.setAttribute('src', queryParams);
-            }
+            child.setAttribute('src', queryParams);
             child.setAttribute('loading', 'eager');
           }
         }
       });
-      extImage.parentNode.replaceChild(extPicture, extImage);
+
+      // Create a new picture element to ensure the correct order of child elements (sources first, then img)
+      const newPicture = document.createElement('picture');
+
+      // Create and append new source elements based on the unique media+type keys
+      Object.keys(srcsetMap).forEach((key) => {
+        const [media, type] = key.split('_');
+        const source = document.createElement('source');
+
+        if (media) {
+          source.setAttribute('media', media);
+        }
+
+        if (type) {
+          source.setAttribute('type', type);
+        }
+
+        const deduplicatedSrcset = [...srcsetMap[key]].join(','); // Convert Set to string
+        source.setAttribute('srcset', deduplicatedSrcset);
+        newPicture.appendChild(source);  // Append source first
+      });
+
+      // Append the img tag at the end
+      const img = extPicture.querySelector('img');
+      if (img) {
+        newPicture.appendChild(img);
+      }
+
+      // Replace the original link with the new picture
+      extImage.parentNode.replaceChild(newPicture, extImage);
     }
   });
 }
+
+
+
+
+
+
 
 /**
  * Decorates the main element.

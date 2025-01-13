@@ -22,6 +22,7 @@ export default function decorate(block) {
         iframe.setAttribute('allow', 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
         iframe.setAttribute('allowfullscreen', true);
         iframe.classList.add('columns-video-col');
+        iframe.setAttribute('title', 'Video content');
         videoUrl.replaceWith(iframe);
       }
     });

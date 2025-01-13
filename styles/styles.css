@@ -16,7 +16,7 @@
   --light-color: #f8f8f8;
   --dark-color: #505050;
   --text-color: black;
-  --link-color: #0000FF;;
+  --link-color: #3B3BF7;
   --link-hover-color: #ff6633;
   ;
 
@@ -219,7 +219,7 @@ button {
   text-align: center;
   text-decoration: none;
   background-color: var(--link-color);
-  color: var(--link-hover-color);
+  color: white;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -231,7 +231,7 @@ a.button:focus,
 button:hover,
 button:focus {
   /* background-color: var(--link-hover-color); */
-  background-color: white;
+  background-color: #0f456e;
   cursor: pointer;
 }
 

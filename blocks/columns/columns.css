@@ -38,7 +38,8 @@
   }
 
   .columns-video-col {
-    height: 500px; /* Increased height for desktop */
+    border: 0px;
+    height: 620px; /* Increased height for desktop */
   }
 
   .columns > div > div {

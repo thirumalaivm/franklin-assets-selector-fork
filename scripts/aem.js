@@ -16,16 +16,6 @@ function sampleRUM(checkpoint, data) {
   const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
   try {
     window.hlx = window.hlx || {};
-<<<<<<< HEAD
-    sampleRUM.enhance = () => { };
-    if (!window.hlx.rum) {
-      const weight = (window.SAMPLE_PAGEVIEWS_AT_RATE === 'high' && 10)
-        || (window.SAMPLE_PAGEVIEWS_AT_RATE === 'low' && 1000)
-        || (new URLSearchParams(window.location.search).get('rum') === 'on' && 1)
-        || 100;
-      const id = Math.random().toString(36).slice(-4);
-      const isSelected = Math.random() * weight < 1;
-=======
     sampleRUM.enhance = () => {};
     if (!window.hlx.rum) {
       const param = new URLSearchParams(window.location.search).get('rum');
@@ -35,7 +25,6 @@ function sampleRUM(checkpoint, data) {
         || 100;
       const id = Math.random().toString(36).slice(-4);
       const isSelected = param !== 'off' && Math.random() * weight < 1;
->>>>>>> 878dbbb7e4382c1b0ba6854442983c63bed51d1d
       // eslint-disable-next-line object-curly-newline, max-len
       window.hlx.rum = {
         weight,
@@ -92,9 +81,6 @@ function sampleRUM(checkpoint, data) {
             t: time,
             ...pingData,
           });
-<<<<<<< HEAD
-          const { href: url, origin } = new URL(`.rum/${weight}`, sampleRUM.collectBaseURL);
-=======
           const urlParams = window.RUM_PARAMS
             ? `?${new URLSearchParams(window.RUM_PARAMS).toString()}`
             : '';
@@ -102,7 +88,6 @@ function sampleRUM(checkpoint, data) {
             `.rum/${weight}${urlParams}`,
             sampleRUM.collectBaseURL,
           );
->>>>>>> 878dbbb7e4382c1b0ba6854442983c63bed51d1d
           const body = origin === window.location.origin
             ? new Blob([rumData], { type: 'application/json' })
             : rumData;
@@ -113,11 +98,6 @@ function sampleRUM(checkpoint, data) {
         sampleRUM.sendPing('top', timeShift());
 
         sampleRUM.enhance = () => {
-<<<<<<< HEAD
-          const script = document.createElement('script');
-          script.src = new URL(
-            '.rum/@adobe/helix-rum-enhancer@^2/src/index.js',
-=======
           // only enhance once
           if (document.querySelector('script[src*="rum-enhancer"]')) return;
           const { enhancerVersion, enhancerHash } = sampleRUM.enhancerContext || {};
@@ -128,7 +108,6 @@ function sampleRUM(checkpoint, data) {
           }
           script.src = new URL(
             `.rum/@adobe/helix-rum-enhancer@${enhancerVersion || '^2'}/src/index.js`,
->>>>>>> 878dbbb7e4382c1b0ba6854442983c63bed51d1d
             sampleRUM.baseURL,
           ).href;
           document.head.appendChild(script);
@@ -726,12 +705,9 @@ async function loadSections(element) {
   for (let i = 0; i < sections.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
     await loadSection(sections[i]);
-<<<<<<< HEAD
-=======
     if (i === 0 && sampleRUM.enhance) {
       sampleRUM.enhance();
     }
->>>>>>> 878dbbb7e4382c1b0ba6854442983c63bed51d1d
   }
 }
 

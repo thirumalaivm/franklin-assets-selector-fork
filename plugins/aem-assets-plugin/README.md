@@ -12,7 +12,8 @@ The AEM Assets Plugin helps you quickly integrate with AEM Assets for your AEM p
 - You need to have access to [Dynamic Media Open API](https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/assets/dynamicmedia/dynamic-media-open-apis/dynamic-media-open-apis-overview)
 
 And you need to have pre-configured:
-- [AEM Assets Sidekick plugin](https://www.aem.live/docs/aem-assets-sidekick-plugin)
+- [AEM Assets Sidekick plugin](https://www.aem.live/docs/aem-assets-sidekick-plugin) if using Doc based authoring OR
+- [Universal Editor Custom Asset Picker](https://developer.adobe.com/uix/docs/extension-manager/extension-developed-by-adobe/configurable-asset-picker/) if using Universal Editor based authoring
 
 ## Installation
 
@@ -38,11 +39,14 @@ you can just delete the folder and re-add the plugin via the `git subtree add` c
 
 To properly connect and configure the plugin for your project, you'll need to edit both the `aem.js` and `scripts.js` in your AEM project and add a new file `aem-assets-plugin-support.js` in the `scripts` folder.
 
+> **Note:** All the changes described below can also be seen consolidated in this [git commit](https://github.com/hlxsites/franklin-assets-selector/commit/f512e9b10d752971136fef476402826b61d07f45).
+
+
 Here's typically how `scripts/aem-assets-plugin-support.js` would look:
 
 ```
 // The based path of the aem-assets-plugin code.
-const codeBasePath = '/plugins/aem-assets-plugin';
+const codeBasePath = `${window.hlx?.codeBasePath}/plugins/aem-assets-plugin`;
 
 // The blocks that are to be used from the aem-assets-plugin.
 const blocks = ['video'];

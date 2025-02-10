@@ -201,10 +201,10 @@ function hasImageSmartcropMeta() {
 }
 
 /**
- * to filter out all the external images on the page and set data-smartcrop-status=loading
+ * to mark all the external images with smart crop on the page and set data-smartcrop-status=loading
  * if the image is a DM OpenAPI URL
  */
-function filterSmartCropImagesOnPage() {
+function markSmartCropImages(ele = document) {
   // Early return if smartcrop config is missing
   if (window.hlx?.aemassets?.smartCrops === undefined) {
     return;
@@ -215,11 +215,11 @@ function filterSmartCropImagesOnPage() {
 
   if (hasImageSmartcropMeta()) {
     // If smartcrop is enabled at page level, collect all <a> tags
-    extImages.push(...document.querySelectorAll('a'));
+    extImages.push(...ele.querySelectorAll('a'));
   } else {
     // if not enabled at page level, collect all <a> tags within block and section elements
-    extImages.push(...document.querySelectorAll('.smartcrop a'));
-    document.querySelectorAll('.section-metadata > div > div').forEach((sectionMeta) => {
+    extImages.push(...ele.querySelectorAll('.smartcrop a'));
+    ele.querySelectorAll('.section-metadata > div > div').forEach((sectionMeta) => {
       if (sectionMeta.innerText === 'smartcrop') {
         extImages.push(...sectionMeta.closest('.section-metadata').parentElement.querySelectorAll('a'));
       }
@@ -244,7 +244,7 @@ function filterSmartCropImagesOnPage() {
   */
 export function decorateExternalImages(ele, deliveryMarker) {
   // apply data-smartcrop-status=loading to all potential <a> tags
-  filterSmartCropImagesOnPage();
+  markSmartCropImages(ele);
 
   const extImages = ele.querySelectorAll('a');
   extImages.forEach((extImage) => {
@@ -298,7 +298,7 @@ export function decorateImagesFromAlt(main) {
         return;
       }
 
-      const newPictureElement = createOptimizedPicture(deliveryUrl, altText);
+      const newPictureElement = createOptimizedPictureWithSmartcrop(deliveryUrl, altText);
       pictureElement.parentElement.replaceChild(newPictureElement, pictureElement);
     } catch (error) {
       // Do nothing

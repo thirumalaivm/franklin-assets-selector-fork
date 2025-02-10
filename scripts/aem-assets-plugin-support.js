@@ -10,6 +10,7 @@ export default async function assetsInit() {
     loadBlock,
     createOptimizedPicture,
     decorateExternalImages,
+    decorateImagesFromAlt,
   } = await import(`${codeBasePath}/scripts/aem-assets.js`);
   window.hlx = window.hlx || {};
   window.hlx.aemassets = {
@@ -18,6 +19,7 @@ export default async function assetsInit() {
     loadBlock,
     createOptimizedPicture,
     decorateExternalImages,
+    decorateImagesFromAlt,
     smartCrops: {
       Small: { minWidth: 0, maxWidth: 767 },
       Medium: { minWidth: 768, maxWidth: 1023 },

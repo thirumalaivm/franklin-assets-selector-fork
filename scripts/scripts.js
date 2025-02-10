@@ -168,6 +168,10 @@ export function decorateMain(main) {
     window.hlx.aemassets.decorateExternalImages(main);
   }
 
+  if (window.hlx.aemassets.decorateImagesFromAlt) {
+    window.hlx.aemassets.decorateImagesFromAlt(main);
+  }
+
   // decorate images with delivery url and correct alt text
   decorateDeliveryImages(main);
   // hopefully forward compatible button decoration

@@ -141,7 +141,7 @@ export function createOptimizedPictureWithSmartcrop(src, alt = '', eager = false
 
   // initialise breakpoint to project level smartcrop config unless needed to customise
   const smartcropBreakpoints = breakpoints.length !== 0 ? breakpoints
-  : Object.entries(window.hlx.aemassets?.smartCrops).map(
+    : Object.entries(window.hlx.aemassets?.smartCrops).map(
       ([name, { minWidth, maxWidth }]) => ({
         media: `(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`,
         smartcrop: name,
@@ -284,10 +284,10 @@ export function decorateExternalImages(ele, deliveryMarker) {
 
 /**
  * Decorates all images in a container element and replace media urls with delivery urls.
- * @param {Element} main The container element
+ * @param {Element} ele The container element
  */
-export function decorateImagesFromAlt(main) {
-  const pictureElements = main.querySelectorAll('picture');
+export function decorateImagesFromAlt(ele = document) {
+  const pictureElements = ele.querySelectorAll('picture');
   [...pictureElements].forEach((pictureElement) => {
     const imgElement = pictureElement.querySelector('img');
     const alt = imgElement.getAttribute('alt');
@@ -298,7 +298,9 @@ export function decorateImagesFromAlt(main) {
         return;
       }
 
-      const newPictureElement = createOptimizedPictureWithSmartcrop(deliveryUrl, altText);
+      const newPictureElement = isDMOpenAPIUrl(deliveryUrl)
+        ? createOptimizedPictureWithSmartcrop(deliveryUrl, altText)
+        : createOptimizedPicture(deliveryUrl, altText);
       pictureElement.parentElement.replaceChild(newPictureElement, pictureElement);
     } catch (error) {
       // Do nothing
@@ -349,6 +351,7 @@ export async function loadBlock(block) {
 // Create an object with the test functions
 const testFunctions = {
   appendQueryParams,
+  decorateImagesFromAlt,
 };
 
 // Export the object

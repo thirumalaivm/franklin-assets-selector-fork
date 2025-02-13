@@ -8,7 +8,7 @@
 const videoConfig = {
   autoplay: "any", // refer https://videojs.com/guides/options/#autoplay
   muted: true,
-  loop: true,
+  loop: false,
   controls: true,
 };
 

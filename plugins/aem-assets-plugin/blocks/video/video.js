@@ -243,6 +243,13 @@ function setupPlayer(url, videoContainer, config) {
     videojsConfig.autoplay = true;
   }
 
+  videojsConfig.html5 = {
+    vhs: {
+      useDevicePixelRatio: true,
+      customPixelRatio: window.devicePixelRatio ?? 1,
+    },
+  };
+
   // eslint-disable-next-line no-undef
   const player = videojs(videoElement, videojsConfig);
   player.src(url);

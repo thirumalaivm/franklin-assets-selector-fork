@@ -4,7 +4,11 @@ const VIDEO_JS_SCRIPT = '/blocks/video/videojs/video.min.js';
 const VIDEO_JS_CSS = '/blocks/video/videojs/video-js.min.css';
 const VIDEO_JS_LOAD_EVENT = 'videojs-loaded';
 
-function getDeviceSpecificVideoUrl(videoUrl) {
+function getDeviceSpecificVideoUrl(videoUrl, isProgressive) {
+  if (isProgressive) {
+    return videoUrl.replace(/manifest\.mpd|manifest\.m3u8|play/, 'original/as/video.mp4');
+  }
+
   const { userAgent } = navigator;
   const isIOS = /iPad|iPhone|iPod/.test(userAgent);
   const isSafari = (/Safari/i).test(userAgent) && !(/Chrome/i).test(userAgent) && !(/CriOs/i).test(userAgent) && !(/Android/i).test(userAgent) && !(/Edg/i).test(userAgent);
@@ -15,6 +19,7 @@ function getDeviceSpecificVideoUrl(videoUrl) {
 
 function parseConfig(block) {
   const isAutoPlay = block.classList.contains('autoplay');
+  const isProgressive = block.classList.contains('progressive');
 
   if (block.classList.contains('hero')) {
     const posterImage = block.querySelector('picture');
@@ -25,7 +30,7 @@ function parseConfig(block) {
 
     return {
       type: 'hero',
-      videoUrl: getDeviceSpecificVideoUrl(videoUrl),
+      videoUrl: getDeviceSpecificVideoUrl(videoUrl, isProgressive),
       isAutoPlay,
       title,
       description,
@@ -42,7 +47,7 @@ function parseConfig(block) {
       const description = child.querySelector('div:nth-child(2) > p')?.textContent;
 
       return {
-        videoUrl: getDeviceSpecificVideoUrl(videoUrl),
+        videoUrl: getDeviceSpecificVideoUrl(videoUrl, isProgressive),
         isAutoPlay,
         title,
         description,
@@ -61,7 +66,7 @@ function parseConfig(block) {
 
   return {
     type: 'modal',
-    videoUrl: getDeviceSpecificVideoUrl(videoUrl),
+    videoUrl: getDeviceSpecificVideoUrl(videoUrl, isProgressive),
     posterImage,
   };
 }
@@ -213,6 +218,31 @@ function setupAutopause(videoElement, player) {
   observer.observe(videoElement);
 }
 
+function setupProgressiveVideo(url, videoContainer, config) {
+  const videoElement = document.createElement('video');
+
+  // Add basic attributes
+  videoElement.setAttribute('loop', '');
+  videoElement.setAttribute('playsinline', '');
+  videoElement.removeAttribute('controls');
+  videoElement.addEventListener('canplay', () => {
+    videoElement.muted = true;
+    if (config.autoplay) videoElement.play();
+  });
+
+  // Set source
+  videoElement.src = url;
+
+  // Add poster if available
+  if (config.poster) {
+    videoElement.poster = getPosterImage(config.poster);
+  }
+
+  videoContainer.append(videoElement);
+
+  return videoElement;
+}
+
 function setupPlayer(url, videoContainer, config) {
   const videoElement = document.createElement('video');
   videoElement.classList.add('video-js');
@@ -272,6 +302,22 @@ async function decorateVideoPlayer(url, videoContainer, config) {
     videoContainer.append(config.posterImage);
   }
 
+  // Check if progressive playback is requested
+  if (config.progressive) {
+    const player = setupProgressiveVideo(url, videoContainer, config);
+    player.addEventListener('loadeddata', () => {
+      const posterImage = videoContainer.querySelector('picture');
+      if (posterImage) {
+        posterImage.style.display = 'none';
+        setTimeout(() => {
+          player.play();
+        }, 1000);
+      }
+    });
+    return;
+  }
+
+  // Existing VideoJS implementation
   await waitForVideoJs();
   const player = setupPlayer(url, videoContainer, config);
   player.on('loadeddata', () => {
@@ -318,6 +364,7 @@ async function decorateVideoCard(container, config) {
     hasCustomPlayButton: true,
     fill: true,
     posterImage: config.posterImage,
+    progressive: config.progressive,
   });
 }
 
@@ -357,6 +404,7 @@ async function decorateHeroBlock(block, config) {
     hasCustomPlayButton: true,
     fill: true,
     posterImage: config.posterImage,
+    progressive: config.progressive,
   });
 }
 
@@ -495,28 +543,33 @@ async function decorateVideoModal(block, config) {
 }
 
 export default async function decorate(block) {
-  // If block is delayed, we'd load it in a delayed manner
-  if (block.classList.contains('delayed')) {
-    if (typeof window.DELAYED_PHASE !== 'undefined') {
-      // DELAYED_PHASE is defined, so hook to delayed-phase
-      if (window.DELAYED_PHASE) {
-        loadVideoJs();
+  // Check for progressive class
+  const isProgressive = block.classList.contains('progressive');
+
+  // Only load VideoJS if not progressive
+  if (!isProgressive) {
+    if (block.classList.contains('delayed')) {
+      if (typeof window.DELAYED_PHASE !== 'undefined') {
+        if (window.DELAYED_PHASE) {
+          loadVideoJs();
+        } else {
+          const delayedPhaseHandler = async () => {
+            document.removeEventListener('delayed-phase', delayedPhaseHandler);
+            await loadVideoJs();
+          };
+          document.addEventListener('delayed-phase', delayedPhaseHandler);
+        }
       } else {
-        const delayedPhaseHandler = async () => {
-          document.removeEventListener('delayed-phase', delayedPhaseHandler);
-          await loadVideoJs();
-        };
-        document.addEventListener('delayed-phase', delayedPhaseHandler);
+        setTimeout(loadVideoJs, 3000);
       }
     } else {
-      // DELAYED_PHASE is not defined, so don't hook to delayed-phase event
-      setTimeout(loadVideoJs, 3000);
+      await loadVideoJs();
     }
-  } else {
-    await loadVideoJs();
   }
 
   const config = parseConfig(block);
+  // Add progressive flag to config
+  config.progressive = isProgressive;
 
   if (config.type === 'hero') {
     await decorateHeroBlock(block, config);

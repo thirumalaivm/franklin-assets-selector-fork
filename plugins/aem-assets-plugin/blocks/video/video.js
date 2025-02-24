@@ -20,7 +20,7 @@ function getDeviceSpecificVideoUrl(videoUrl, isProgressive) {
 function parseConfig(block) {
   const isAutoPlay = block.classList.contains('autoplay');
   const isProgressive = block.classList.contains('progressive');
-
+  const isHighestBitrate = block.classList.contains('highestbitrate');
   if (block.classList.contains('hero')) {
     const posterImage = block.querySelector('picture');
     const videoUrl = block.querySelector('div > div:first-child a').href;
@@ -36,6 +36,7 @@ function parseConfig(block) {
       description,
       button,
       posterImage,
+      highestBitrate: isHighestBitrate,
     };
   }
 
@@ -52,12 +53,14 @@ function parseConfig(block) {
         title,
         description,
         posterImage,
+        highestBitrate: isHighestBitrate,
       };
     });
 
     return {
       type: 'cards',
       cards,
+      highestBitrate: isHighestBitrate,
     };
   }
 
@@ -68,6 +71,7 @@ function parseConfig(block) {
     type: 'modal',
     videoUrl: getDeviceSpecificVideoUrl(videoUrl, isProgressive),
     posterImage,
+    highestBitrate: isHighestBitrate,
   };
 }
 
@@ -277,6 +281,16 @@ function setupPlayer(url, videoContainer, config) {
     vhs: {
       useDevicePixelRatio: true,
       customPixelRatio: window.devicePixelRatio ?? 1,
+      // Start with highest quality for highestbitrate class
+      limitRenditionByPlayerDimensions: !config.highestBitrate,
+      // Select highest bitrate variant
+      selectionCallback: config.highestBitrate
+        ? (playlistController, representations) => representations.reduce((highest, current) => (
+          (!highest || current.bandwidth > highest.bandwidth)
+            ? current
+            : highest
+        ))
+        : undefined,
     },
   };
 
@@ -365,6 +379,7 @@ async function decorateVideoCard(container, config) {
     fill: true,
     posterImage: config.posterImage,
     progressive: config.progressive,
+    highestBitrate: config.highestBitrate,
   });
 }
 
@@ -405,6 +420,7 @@ async function decorateHeroBlock(block, config) {
     fill: true,
     posterImage: config.posterImage,
     progressive: config.progressive,
+    highestBitrate: config.highestBitrate,
   });
 }
 

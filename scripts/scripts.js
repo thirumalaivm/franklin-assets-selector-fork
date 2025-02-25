@@ -194,9 +194,9 @@ async function loadEager(doc) {
     decorateMain(main);
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);
-    // Artificial Delay eager loading of the page for 2 seconds - for demo only
+    // Artificial Delay eager loading of the page for 1 seconds - for demo only
     await new Promise((resolve) => {
-      setTimeout(resolve, 2000);
+      setTimeout(resolve, 1000);
     });
   }
 
@@ -217,6 +217,8 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  document.dispatchEvent(new Event('lazy-phase'));
+  window.LOADING_PHASE = 'lazy';
   const main = doc.querySelector('main');
   await loadSections(main);
 
@@ -237,7 +239,7 @@ async function loadLazy(doc) {
  */
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
+  window.setTimeout(() => import('./delayed.js'), 5000);
   // load anything that can be postponed to the latest here
 }
 

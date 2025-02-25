@@ -562,21 +562,23 @@ export default async function decorate(block) {
   // Check for progressive class
   const isProgressive = block.classList.contains('progressive');
 
-  // Only load VideoJS if not progressive
   if (!isProgressive) {
-    if (block.classList.contains('delayed')) {
-      if (typeof window.DELAYED_PHASE !== 'undefined') {
-        if (window.DELAYED_PHASE) {
-          loadVideoJs();
-        } else {
-          const delayedPhaseHandler = async () => {
-            document.removeEventListener('delayed-phase', delayedPhaseHandler);
-            await loadVideoJs();
-          };
-          document.addEventListener('delayed-phase', delayedPhaseHandler);
-        }
+    let vjsLoadingPhase;
+    if (block.classList.contains('lazy')) {
+      vjsLoadingPhase = 'lazy';
+    } else if (block.classList.contains('delayed')) {
+      vjsLoadingPhase = 'delayed';
+    }
+
+    if (vjsLoadingPhase) {
+      if (window.LOADING_PHASE === vjsLoadingPhase) {
+        loadVideoJs();
       } else {
-        setTimeout(loadVideoJs, 3000);
+        const vjsLoadingPhaseHandler = async () => {
+          document.removeEventListener(`${vjsLoadingPhase}-phase`, vjsLoadingPhaseHandler);
+          await loadVideoJs();
+        };
+        document.addEventListener(`${vjsLoadingPhase}-phase`, vjsLoadingPhaseHandler);
       }
     } else {
       await loadVideoJs();

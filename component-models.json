@@ -34,6 +34,18 @@
     ]
   },
   {
+    "id": "dm-video",
+    "fields": [
+      {
+        "component": "custom-asset-namespace:custom-asset",
+        "name": "video",
+        "label": "Video",
+        "configUrl": "https://274796-hlxassetaddonconfig-stage.adobeio-static.net/api/v1/web/hlx-asset-addon-config/ue-extn-config",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "title",
     "fields": [
       {

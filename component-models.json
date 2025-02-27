@@ -47,6 +47,7 @@
         "component": "custom-asset-namespace:custom-asset",
         "name": "poster",
         "label": "Poster",
+        "configUrl": "https://274796-hlxassetaddonconfig-stage.adobeio-static.net/api/v1/web/hlx-asset-addon-config/ue-extn-config",
         "valueType": "string"
       }
     ]

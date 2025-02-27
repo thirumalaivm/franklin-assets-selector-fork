@@ -47,10 +47,12 @@ To extend the capabilities of the Assets Selector, you can look at the following
 - [Sample Configuration with Web Path][1]
 - [GitHub Reference Implementation][2]
 
+### Extending the Assets Selector Capabilities
 This configuration is particularly useful for extending the Assets Selector capabilities documented [here][3]. Feel free to integrate and customize it as per your project’s use cases.
 
 [0]: https://245265-extensionconfig.adobeioruntime.net/api/v1/web/extension-config/extension-config
 [1]: https://245265-extensionconfig.adobeioruntime.net/api/v1/web/extension-config/extension-config?webPath=snorkling
 [2]: https://github.com/Adobe-Marketing-Cloud/assets-selector-extension
 [3]: https://www.aem.live/developer/configuring-aem-assets-sidekick-plugin#extend-aem-assets-sidekick-plugin
+1. Open the `{repo}` directory in your favorite IDE and start coding :)
 1. Open the `{repo}` directory in your favorite IDE and start coding :)

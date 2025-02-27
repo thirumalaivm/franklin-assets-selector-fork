@@ -173,15 +173,15 @@
           }
         },
         {
-          "title": "DM Video",
-          "id": "dm-video",
+          "title": "Video",
+          "id": "video",
           "plugins": {
             "xwalk": {
               "page": {
                 "resourceType": "core/franklin/components/block/v1/block",
                 "template": {
-                  "name": "DM Video",
-                  "model": "dm-video"
+                  "name": "Video",
+                  "model": "video"
                 }
               }
             }

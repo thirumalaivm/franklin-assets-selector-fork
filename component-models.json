@@ -34,7 +34,7 @@
     ]
   },
   {
-    "id": "dm-video",
+    "id": "video",
     "fields": [
       {
         "component": "custom-asset-namespace:custom-asset",

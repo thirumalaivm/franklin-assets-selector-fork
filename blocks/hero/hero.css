@@ -39,7 +39,7 @@
   .hero {
     padding: 40px 32px;
   }
-  .hero p, .hero h3 {
+  .hero p, .hero h2, .hero h3 {
     margin-left: 13%;
     width: 40%;
   }

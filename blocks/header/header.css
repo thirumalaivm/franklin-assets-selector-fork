@@ -43,6 +43,10 @@ header nav[aria-expanded='true'] {
     min-height: 0;
     overflow: visible;
   }
+
+  .header .icon-search img {
+    margin-left: 400px;
+  }
 }
 
 header nav p {

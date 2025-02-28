@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40">
+  <defs>
+    <style>
+      .logo-text {
+        font-family: serif;
+        font-size: 32px;
+        fill: currentColor;
+      }
+      .coffee-bean {
+        fill: currentColor;
+      }
+    </style>
+  </defs>
+  <g>
+    <!-- Coffee Bean Icon -->
+    <path class="coffee-bean" d="M30,15 C25,10 15,12 10,18 C5,24 5,32 10,35 C15,38 25,35 30,30 C35,25 35,20 30,15Z" />
+    <path class="coffee-bean" d="M32,25 C37,20 35,10 29,5 C23,0 15,0 12,5 C9,10 12,20 17,25 C22,30 27,30 32,25Z" />
+    
+    <!-- Text -->
+    <text x="45" y="30" class="logo-text">Fréscopa</text>
+  </g>
+</svg> 

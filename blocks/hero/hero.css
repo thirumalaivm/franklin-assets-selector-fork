@@ -30,7 +30,7 @@
   height: 100%;
 }
 
-.hero p, .hero h3 {
+.hero p, .hero h2, .hero h3 {
   color: white;
 
 }

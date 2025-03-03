@@ -255,3 +255,17 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+/* Add explicit dimensions to containers */
+.section.columns-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.default-content-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}

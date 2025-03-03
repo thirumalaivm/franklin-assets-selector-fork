@@ -44,9 +44,10 @@ header nav[aria-expanded='true'] {
     overflow: visible;
   }
 
-  .header .icon-search img {
+  .header .icon-cart img {
     margin-left: 400px;
   }
+  
 }
 
 header nav p {

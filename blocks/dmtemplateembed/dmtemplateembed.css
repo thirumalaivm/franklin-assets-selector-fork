@@ -20,26 +20,3 @@
   max-width: 1000px; /* matches your image width */
   margin: 0 auto;
 }
-
-/* Hide the raw HTML/text that might be showing */
-.dmtemplateembed > div > div:first-child {
-  display: none;
-}
-
-/* Ensure map and areas work properly */
-.dmtemplate-container map {
-  position: relative;
-  display: inline-block;
-}
-
-.dmtemplate-container area {
-  cursor: pointer;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1000px) {
-  .dmtemplate-container img {
-    width: 100%;
-    height: auto;
-  }
-}

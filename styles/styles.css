@@ -14,10 +14,11 @@
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
-  --background-color: black;
+  --background-color: white;
+  --main-background-color: #d5ebf7;
   --light-color: #eee;
   --dark-color: rgb(10,10,10);
-  --text-color: white;
+  --text-color: black;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback;
@@ -75,6 +76,10 @@ body.appear {
 
 header {
   height: var(--nav-height);
+}
+
+main {
+  background-color: var(--main-background-color);
 }
 
 h1, h2, h3,
@@ -152,11 +157,6 @@ a.button:any-link, button {
   border-radius: 30px;
 }
 
-a.button:hover, a.button:focus, button:hover, button:focus  {
-  background-color: var(--link-hover-color);
-  cursor: pointer;
-}
-
 button:disabled, button:disabled:hover {
   background-color: var(--light-color);
   cursor: unset;
@@ -193,6 +193,7 @@ main .section {
 @media (width >= 600px) {
   main .section {
     padding: 64px 32px;
+    margin: 0 10%;
   }
 }
 

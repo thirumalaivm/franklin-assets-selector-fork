@@ -1,0 +1,109 @@
+.smallslides.block {
+  position: relative;
+  width: 100%;
+  padding: 2rem 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.smallslides-track {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 2rem;
+  min-height: unset;
+  scrollbar-width: none;
+}
+.smallslides-track::-webkit-scrollbar {
+  display: none;
+}
+
+.smallslide {
+  flex: 0 0 auto;
+  width: 130px;
+  min-width: 120px;
+  max-width: 130px;
+  height: 160px;
+  min-height: 160px;
+  max-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  position: relative;
+  margin: 0;
+  scroll-snap-align: center;
+  border-radius: 999px;
+  border: 6px solid #4d5ca2; /* outer white border */
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+
+
+
+.smallslide.active::after {
+  content: '';
+  position: absolute;
+  top: 6px; left: 6px; right: 6px; bottom: 6px;
+  border-radius: 999px;
+  border: 3px solid #0af; /* inner blue border */
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.smallslide picture, .smallslide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 1.4rem;
+  display: block;
+  position: relative;
+}
+
+/* City name below the slide */
+.smallslide-label {
+  display: block;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.01em;
+}
+
+.smallslides-nav {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: none;
+  color: gray; /* or #0af for blue, or #222 for dark, as you prefer */
+  border: none;
+  box-shadow: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0;
+  opacity: 1;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.smallslides-nav:hover {
+  color: #0af; /* highlight on hover */
+  background: none;
+}
+
+.smallslides-nav.prev {
+  left: -0.5rem;
+}
+.smallslides-nav.next {
+  right: -1.8rem;
+} 

@@ -328,3 +328,34 @@ async function loadPage() {
 }
 
 loadPage();
+
+function colorizeBracketedText(root = document.body) {
+  // Regex: [text{color}]
+  const regex = /\[([^\{\]]+)\{([^\}\]]+)\}\]/g;
+
+  // Elements to scan
+  const selectors = 'h1, h2, h3, h4, h5, h6, p, span, li, td, th, a, div';
+
+  root.querySelectorAll(selectors).forEach(el => {
+    // Only process elements with childNodes (not just textContent)
+    el.childNodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE && regex.test(node.textContent)) {
+        // Reset regex lastIndex for global regex
+        regex.lastIndex = 0;
+        // Replace all matches in the text node
+        const replaced = node.textContent.replace(regex, (match, text, color) => {
+          return `<span style="color:${color}">${text}</span>`;
+        });
+        // Replace the text node with HTML
+        const span = document.createElement('span');
+        span.innerHTML = replaced;
+        el.replaceChild(span, node);
+      }
+    });
+  });
+}
+
+// Run after page load
+window.addEventListener('DOMContentLoaded', () => {
+  colorizeBracketedText();
+});

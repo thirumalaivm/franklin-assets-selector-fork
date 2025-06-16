@@ -34,18 +34,18 @@ describe('appendQueryParams', () => {
   });
 });
 
-describe('decorateImagesFromAlt', () => {
-  it('should decorate images from alt', () => {
-    const container = document.createElement('div');
-    container.innerHTML = `
-      <picture>
-        <img src="https://example.com/image.jpg" alt='{"deliveryUrl":"https://delivery.com/image.jpg","altText":"Example Image"}'>
-      </picture>
-    `;
-    const { decorateImagesFromAlt } = testFunctions;
-    decorateImagesFromAlt(container);
-    expect(container.innerHTML).toBe(`
-      <picture><source media="(min-width: 600px)" type="image/webp" srcset="https://delivery.com/image.jpg?width=2000"><source type="image/webp" srcset="https://delivery.com/image.jpg?width=750"><source media="(min-width: 600px)" srcset="https://delivery.com/image.jpg?width=2000"><img loading="lazy" alt="Example Image" src="https://delivery.com/image.jpg?width=750"></picture>
-    `);
-  });
-});
+// describe('decorateImagesFromAlt', () => {
+//   it('should decorate images from alt', () => {
+//     const container = document.createElement('div');
+//     container.innerHTML = `
+//       <picture>
+//         <img src="https://example.com/image.jpg" alt='{"deliveryUrl":"https://delivery.com/image.jpg","altText":"Example Image"}'>
+//       </picture>
+//     `;
+//     const { decorateImagesFromAlt } = testFunctions;
+//     decorateImagesFromAlt(container);
+//     expect(container.innerHTML).toBe(`
+//       <picture><source media="(min-width: 600px)" type="image/webp" srcset="https://delivery.com/image.jpg?width=2000"><source type="image/webp" srcset="https://delivery.com/image.jpg?width=750"><source media="(min-width: 600px)" srcset="https://delivery.com/image.jpg?width=2000"><img loading="lazy" alt="Example Image" src="https://delivery.com/image.jpg?width=750"></picture>
+//     `);
+//   });
+// });

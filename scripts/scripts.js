@@ -160,16 +160,8 @@ function decorateDeliveryImages(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
-  if (window.hlx.aemassets.decorateExternalImages) {
-    // decorate external images with explicit external image marker
-    window.hlx.aemassets.decorateExternalImages(main, '//External Image//');
-
-    // decorate external images with implicit external image marker
+  if (window.hlx.aemassets?.decorateExternalImages) {
     window.hlx.aemassets.decorateExternalImages(main);
-  }
-
-  if (window.hlx.aemassets.decorateImagesFromAlt) {
-    window.hlx.aemassets.decorateImagesFromAlt(main);
   }
 
   // decorate images with delivery url and correct alt text

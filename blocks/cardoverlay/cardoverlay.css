@@ -1,0 +1,126 @@
+.cardoverlay.block {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 2rem 2rem 2.5rem 2rem;
+  border-radius: 2rem;
+  box-sizing: border-box;
+  background: none;
+  z-index: 1;
+}
+
+.cardoverlay-maintext {
+  position: absolute;
+  top: 2.5rem;
+  left: 2.5rem;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 600;
+  z-index: 2;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  max-width: 50%;
+  line-height: 1.2;
+}
+
+.cardoverlay-cards {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.cardoverlay-card {
+  background: rgba(30, 30, 30, 0.6);
+  border-radius: 1.5rem;
+  padding: 2rem 1.2rem 2rem 1.2rem;
+  min-width: 0;
+  max-width: 320px;
+  min-height: 120px;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  transition: box-shadow 0.2s;
+  flex: 1 1 0;
+  word-break: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.cardoverlay-card a.button, .cardoverlay-card a {
+  color: #fff;
+  background: none;
+  font-size: 1.8rem;
+  font-weight: 900;
+  border: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  border-radius: 0.8rem;
+  display: inline;
+}
+
+.cardoverlay-card a.button:hover, .cardoverlay-card a:hover {
+  color: #0af;
+  background: none;
+  text-decoration: underline;
+}
+
+.cardoverlay-card-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  background: none;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.cardoverlay-card-link:hover, .cardoverlay-card-link:focus {
+  color: #fff;
+  background: none;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .cardoverlay.block {
+    padding: 1rem;
+    min-height: 300px;
+    border-radius: 1.2rem;
+  }
+  .cardoverlay-maintext {
+    position: static;
+    max-width: 100%;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .cardoverlay-cards {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .cardoverlay-card {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+    border-radius: 1.2rem;
+  }
+} 

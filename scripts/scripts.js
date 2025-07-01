@@ -130,29 +130,29 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
   return picture;
 }
 
-/**
- * Decorates all images in a container element and replace media urls with delivery urls.
- * @param {Element} main The container element
- */
-function decorateDeliveryImages(main) {
-  const pictureElements = main.querySelectorAll('picture');
-  [...pictureElements].forEach((pictureElement) => {
-    const imgElement = pictureElement.querySelector('img');
-    const alt = imgElement.getAttribute('alt');
-    try {
-      const deliveryObject = JSON.parse(decodeURIComponent(alt));
-      const { deliveryUrl, altText } = deliveryObject;
-      if (!deliveryUrl) {
-        return;
-      }
+// /**
+//  * Decorates all images in a container element and replace media urls with delivery urls.
+//  * @param {Element} main The container element
+//  */
+// function decorateDeliveryImages(main) {
+//   const pictureElements = main.querySelectorAll('picture');
+//   [...pictureElements].forEach((pictureElement) => {
+//     const imgElement = pictureElement.querySelector('img');
+//     const alt = imgElement.getAttribute('alt');
+//     try {
+//       const deliveryObject = JSON.parse(decodeURIComponent(alt));
+//       const { deliveryUrl, altText } = deliveryObject;
+//       if (!deliveryUrl) {
+//         return;
+//       }
 
-      const newPictureElement = createOptimizedPicture(deliveryUrl, altText);
-      pictureElement.parentElement.replaceChild(newPictureElement, pictureElement);
-    } catch (error) {
-      // Do nothing
-    }
-  });
-}
+//       const newPictureElement = createOptimizedPicture(deliveryUrl, altText);
+//       pictureElement.parentElement.replaceChild(newPictureElement, pictureElement);
+//     } catch (error) {
+//       // Do nothing
+//     }
+//   });
+// }
 
 /**
  * Decorates the main element.
@@ -161,19 +161,9 @@ function decorateDeliveryImages(main) {
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   if (window.hlx.aemassets.decorateExternalImages) {
-    // decorate external images with explicit external image marker
-    window.hlx.aemassets.decorateExternalImages(main, '//External Image//');
-
     // decorate external images with implicit external image marker
     window.hlx.aemassets.decorateExternalImages(main);
   }
-
-  if (window.hlx.aemassets.decorateImagesFromAlt) {
-    window.hlx.aemassets.decorateImagesFromAlt(main);
-  }
-
-  // decorate images with delivery url and correct alt text
-  decorateDeliveryImages(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);

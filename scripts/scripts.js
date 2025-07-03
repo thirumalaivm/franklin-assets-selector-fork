@@ -130,30 +130,6 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
   return picture;
 }
 
-// /**
-//  * Decorates all images in a container element and replace media urls with delivery urls.
-//  * @param {Element} main The container element
-//  */
-// function decorateDeliveryImages(main) {
-//   const pictureElements = main.querySelectorAll('picture');
-//   [...pictureElements].forEach((pictureElement) => {
-//     const imgElement = pictureElement.querySelector('img');
-//     const alt = imgElement.getAttribute('alt');
-//     try {
-//       const deliveryObject = JSON.parse(decodeURIComponent(alt));
-//       const { deliveryUrl, altText } = deliveryObject;
-//       if (!deliveryUrl) {
-//         return;
-//       }
-
-//       const newPictureElement = createOptimizedPicture(deliveryUrl, altText);
-//       pictureElement.parentElement.replaceChild(newPictureElement, pictureElement);
-//     } catch (error) {
-//       // Do nothing
-//     }
-//   });
-// }
-
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -161,7 +137,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   if (window.hlx.aemassets.decorateExternalImages) {
-    // decorate external images with implicit external image marker
+    // decorate external images
     window.hlx.aemassets.decorateExternalImages(main);
   }
   // hopefully forward compatible button decoration

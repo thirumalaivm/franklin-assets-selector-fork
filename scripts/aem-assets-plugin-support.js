@@ -11,7 +11,7 @@ export default async function assetsInit() {
     createOptimizedPicture,
     decorateExternalImages,
     createOptimizedPictureForDMOpenAPI,
-    createOptimizedPictureForDM
+    createOptimizedPictureForDM,
   } = await import(`${codeBasePath}/scripts/aem-assets.js`);
   window.hlx = window.hlx || {};
   window.hlx.aemassets = {
